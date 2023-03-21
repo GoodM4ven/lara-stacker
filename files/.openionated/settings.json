@@ -1,0 +1,103 @@
+{
+    // * =========
+    // * Original
+    // * =======
+    "window.zoomLevel": 0.7,
+    "explorer.autoReveal": false,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.nonBasicASCII": false,
+    "editor.hover.above": false,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 130,
+    "editor.formatOnPaste": false,
+    "editor.minimap.showSlider": "always",
+    "editor.scrollbar.vertical": "hidden",
+    "editor.scrollbar.verticalScrollbarSize": 0,
+    "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 14,
+    "editor.lineHeight": 2,
+    "editor.guides.bracketPairs": true,
+    "workbench.localHistory.maxFileEntries": 500,
+    "workbench.editor.untitled.hint": "hidden",
+    "workbench.startupEditor": "none",
+    "workbench.editor.enablePreview": true,
+    "workbench.editor.enablePreviewFromQuickOpen": true,
+    "workbench.activityBar.visible": false,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true
+    },
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "emmet.triggerExpansionOnTab": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    // * ===========
+    // * Extensions
+    // * =========
+    // [Community Material Theme]
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Community Material Theme Darker High Contrast",
+    "workbench.colorCustomizations": {
+        "[Community Material Theme Darker High Contrast]": {
+            "breadcrumb.background": "#1a1a1a"
+        }
+    },
+    // [Markdown Preview Github Styling]
+    "markdown-preview-github-styles.colorTheme": "dark",
+    // [Todo Tree]
+    "todo-tree.general.tags": ["BUG", "HACK", "TODO", "[ ]"],
+    "todo-tree.filtering.excludeGlobs": [
+        "**/node_modules",
+        "**/vendor",
+        "**/linux",
+        "**/windows"
+    ],
+    "todo-tree.tree.showBadges": true,
+    "todo-tree.tree.showCountsInTree": true,
+    // [GitLens]
+    "gitlens.codeLens.enabled": false,
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.enabled": false,
+    "gitlens.statusBar.enabled": true,
+    "gitlens.telemetry.enabled": false,
+    // * Specification
+    // [PHP Intelephense]
+    // ! Disable @builtin php > PHP Language Features
+    // ! Enter your Intelephense licence key in your user's [settings.json] (not workspace, not the profile)
+    "intelephense.telemetry.enabled": false,
+    // [Laravel Intelephense]
+    "LaravelIntelephense.disableGoToConfig": true,
+    // [Alpine.js IntelliSense]
+    "alpine-intellisense.settings.languageScopes": "blade,php",
+    // [Laravel Blade formatter]
+    "blade.format.enable": false,
+    "[blade]": {
+        "editor.defaultFormatter": "shufo.vscode-blade-formatter",
+        "editor.autoClosingBrackets": "always"
+    },
+    "bladeFormatter.format.wrapAttributes": "force-expand-multiline",
+    "bladeFormatter.format.sortHtmlAttributes": "none",
+    "bladeFormatter.format.sortTailwindcssClasses": true,
+    "bladeFormatter.format.noMultipleEmptyLines": true,
+    "bladeFormatter.format.enabled": true,
+    "bladeFormatter.format.indentSize": 4,
+    "bladeFormatter.format.wrapLineLength": 120,
+    "bladeFormatter.format.useTabs": false,
+    "bladeFormatter.format.noPhpSyntaxCheck": false,
+    "bladeFormatter.format.customHtmlAttributesOrder": "",
+    "bladeFormatter.misc.dontShowNewVersionMessage": false,
+    "[php]": {
+        // [Fold On Open]
+        "foldOnOpen.targets": ["AllBlockComments"],
+        // [PHP Intelephense]
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    }
+}

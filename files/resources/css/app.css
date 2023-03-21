@@ -1,0 +1,36 @@
+@import '../../node_modules/tippy.js/dist/tippy.css';
+@import '../../node_modules/tippy.js/themes/light.css';
+@import '../../vendor/filament/forms/dist/module.esm.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --breakpoint: 'unset';
+}
+@media screen and (min-width: 640px) {
+    :root {
+        --breakpoint: 'sm';
+    }
+}
+@media screen and (min-width: 768px) {
+    :root {
+        --breakpoint: 'md';
+    }
+}
+@media screen and (min-width: 1024px) {
+    :root {
+        --breakpoint: 'lg';
+    }
+}
+@media screen and (min-width: 1280px) {
+    :root {
+        --breakpoint: 'xl';
+    }
+}
+@media screen and (min-width: 1536px) {
+    :root {
+        --breakpoint: '2xl';
+    }
+}
