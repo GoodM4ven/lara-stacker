@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Laravel Sail's [DevContainer](https://laravel.com/docs/sail#using-devcontainers) setup is great, except when it **relies on VSC and its extensions to keep up and Docker not outsmarting everybody!** Meanwhile, I'm using my Ubuntu mainly for TALL stack development, so I might as well just do everything <u>***locally***</u>.
+Laravel Sail's [DevContainer](https://laravel.com/docs/sail#using-devcontainers) setup is great, except when it **relies on VSC and its extensions to keep up and Docker not outsmarting everybody!** Meanwhile, I'm using my Ubuntu mainly for [TALL stack](https://tallstack.dev/) development, so I might as well just do everything <u>***locally***</u>.
 
 This way, I don't have to worry about the things I've mentioned, plus I gain the following advantages for my situation:
 
@@ -156,18 +156,34 @@ That's it. You'll have your first project accessible in the end (displaying the 
 > You're free to take a look at and apply the VSC [settings](./files/.opinionated/settings.json) I'm using locally, as well as their complete [extension list](./files/.opinionated/extensions.md). (You can also set up both in their own "tall" VSC profile or something)
 
 
-### Todos For Production
+## Before Production
 
 - Reset [app/Http/Middleware/TrustedProxies.php]'s property to `protected $proxies;`
 
 
 ## Todos For Development:
 
+- [ ] Quiet out the setup script and test it! 🌚
+- [ ] Auto-complete or suggestion mechanism while deleting the project
+  - [ ] OR selection mechanism with an interface listing projects in rectangles (arrow up and down then enter)
 - [ ] Open VSC if available (check the commented code in [scripts/create.sh])
 - [ ] Run PHPUnit tests with the keybinding (ctrl+shift+r) if in PHPUnit class, and BetterPest's otherwise
 - [ ] Selective installation process (check [.draft/stacking-wip.md])
 - [ ] Blurred Image
 - [ ] TheatreJS
+
+
+## Changelogs
+
+### v1.0.1
+- Added PHP Resolver extension settings locally (opening PHP files outside workspace folders won't throw exceptions)
+- Considered [/var/www/html/.packages] folder in the VSC workspace
+
+### v1.0.0
+- Setup packages and services
+- List projects
+- create a project
+- delete a project
 
 
 ## Credits

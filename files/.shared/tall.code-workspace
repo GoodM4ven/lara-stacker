@@ -6,7 +6,11 @@
 			"StoilDobreff.php-resolver"
 		]
 	},
-	"folders": [],
+	"folders": [
+		{
+			"path": "/var/www/html/.packages"
+		}
+	],
 	"settings": {
 		// [Prettier - Code formatter]
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
