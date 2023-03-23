@@ -175,6 +175,9 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Changelogs
 
+### v1.0.2
+- Fixed a folder name type
+
 ### v1.0.1
 - Added PHP Resolver extension settings locally (opening PHP files outside workspace folders won't throw exceptions)
 - Considered [/var/www/html/.packages] folder in the VSC workspace
@@ -192,10 +195,21 @@ That's it. You'll have your first project accessible in the end (displaying the 
 - [Alpine.js](https://alpinejs.dev)
 - [Livewire](https://laravel-livewire.com)
 - [Laravel](https://laravel.com)
+- [FilamentPHP](https://filamentphp.com)
+- [Spatie](https://github.com/spatie)
 - [TALL Stack List](#tall-stack-list)
 - [Local VSC Extensions](./files/.opinionated/extensions.md)
 - [Workspace VSC Extensions](./files/.shared/tall.code-workspace)
 - [Contributers](https://github.com/GoodM4ven/tall-stacker/graphs/contributors)
+
+
+## Support
+
+Support the maintenance as well as the development of [other projects](https://github.com/sponsors/GoodM4ven).
+
+<div align="left">
+   <iframe src="https://github.com/sponsors/GoodM4ven/button" title="Sponsor GoodM4ven" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
+</div>
 
 
 <div align="center">
