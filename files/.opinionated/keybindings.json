@@ -545,6 +545,36 @@
         "command": "wrap.with",
         "when": "editorHasSelection"
     },
+    // [PHP Namespace Resolver]
+    {
+        "key": "ctrl+alt+e",
+        "command": "-namespaceResolver.expand",
+        "when": "editorLangId == 'php'"
+    },
+    {
+        "key": "ctrl+alt+g",
+        "command": "-namespaceResolver.generateNamespace",
+        "when": "editorLangId == 'php'"
+    },
+    {
+        "key": "ctrl+alt+a",
+        "command": "-namespaceResolver.importAll",
+        "when": "editorLangId == 'php'"
+    },
+    {
+        "key": "ctrl+alt+i",
+        "command": "-namespaceResolver.import",
+        "when": "editorLangId == 'php'"
+    },
+    {
+        "key": "ctrl+alt+s",
+        "command": "-namespaceResolver.sort",
+        "when": "editorLangId == 'php'"
+    },
+    {
+        "key": "ctrl+alt+g",
+        "command": "namespaceResolver.generateNamespace"
+    },
     // [PHP Resolver]
     {
         "key": "ctrl+alt+a",
@@ -577,11 +607,11 @@
         "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+alt+e",
-        "command": "phpResolver.expand"
+        "key": "ctrl+alt+g",
+        "command": "-phpResolver.generateNamespace"
     },
     {
-        "key": "ctrl+alt+g",
-        "command": "phpResolver.generateNamespace"
+        "key": "ctrl+alt+e",
+        "command": "phpResolver.expand"
     }
 ]

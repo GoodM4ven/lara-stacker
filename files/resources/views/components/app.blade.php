@@ -102,7 +102,6 @@
     <!-- Head Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireScripts
-    @stack('headScripts')
 </head>
 
 <body
@@ -126,7 +125,7 @@
     {{ $slot }}
 
     @livewire('notifications')
-    @stack('bodyScripts')
+    @stack('scripts')
 </body>
 
 </html>

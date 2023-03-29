@@ -6,6 +6,11 @@
     "explorer.autoReveal": false,
     "explorer.confirmDragAndDrop": false,
     "explorer.confirmDelete": false,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+    },
     "editor.unicodeHighlight.ambiguousCharacters": false,
     "editor.unicodeHighlight.nonBasicASCII": false,
     "editor.hover.above": false,
@@ -38,10 +43,17 @@
     "git.enableSmartCommit": true,
     "diffEditor.ignoreTrimWhitespace": false,
     "emmet.triggerExpansionOnTab": true,
+    "emmet.showExpandedAbbreviation": "always",
     "javascript.updateImportsOnFileMove.enabled": "always",
     // * ===========
     // * Extensions
     // * =========
+    // [GitLens]
+    "gitlens.codeLens.enabled": false,
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.enabled": false,
+    "gitlens.statusBar.enabled": true,
+    "gitlens.telemetry.enabled": false,
     // [Community Material Theme]
     "workbench.iconTheme": "material-icon-theme",
     "workbench.colorTheme": "Community Material Theme Darker High Contrast",
@@ -53,37 +65,23 @@
     // [Markdown Preview Github Styling]
     "markdown-preview-github-styles.colorTheme": "dark",
     // [Todo Tree]
+    "todo-tree.tree.showBadges": true,
+    "todo-tree.tree.showCountsInTree": true,
     "todo-tree.general.tags": ["BUG", "HACK", "TODO", "[ ]"],
     "todo-tree.filtering.excludeGlobs": [
         "**/node_modules",
-        "**/vendor",
-        "**/linux",
-        "**/windows"
+        "**/vendor"
     ],
-    "todo-tree.tree.showBadges": true,
-    "todo-tree.tree.showCountsInTree": true,
-    // [GitLens]
-    "gitlens.codeLens.enabled": false,
-    "gitlens.currentLine.enabled": false,
-    "gitlens.hovers.enabled": false,
-    "gitlens.statusBar.enabled": true,
-    "gitlens.telemetry.enabled": false,
     // * Specification
-    // [PHP Intelephense]
-    // ! Disable @builtin php > PHP Language Features
-    // ! Enter your Intelephense licence key in your user's [settings.json] (not workspace, not the profile)
-    "intelephense.telemetry.enabled": false,
-    // [PHP Resolver]
-    "phpResolver.showMessageOnStatusBar": false,
-    "phpResolver.phpSnifferCommand": "/home/goodm4ven/.config/composer/vendor/bin/phpcs",
-    "phpResolver.phpBeautifierCommand": "/home/goodm4ven/.config/composer/vendor/bin/phpcbf",
-    "phpResolver.phpStandards": "PSR2",
-    // [Laravel Intelephense]
-    "LaravelIntelephense.disableGoToConfig": true,
+    "[php]": {
+        // [Fold On Open]
+        "foldOnOpen.targets": ["AllBlockComments"],
+        // [PHP Intelephense]
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
     // [Alpine.js IntelliSense]
-    "alpine-intellisense.settings.languageScopes": "blade,php",
+    "alpine-intellisense.settings.languageScopes": "blade",
     // [Laravel Blade formatter]
-    "blade.format.enable": false,
     "[blade]": {
         "editor.defaultFormatter": "shufo.vscode-blade-formatter",
         "editor.autoClosingBrackets": "always"
@@ -99,10 +97,8 @@
     "bladeFormatter.format.noPhpSyntaxCheck": false,
     "bladeFormatter.format.customHtmlAttributesOrder": "",
     "bladeFormatter.misc.dontShowNewVersionMessage": false,
-    "[php]": {
-        // [Fold On Open]
-        "foldOnOpen.targets": ["AllBlockComments"],
-        // [PHP Intelephense]
-        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-    }
+    // [PHP Intelephense]
+    // ! Disable @builtin php > PHP Language Features
+    // ! Enter your Intelephense licence key in your user's [settings.json] (not workspace, not the profile)
+    "intelephense.telemetry.enabled": false
 }
