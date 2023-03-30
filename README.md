@@ -170,7 +170,6 @@ That's it. You'll have your first project accessible in the end (displaying the 
 - [ ] Open VSC if available (check the commented code in [scripts/create.sh])
 - [ ] Run PHPUnit tests with the keybinding (ctrl+shift+r) if in PHPUnit class, and BetterPest's otherwise
 - [ ] Selective installation process (check [.draft/stacking-wip.md])
-- [ ] Blurred Image
 - [ ] TheatreJS
 
 
@@ -194,6 +193,13 @@ Support the maintenance as well as the development of [other projects](https://g
 
 
 ## Changelogs
+
+### v1.0.4
+- Fixed MinIO's permissions issue
+  - Fixed bucket deletion
+  - Set livewire's temp uploads disk to 's3' as well
+- Fixed `login` route not defined issue (Filament related)
+- Added [blurred-image](https://github.com/GoodM4ven/blurred-image) package to the roster!
 
 ### v1.0.3
 - Added PHP Namespace Resolver extension and keybindings

@@ -85,12 +85,14 @@ if mysql -u root -p$DB_PASSWORD -e "use $project_db_name" 2> /dev/null; then
   echo -e "\nDropped $project_db_name database."
 fi
 
-
 # Delete the MinIO storage
 if [ -d "/home/$USERNAME/.config/minio/data/$escaped_project_name" ]; then
-  minio-client rb --force myminio/$escaped_project_name >/dev/null 2>&1
+  cd /home/$USERNAME/.config/minio/data
+  rm -rf $escaped_project_name >/dev/null 2>&1
 
-  echo -e "\nDeleted $project_db_name's MinIO storage."
+  cd $PROJECTS_DIRECTORY
+
+  echo -e "\nDeleted $escaped_project_name's MinIO storage."
 fi
 
 # Display a success message

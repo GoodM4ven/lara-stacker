@@ -104,7 +104,7 @@ sudo echo "<VirtualHost *:80>
     </VirtualHost>
 </IfModule>" | sudo tee /etc/apache2/sites-available/$escaped_project_name.conf > /dev/null
 
-sudo a2ensite -q $escaped_project_name
+sudo a2ensite -q $escaped_project_name >/dev/null 2>&1
 
 sudo service apache2 restart
 
@@ -131,7 +131,7 @@ echo -e "\nInstalling all Composer packages; please be patient..."
 
 composer require --dev laravel/telescope pestphp/pest pestphp/pest-plugin-faker pestphp/pest-plugin-laravel pestphp/pest-plugin-livewire laravel-lang/lang --with-all-dependencies -n --quiet
 
-composer require league/flysystem-aws-s3-v3 livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-permission bezhansalleh/filament-shield spatie/laravel-settings filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons --with-all-dependencies -n --quiet
+composer require league/flysystem-aws-s3-v3 livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-permission bezhansalleh/filament-shield spatie/laravel-settings filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons goodm4ven/blurred-image --with-all-dependencies -n --quiet
 
 # ? Install all NPM packages right here
 echo -e "\nInstalling all NPM packages; please stay patient...!"
@@ -174,17 +174,21 @@ sed -i "s/REDIS_HOST=127.0.0.1/REDIS_CLIENT=predis\nREDIS_HOST=127.0.0.1/g" ./.e
 
 echo -e "\nInstalled Redis, predis and the Redis facade in the project..."
 
-# TODO Set up a MinIO storage
+# Set up a MinIO storage
 cd /home/$USERNAME/.config/minio/data/
+
 minio-client mb --region=us-east-1 $escaped_project_name >/dev/null 2>&1
+sleep 5
 minio-client anonymous set public myminio/$escaped_project_name >/dev/null 2>&1
+
+sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $escaped_project_name
+
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 
 sed -i "s/FILESYSTEM_DISK=local/FILESYSTEM_DISK=s3/g" ./.env
 sed -i "s/AWS_ACCESS_KEY_ID=/AWS_ACCESS_KEY_ID=minioadmin/g" ./.env
 sed -i "s/AWS_SECRET_ACCESS_KEY=/AWS_SECRET_ACCESS_KEY=minioadmin/g" ./.env
 sed -i "s/AWS_BUCKET=/AWS_BUCKET=$escaped_project_name/g" ./.env
-# TODO double check the `minio` instead of `localhost` in AWS_ENDPOINT
 sed -i "s|AWS_USE_PATH_STYLE_ENDPOINT=false|AWS_ENDPOINT=http://localhost:9000\nAWS_URL=http://localhost:9000/$escaped_project_name\nAWS_USE_PATH_STYLE_ENDPOINT=true|g" ./.env
 
 echo -e "\nSet up a MinIO storage for the project..."
@@ -250,7 +254,8 @@ echo -e "\nInstalled ALpine.js framework..."
 # Alpine.js Breakpoints
 echo -e "\nInstalled Alpine.js Breakpoints (check app.blade.php listeners)..."
 
-# TODO Laravel-Wave
+# TODO needs testing
+# Laravel-Wave
 php artisan vendor:publish --tag="wave-config" --quiet
 
 sed -i "s/BROADCAST_DRIVER=log/BROADCAST_DRIVER=redis/g" ./.env
@@ -266,6 +271,7 @@ rm ./resources/views/welcome.blade.php
 mkdir -p ./resources/views/components/home
 mkdir -p ./resources/views/partials
 sudo cp -r $TALL_STACKER_DIRECTORY/files/public/build ./public/
+sudo cp $TALL_STACKER_DIRECTORY/files/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
 sudo cp $TALL_STACKER_DIRECTORY/files/routes/web.php ./routes/
 sudo cp $TALL_STACKER_DIRECTORY/files/resources/views/home.blade.php ./resources/views/
 sudo cp $TALL_STACKER_DIRECTORY/files/resources/views/components/app.blade.php ./resources/views/components/
@@ -274,7 +280,7 @@ sudo cp $TALL_STACKER_DIRECTORY/files/resources/views/partials/fader.blade.php .
 
 sed -i "s/\"@php artisan package:discover --ansi\"/\"@php artisan package:discover --ansi\",\n            \"@php artisan vendor:publish --force --tag=livewire:assets --ansi\"/g" ./composer.json
 sed -i "s/'layout' => 'layouts.app',/'layout' => 'components.app',/g" ./config/livewire.php
-sed -i "s/'disk' => null,/'disk' => 'local',/g" ./config/livewire.php
+sed -i "s/'disk' => null,/'disk' => 's3',/g" ./config/livewire.php
 
 echo -e "\nInstalled Livewire framework..."
 
@@ -324,6 +330,11 @@ sed -i "s~'CacheControl' => 'max-age=604800',~'CacheControl' => 'max-age=604800'
 echo -e "\nMEDIA_DISK=s3" | tee -a ./.env >/dev/null 2>&1
 
 echo -e "\nInstalled and configured Laravel Media Library to work with MinIO..."
+
+# Blurred Image
+php artisan blurred-image:install --quiet
+
+echo -e "\nInstalled Blurred Image and Blurhash..."
 
 # Eloquent Sortable
 php artisan vendor:publish --tag=eloquent-sortable-config --quiet
@@ -445,5 +456,5 @@ echo -e "\nUpdated directory and file permissions all around..."
 # fi
 
 # Display a success message
-echo -e "\nProject created successfully! You can access it at: [https://$escaped_project_name.test]."
+echo -e "\nProject created successfully! You can access it at: [https://$escaped_project_name.test].\n"
 # echo -e "\nNote: File permissions through VSC need about a minute or two to kick in; after indexing via PHP Intelephense extension.\n"
