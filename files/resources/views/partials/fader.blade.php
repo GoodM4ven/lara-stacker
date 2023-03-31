@@ -1,13 +1,16 @@
 <div
     id="tall-stacker-fader"
-    class="fixed inset-0 z-[99] bg-white transition-opacity duration-1000"
+    class="fixed inset-0 z-[99] bg-white transition-opacity duration-1000 pointer-events-none"
 ></div>
 
 @push('scripts')
     <script>
         document.fonts.ready.then(() => {
             setTimeout(() => {
-                document.getElementById('tall-stacker-fader').classList.add('opacity-0');
+                const fader = document.getElementById('tall-stacker-fader');
+
+                fader.classList.add('opacity-0');
+                setTimeout(() => fader.remove(), 500);
             }, 500);
         });
     </script>
