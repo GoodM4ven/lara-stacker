@@ -389,6 +389,11 @@
         "key": "ctrl+shift+n",
         "command": "extension.advancedNewFile"
     },
+    // [Compare Folders]
+    {
+        "key": "ctrl+shift+meta+c",
+        "command": "foldersCompare.compareFoldersAgainstEachOther"
+    },
     // [Polacode]
     {
         "key": "ctrl+alt+p",

@@ -21,42 +21,45 @@ origin_dir=$PWD
 # Get environment variables and defaults
 source $origin_dir/.env
 
+# Make the helper script executable
+sudo chmod +x $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh
+
 # git, php, apache2, redis and npm
-sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath redis-server npm -y
+sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath redis-server npm -y >/dev/null 2>&1
 
 sed -i "s~post_max_size = 8M~post_max_size = 100M~g" /etc/php/8.1/apache2/php.ini
 sed -i "s~upload_max_filesize = 2M~upload_max_filesize = 100M~g" /etc/php/8.1/apache2/php.ini
 sed -i "s~variables_order = \"GPCS\"~variables_order = \"EGPCS\"~g" /etc/php/8.1/apache2/php.ini
 
-sudo systemctl start apache2
+sudo systemctl start apache2 >/dev/null 2>&1
 
 echo -e "\nInstalled Git, PHP, Apache, Redis and npm packages."
 
 # media packages
-sudo apt install php-imagick php-gd ghostscript ffmpeg -y
+sudo apt install php-imagick php-gd ghostscript ffmpeg -y >/dev/null 2>&1
 
 echo -e "\nInstalled media packages. (imagick, GD, etc.)"
 
 # Xdebug
-sudo apt install php-xdebug -y
+sudo apt install php-xdebug -y >/dev/null 2>&1
 
 mkdir -p /home/$USERNAME/.config/xdebug
 
 sed -i "s~zend_extension=xdebug.so~zend_extension=xdebug.so\n\nxdebug.log=\"/home/$USERNAME/.config/xdebug/xdebug.log\"\nxdebug.log_level=10\nxdebug.mode=develop,debug,coverage\nxdebug.client_port=9003\nxdebug.start_with_request=yes\nxdebug.discover_client_host=true~g" /etc/php/8.1/mods-available/xdebug.ini
 
-sudo systemctl restart apache2
+sudo systemctl restart apache2 >/dev/null 2>&1
 
 echo -e "\nInstalled PHP Xdebug."
 
 # mkcert
-sudo apt install mkcert -y
+sudo apt install mkcert -y >/dev/null 2>&1
 
-sudo -u $USERNAME mkcert -install
+sudo -u $USERNAME mkcert -install >/dev/null 2>&1
 
 echo -e "\nInstalled mkcert for SSL generation."
 
 # Composer (globally)
-sudo apt install composer -y
+sudo apt install composer -y >/dev/null 2>&1
 
 echo 'export PATH="$PATH:$HOME/.config/composer/vendor/bin"' >> ~/.bashrc
 source ~/.bashrc
@@ -81,7 +84,7 @@ if [ "$OPINIONATED_KEYBINDINGS" == true ]; then
 fi
 
 # CodeSniffer
-composer global require "squizlabs/php_codesniffer=*" --dev -y
+composer global require "squizlabs/php_codesniffer=*" --dev --quiet
 
 mkdir $PROJECTS_DIRECTORY/.shared
 sudo cp $TALL_STACKER_DIRECTORY/files/.shared/phpcs.xml $PROJECTS_DIRECTORY/.shared/
@@ -117,6 +120,7 @@ if [[ $found_vsc == true ]]; then
   echo -e "\nCreated a VSC workspace on Desktop."
 fi
 
+# TODO continue testing from here
 # MySQL (root 'password')
 sudo apt install mysql-server -y
 
@@ -158,6 +162,7 @@ RestartSec=10
 
 [Install]
 WantedBy=multi-user.target" | sudo tee /etc/systemd/system/mailpit.service > /dev/null
+
 sudo systemctl daemon-reload
 sudo systemctl enable mailpit.service
 sudo systemctl start mailpit.service
@@ -198,6 +203,7 @@ RestartSec=10
 
 [Install]
 WantedBy=multi-user.target" | sudo tee /etc/systemd/system/minio.service > /dev/null
+
 sudo systemctl daemon-reload
 sudo systemctl enable minio.service
 sudo systemctl start minio.service

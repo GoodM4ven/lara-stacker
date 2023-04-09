@@ -83,6 +83,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - filament/spatie-laravel-settings-plugin:"^2.0"
     - spatie/laravel-options
     - blade-ui-kit/blade-icons
+    - danharrin/livewire-rate-limiting
   - Local Development
     - laravel/telescope
     - pestphp/pest
@@ -170,7 +171,7 @@ That's it. You'll have your first project accessible in the end (displaying the 
 - [ ] Open VSC if available (check the commented code in [scripts/create.sh])
 - [ ] Run PHPUnit tests with the keybinding (ctrl+shift+r) if in PHPUnit class, and BetterPest's otherwise
 - [ ] Selective installation process (check [.draft/stacking-wip.md])
-- [ ] TheatreJS
+- [ ] TheatreJS (Alpination)
 
 
 ## Credits
@@ -194,33 +195,7 @@ Support the maintenance as well as the development of [other projects](https://g
 
 ## Changelogs
 
-### v1.0.4
-- Fixed MinIO's permissions issue
-  - Fixed bucket deletion
-  - Set livewire's temp uploads disk to 's3' as well
-- Fixed `login` route not defined issue (Filament related)
-- Added [blurred-image](https://github.com/GoodM4ven/blurred-image) package to the roster!
-
-### v1.0.3
-- Added PHP Namespace Resolver extension and keybindings
-  - Replaced the namespace generation shortcut with this new extension's
-- Fixed HTML intellisense in Blade files
-- Added some VSC extensions
-- Moved some extensions to the workspace level
-- Removed `headScripts` Blade stack, as it doesn't work for some reason!
-
-### v1.0.2
-- Fixed a folder name type
-
-### v1.0.1
-- Added PHP Resolver extension settings locally (opening PHP files outside workspace folders won't throw exceptions)
-- Considered [/var/www/html/.packages] folder in the VSC workspace
-
-### v1.0.0
-- Setup packages and services
-- List projects
-- create a project
-- delete a project
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
 
 <div align="center">

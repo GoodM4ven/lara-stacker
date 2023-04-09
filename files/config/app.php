@@ -186,6 +186,7 @@ return [
          * Package Service Providers...
          */
         App\Providers\FilamentServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
 
         /*
          * Application Service Providers...

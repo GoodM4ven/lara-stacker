@@ -131,7 +131,7 @@ echo -e "\nInstalling all Composer packages; please be patient..."
 
 composer require --dev laravel/telescope pestphp/pest pestphp/pest-plugin-faker pestphp/pest-plugin-laravel pestphp/pest-plugin-livewire laravel-lang/lang --with-all-dependencies -n --quiet
 
-composer require league/flysystem-aws-s3-v3 livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-permission bezhansalleh/filament-shield spatie/laravel-settings filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons goodm4ven/blurred-image --with-all-dependencies -n --quiet
+composer require league/flysystem-aws-s3-v3 livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-permission bezhansalleh/filament-shield spatie/laravel-settings filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons danharrin/livewire-rate-limiting goodm4ven/blurred-image --with-all-dependencies -n --quiet
 
 # ? Install all NPM packages right here
 echo -e "\nInstalling all NPM packages; please stay patient...!"
@@ -139,6 +139,8 @@ echo -e "\nInstalling all NPM packages; please stay patient...!"
 npm install alpinejs @alpinejs/mask @alpinejs/intersect @alpinejs/persist @alpinejs/focus @alpinejs/collapse @alpinejs/morph laravel-wave >/dev/null 2>&1
 
 npm install -D tailwindcss postcss autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio @tailwindcss/line-clamp @tailwindcss/container-queries @defstudio/vite-livewire-plugin tippy.js @awcodes/alpine-floating-ui alpinejs-breakpoints >/dev/null 2>&1
+
+npm uninstall axios >/dev/null 2>&1
 
 # Set up launch.json for debugging
 mkdir .vscode

@@ -40,7 +40,9 @@ options_count=$(( ${#options[@]} - 1 ))
 echo ""
 
 # Loop until user chooses to exit
+counter=0
 while true; do
+  counter=$((counter+1))
   echo -e "=================="
   echo -e "=- TALL-Stacker -="
   echo -e "==================\n"
@@ -55,7 +57,11 @@ while true; do
     echo "$opt"
   done
   echo ""
-  read -p "Choose an operation (0-$options_count): " choice
+  if [[ $counter -eq 1 && "$1" ]]; then
+    choice="$1"
+  else
+    read -p "Choose an operation (0-$options_count): " choice
+  fi
   case $choice in
     0)
       sudo ./scripts/setup.sh
