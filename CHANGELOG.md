@@ -2,10 +2,17 @@
 
 All notable changes to `tall-stacker` will be documented in this file.
 
+## v1.0.7 - 2023-04-19
+
+- Fully tested the setup script
+- Added the old changelogs
+- Fixed the TelescopeServiceProvider not found bug
+
 ## v1.0.6 - 2023-04-09
 
 - Testing the setup script with Docker (WIP)
-  - Silenced most of the commands
+- - Silenced most of the commands
+- 
 - Added the missing MIT license
 - Added [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting) to the stack
 - Accepting an initial argument as an option for tall-stacker script
@@ -19,15 +26,17 @@ All notable changes to `tall-stacker` will be documented in this file.
 ## v1.0.4 - 2023-03-30
 
 - Fixed MinIO's permissions issue
-  - Fixed bucket deletion
-  - Set livewire's temp uploads disk to 's3' as well
+- - Fixed bucket deletion
+- - Set livewire's temp uploads disk to 's3' as well
+- 
 - Fixed `login` route not defined issue (Filament related)
 - Added [blurred-image](https://github.com/GoodM4ven/blurred-image) package to the roster!
 
 ## v1.0.3 - 2023-03-29
 
 - Added PHP Namespace Resolver extension and keybindings
-  - Replaced the namespace generation shortcut with this new extension's
+- - Replaced the namespace generation shortcut with this new extension's
+- 
 - Fixed HTML intellisense in Blade files
 - Added some VSC extensions
 - Moved some extensions to the workspace level
