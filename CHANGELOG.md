@@ -2,6 +2,12 @@
 
 All notable changes to `tall-stacker` will be documented in this file.
 
+## v1.0.8 - 2023-04-21
+
+- Dropped Permission along Filament Shield for now
+- Fixed missing SSL configuration in setup script
+- Fixed MinIO's bucket permissions in create script
+
 ## v1.0.7 - 2023-04-19
 
 - Fully tested the setup script
@@ -12,6 +18,7 @@ All notable changes to `tall-stacker` will be documented in this file.
 
 - Testing the setup script with Docker (WIP)
 - - Silenced most of the commands
+- 
 - 
 - Added the missing MIT license
 - Added [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting) to the stack
@@ -27,7 +34,9 @@ All notable changes to `tall-stacker` will be documented in this file.
 
 - Fixed MinIO's permissions issue
 - - Fixed bucket deletion
+- 
 - - Set livewire's temp uploads disk to 's3' as well
+- 
 - 
 - Fixed `login` route not defined issue (Filament related)
 - Added [blurred-image](https://github.com/GoodM4ven/blurred-image) package to the roster!
@@ -36,6 +45,7 @@ All notable changes to `tall-stacker` will be documented in this file.
 
 - Added PHP Namespace Resolver extension and keybindings
 - - Replaced the namespace generation shortcut with this new extension's
+- 
 - 
 - Fixed HTML intellisense in Blade files
 - Added some VSC extensions
