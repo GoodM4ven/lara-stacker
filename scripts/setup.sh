@@ -34,6 +34,8 @@ sudo sed -i "s~variables_order = \"GPCS\"~variables_order = \"EGPCS\"~g" /etc/ph
 sudo systemctl start apache2 >/dev/null 2>&1
 sudo a2enmod rewrite >/dev/null 2>&1
 sudo systemctl restart apache2 >/dev/null 2>&1
+sudo a2enmod ssl >/dev/null 2>&1
+sudo systemctl restart apache2 >/dev/null 2>&1
 
 echo -e "\nInstalled Git, PHP, Apache, Redis and npm packages."
 

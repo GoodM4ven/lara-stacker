@@ -119,7 +119,7 @@ project_db_name=$(echo "$escaped_project_name" | sed 's/\([[:lower:]]\)\([[:uppe
 sed -i "s/DB_DATABASE=laravel/DB_DATABASE=$project_db_name/g" ./.env
 sed -i "s/DB_PASSWORD=/DB_PASSWORD=$DB_PASSWORD/g" ./.env
 
-if mysql -u root -p$DB_PASSWORD -e "use $project_db_name" 2> /dev/null; then
+if mysql -u root -p$DB_PASSWORD -e "SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='$project_db_name'" 2> /dev/null | grep "$project_db_name" > /dev/null; then
   echo -e "\nMySQL database $project_db_name already exists!"
 else
   mysql -u root -p$DB_PASSWORD -e "CREATE DATABASE $project_db_name;" 2> /dev/null
@@ -131,7 +131,7 @@ echo -e "\nInstalling all Composer packages; please be patient..."
 
 composer require --dev laravel/telescope pestphp/pest pestphp/pest-plugin-faker pestphp/pest-plugin-laravel pestphp/pest-plugin-livewire laravel-lang/lang --with-all-dependencies -n --quiet
 
-composer require league/flysystem-aws-s3-v3 livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-permission bezhansalleh/filament-shield spatie/laravel-settings filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons danharrin/livewire-rate-limiting goodm4ven/blurred-image --with-all-dependencies -n --quiet
+composer require league/flysystem-aws-s3-v3 livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-settings filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons danharrin/livewire-rate-limiting goodm4ven/blurred-image --with-all-dependencies -n --quiet
 
 # ? Install all NPM packages right here
 echo -e "\nInstalling all NPM packages; please stay patient...!"
@@ -178,12 +178,12 @@ echo -e "\nInstalled Redis, predis and the Redis facade in the project..."
 
 # Set up a MinIO storage
 cd /home/$USERNAME/.config/minio/data/
-
 minio-client mb --region=us-east-1 $escaped_project_name >/dev/null 2>&1
-sleep 5
-minio-client anonymous set public myminio/$escaped_project_name >/dev/null 2>&1
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $escaped_project_name
+cd /home/$USERNAME/ 
+sudo -u $USERNAME minio-client anonymous set public myminio/$escaped_project_name >/dev/null 2>&1
+
+sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/.config/minio/data/$escaped_project_name
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 
@@ -209,7 +209,7 @@ mkdir -p ./app/Services/Support
 sudo cp $TALL_STACKER_DIRECTORY/files/app/Services/Support/functions.php ./app/Services/Support/
 sed -i '0,/"psr-4": {/s//"files": [\n            "app\/Services\/Support\/functions.php"\n        ],\n        "psr-4": {/' ./composer.json
 
-composer dump-autoload --quiet
+composer dump-autoload -n --quiet
 
 echo -e "\nCreated a helper functions file and registered it in [composer.json]..."
 
@@ -371,16 +371,17 @@ sudo cp $TALL_STACKER_DIRECTORY/files/app/Services/Support/Traits/Enumerifier.ph
 
 echo -e "\nInstalled Laravel Options and extracted an Enumerifier helper trait..."
 
+
+# TODO rework and ensure User model is copied here instead
 # Laravel Permission
-php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --quiet
-php artisan vendor:publish --tag=filament-shield-config --quiet
-php artisan shield:install --fresh --quiet
+# php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --quiet
+# php artisan vendor:publish --tag=filament-shield-config --quiet
+# php artisan shield:install --fresh --only --quiet
 
-php artisan make:policy RolePolicy --model="\Spatie\Permission\Models\Role" --quiet
-sed -i "s~\/\/~return true;~g" ./app/Policies/RolePolicy.php
-sed -i "s~'navigation_group' => true,~'navigation_group' => false,~g" ./config/filament-shield.php
+# sed -i "s~\/\/~return true;~g" ./app/Policies/RolePolicy.php
+# sed -i "s~'navigation_group' => true,~'navigation_group' => false,~g" ./config/filament-shield.php
 
-echo -e "\nInstalled Laravel Permission and Filament Shield for role management page..."
+# echo -e "\nInstalled Laravel Permission and Filament Shield for role management page..."
 
 # Laravel Settings
 php artisan vendor:publish --provider="Spatie\LaravelSettings\LaravelSettingsServiceProvider" --tag="migrations" --quiet

@@ -77,8 +77,6 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - filament/spatie-laravel-translatable-plugin:"^2.0"
     - spatie/laravel-tags
     - filament/spatie-laravel-tags-plugin:"^2.0"
-    - spatie/laravel-permission
-    - bezhansalleh/filament-shield
     - spatie/laravel-settings
     - filament/spatie-laravel-settings-plugin:"^2.0"
     - spatie/laravel-options
@@ -164,7 +162,6 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Todos For Development:
 
-- [ ] Quiet out the setup script and test it! 🌚
 - [ ] Link to the repos of all the packages in the stack list
 - [ ] Auto-complete or suggestion mechanism while deleting the project
   - [ ] OR selection mechanism with an interface listing projects in rectangles (arrow up and down then enter)
