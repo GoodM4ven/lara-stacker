@@ -55,14 +55,14 @@ echo -e "Installing the project via Composer; a bit of patience..."
 
 composer create-project --prefer-dist laravel/laravel $escaped_project_name -n --quiet
 
-# ? Navigate to user's directory
-cd /home/$USERNAME/
-
 # Generate an SSL certificate via mkcert
-sudo -u $USERNAME mkcert $escaped_project_name.test 2>/dev/null
-mkdir $PROJECTS_DIRECTORY/$escaped_project_name/certs
+sudo su - $USERNAME
+cd /home/$USERNAME/
+mkcert $escaped_project_name.test 2>/dev/null
+sudo mkdir $PROJECTS_DIRECTORY/$escaped_project_name/certs
 sudo mv ./$escaped_project_name.test.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
 sudo mv ./$escaped_project_name.test-key.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
+sudo su
 
 echo -e "\nGenerated SSL certificate via mkcert..."
 
@@ -131,7 +131,7 @@ echo -e "\nInstalling all Composer packages; please be patient..."
 
 composer require --dev laravel/telescope pestphp/pest pestphp/pest-plugin-faker pestphp/pest-plugin-laravel pestphp/pest-plugin-livewire laravel-lang/lang --with-all-dependencies -n --quiet
 
-composer require league/flysystem-aws-s3-v3 livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-settings filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons danharrin/livewire-rate-limiting goodm4ven/blurred-image --with-all-dependencies -n --quiet
+composer require "league/flysystem-aws-s3-v3:^3.0" livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-settings:"^2.2" filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons danharrin/livewire-rate-limiting goodm4ven/blurred-image --with-all-dependencies -n --quiet
 
 # ? Install all NPM packages right here
 echo -e "\nInstalling all NPM packages; please stay patient...!"
@@ -180,8 +180,10 @@ echo -e "\nInstalled Redis, predis and the Redis facade in the project..."
 cd /home/$USERNAME/.config/minio/data/
 minio-client mb --region=us-east-1 $escaped_project_name >/dev/null 2>&1
 
-cd /home/$USERNAME/ 
-sudo -u $USERNAME minio-client anonymous set public myminio/$escaped_project_name >/dev/null 2>&1
+sudo su - $USERNAME
+cd /home/$USERNAME/
+minio-client anonymous set public myminio/$escaped_project_name >/dev/null 2>&1
+sudo su
 
 sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/.config/minio/data/$escaped_project_name
 

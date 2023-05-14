@@ -37,7 +37,7 @@ sudo systemctl restart apache2 >/dev/null 2>&1
 sudo a2enmod ssl >/dev/null 2>&1
 sudo systemctl restart apache2 >/dev/null 2>&1
 
-echo -e "\nInstalled Git, PHP, Apache, Redis and npm packages."
+echo -e "Installed Git, PHP, Apache, Redis and npm packages."
 
 # media packages
 sudo apt install php-imagick php-gd ghostscript ffmpeg -y >/dev/null 2>&1
@@ -55,18 +55,32 @@ sudo systemctl restart apache2 >/dev/null 2>&1
 
 echo -e "\nInstalled PHP Xdebug."
 
+# NodeJS Upgrades
+# TODO quiet
+sudo su - $USERNAME
+cd /home/$USERNAME/Downloads
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+source /home/$USERNAME/.bashrc
+nvm install 14
+nvm use 14
+npm install -g npm@8.5.1
+sudo su
+
 # mkcert
 sudo apt install mkcert libnss3-tools -y >/dev/null 2>&1
 
-sudo -u $USERNAME mkcert -install >/dev/null 2>&1
+sudo su - $USERNAME
+mkcert -install >/dev/null 2>&1
+sudo su
 
 echo -e "\nInstalled mkcert for SSL generation."
 
 # Composer (globally)
 sudo apt install composer -y >/dev/null 2>&1
 
-echo 'export PATH="$PATH:$HOME/.config/composer/vendor/bin"' >> ~/.bashrc
-source ~/.bashrc
+# TODO quiet
+echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >> /home/$USERNAME/.bashrc
+source /home/$USERNAME/.bashrc
 
 echo -e "\nInstalled composer globally."
 
@@ -100,11 +114,14 @@ echo -e "\nInstalled CodeSniffer globally."
 # Link projects directory
 mkdir /home/$USERNAME/Code/ >/dev/null 2>&1
 
+sudo su - $USERNAME
 cd /home/$USERNAME/Code
 ln -s $PROJECTS_DIRECTORY/
-
 final_folder=$(basename $PROJECTS_DIRECTORY)
 mv $final_folder TALL
+sudo su
+
+sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
 
 echo -e "\nLinked projects directory into [~/Code/TALL] directory."
 
@@ -114,11 +131,14 @@ if [[ $found_vsc == true ]]; then
   sudo mkdir $PROJECTS_DIRECTORY/.packages
 
   sudo cp $TALL_STACKER_DIRECTORY/files/.shared/tall.code-workspace /home/$USERNAME/Code/Workspaces/
-  cd /home/$USERNAME/Desktop
-  ln -s /home/$USERNAME/Code/Workspaces/tall.code-workspace
 
   sed -i "s/<username>/$USERNAME/g" /home/$USERNAME/Code/Workspaces/tall.code-workspace
   sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" /home/$USERNAME/Code/Workspaces/tall.code-workspace
+
+  sudo su - $USERNAME
+  cd /home/$USERNAME/Desktop
+  ln -s /home/$USERNAME/Code/Workspaces/tall.code-workspace
+  sudo su
 
   sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code/Workspaces/
   sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
@@ -140,8 +160,8 @@ sudo service apache2 restart
 echo -e "\nInstalled MySQL and set the password to the environment's."
 
 # Mailpit (service)
-mkdir ~/Downloads/mailpit
-cd ~/Downloads/mailpit
+mkdir /home/$USERNAME/Downloads/mailpit
+cd /home/$USERNAME/Downloads/mailpit
 release_url=$(curl -s https://api.github.com/repos/axllent/mailpit/releases/latest | grep "browser_download_url.*mailpit-linux-amd64.tar.gz" | cut -d : -f 2,3 | tr -d \")
 curl -L -o mailpit-linux-amd64.tar.gz $release_url >/dev/null 2>&1
 
@@ -194,6 +214,8 @@ sudo rm -rf minio
 
 mkdir -p /home/$USERNAME/.config/minio/data
 
+sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/.config/minio/data
+
 echo "[Unit]
 Description=MinIO
 After=network.target
@@ -213,7 +235,9 @@ sudo systemctl daemon-reload
 sudo systemctl enable minio.service >/dev/null 2>&1
 sudo systemctl start minio.service
 
+sudo su - $USERNAME
 minio-client alias set myminio/ http://localhost:9000 minioadmin minioadmin >/dev/null 2>&1
+sudo su
 
 echo -e "\nInstalled MinIO and set up a service for it."
 
@@ -225,8 +249,10 @@ sudo chmod +x expose
 
 sudo mv expose /usr/local/bin/
 
+sudo su - $USERNAME
 expose token $EXPOSE_TOKEN >/dev/null 2>&1
+sudo su
 
-echo -e "\nInstalled MinIO and set up a service for it."
+echo -e "\nInstalled Expose and set up its token to be ready to use."
 
 touch $origin_dir/done-setup
