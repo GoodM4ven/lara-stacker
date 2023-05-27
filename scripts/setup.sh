@@ -56,30 +56,28 @@ sudo systemctl restart apache2 >/dev/null 2>&1
 echo -e "\nInstalled PHP Xdebug."
 
 # NodeJS Upgrades
-# TODO quiet
-sudo su - $USERNAME
-cd /home/$USERNAME/Downloads
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-source /home/$USERNAME/.bashrc
-nvm install 14
-nvm use 14
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+cd /home/$USERNAME/Downloads &&
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash &&
+source /home/$USERNAME/.bashrc &&
+nvm install 14 &&
+nvm use 14 &&
 npm install -g npm@8.5.1
-sudo su
+EOF
 
 # mkcert
 sudo apt install mkcert libnss3-tools -y >/dev/null 2>&1
 
-sudo su - $USERNAME
-mkcert -install >/dev/null 2>&1
-sudo su
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+mkcert -install
+EOF
 
 echo -e "\nInstalled mkcert for SSL generation."
 
 # Composer (globally)
 sudo apt install composer -y >/dev/null 2>&1
 
-# TODO quiet
-echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >> /home/$USERNAME/.bashrc
+echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >> /home/$USERNAME/.bashrc >/dev/null 2>&1
 source /home/$USERNAME/.bashrc
 
 echo -e "\nInstalled composer globally."
@@ -114,12 +112,12 @@ echo -e "\nInstalled CodeSniffer globally."
 # Link projects directory
 mkdir /home/$USERNAME/Code/ >/dev/null 2>&1
 
-sudo su - $USERNAME
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
 cd /home/$USERNAME/Code
 ln -s $PROJECTS_DIRECTORY/
 final_folder=$(basename $PROJECTS_DIRECTORY)
 mv $final_folder TALL
-sudo su
+EOF
 
 sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
 
@@ -127,21 +125,24 @@ echo -e "\nLinked projects directory into [~/Code/TALL] directory."
 
 # Create a VSC workspace (if installed)
 if [[ $found_vsc == true ]]; then
-  mkdir /home/$USERNAME/Code/Workspaces
+  sudo apt install fonts-firacode -y >/dev/null 2>&1
+
+  sudo mkdir /home/$USERNAME/Code/Workspaces
   sudo mkdir $PROJECTS_DIRECTORY/.packages
 
   sudo cp $TALL_STACKER_DIRECTORY/files/.shared/tall.code-workspace /home/$USERNAME/Code/Workspaces/
 
-  sed -i "s/<username>/$USERNAME/g" /home/$USERNAME/Code/Workspaces/tall.code-workspace
-  sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" /home/$USERNAME/Code/Workspaces/tall.code-workspace
+  sudo sed -i "s/<username>/$USERNAME/g" /home/$USERNAME/Code/Workspaces/tall.code-workspace
+  sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" /home/$USERNAME/Code/Workspaces/tall.code-workspace
 
-  sudo su - $USERNAME
-  cd /home/$USERNAME/Desktop
-  ln -s /home/$USERNAME/Code/Workspaces/tall.code-workspace
-  sudo su
+  sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+cd /home/$USERNAME/Desktop
+ln -s /home/$USERNAME/Code/Workspaces/tall.code-workspace
+EOF
 
-  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code/Workspaces/
+  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code/Workspaces
   sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
+  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
 
   echo -e "\nCreated a VSC workspace on Desktop."
 fi
@@ -235,9 +236,9 @@ sudo systemctl daemon-reload
 sudo systemctl enable minio.service >/dev/null 2>&1
 sudo systemctl start minio.service
 
-sudo su - $USERNAME
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
 minio-client alias set myminio/ http://localhost:9000 minioadmin minioadmin >/dev/null 2>&1
-sudo su
+EOF
 
 echo -e "\nInstalled MinIO and set up a service for it."
 
@@ -249,9 +250,9 @@ sudo chmod +x expose
 
 sudo mv expose /usr/local/bin/
 
-sudo su - $USERNAME
-expose token $EXPOSE_TOKEN >/dev/null 2>&1
-sudo su
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+expose token $EXPOSE_TOKEN
+EOF
 
 echo -e "\nInstalled Expose and set up its token to be ready to use."
 

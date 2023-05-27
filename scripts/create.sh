@@ -56,13 +56,13 @@ echo -e "Installing the project via Composer; a bit of patience..."
 composer create-project --prefer-dist laravel/laravel $escaped_project_name -n --quiet
 
 # Generate an SSL certificate via mkcert
-sudo su - $USERNAME
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
 cd /home/$USERNAME/
-mkcert $escaped_project_name.test 2>/dev/null
+mkcert $escaped_project_name.test
 sudo mkdir $PROJECTS_DIRECTORY/$escaped_project_name/certs
 sudo mv ./$escaped_project_name.test.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
 sudo mv ./$escaped_project_name.test-key.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
-sudo su
+EOF
 
 echo -e "\nGenerated SSL certificate via mkcert..."
 
@@ -180,10 +180,10 @@ echo -e "\nInstalled Redis, predis and the Redis facade in the project..."
 cd /home/$USERNAME/.config/minio/data/
 minio-client mb --region=us-east-1 $escaped_project_name >/dev/null 2>&1
 
-sudo su - $USERNAME
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
 cd /home/$USERNAME/
-minio-client anonymous set public myminio/$escaped_project_name >/dev/null 2>&1
-sudo su
+minio-client anonymous set public myminio/$escaped_project_name
+EOF
 
 sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/.config/minio/data/$escaped_project_name
 
