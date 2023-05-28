@@ -28,6 +28,8 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - apache2
     - composer
     - npm
+    - nvm
+    - libnss3-tools
   - Passive Services
     - Redis
     - MySQL
@@ -82,6 +84,8 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - spatie/laravel-options
     - blade-ui-kit/blade-icons
     - danharrin/livewire-rate-limiting
+    - spatie/laravel-permission
+    - bezhansalleh/filament-shield
   - Local Development
     - laravel/telescope
     - pestphp/pest
