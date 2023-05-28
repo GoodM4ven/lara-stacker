@@ -51,6 +51,8 @@ mkdir -p /home/$USERNAME/.config/xdebug
 
 sudo sed -i "s~zend_extension=xdebug.so~zend_extension=xdebug.so\n\nxdebug.log=\"/home/$USERNAME/.config/xdebug/xdebug.log\"\nxdebug.log_level=10\nxdebug.mode=develop,debug,coverage\nxdebug.client_port=9003\nxdebug.start_with_request=yes\nxdebug.discover_client_host=true~g" /etc/php/8.1/mods-available/xdebug.ini
 
+sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/.config/xdebug
+
 sudo systemctl restart apache2 >/dev/null 2>&1
 
 echo -e "\nInstalled PHP Xdebug."

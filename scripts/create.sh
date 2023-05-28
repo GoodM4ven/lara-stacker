@@ -55,13 +55,15 @@ echo -e "Installing the project via Composer; a bit of patience..."
 
 composer create-project --prefer-dist laravel/laravel $escaped_project_name -n --quiet
 
+sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
+
 # Generate an SSL certificate via mkcert
 sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
 cd /home/$USERNAME/
 mkcert $escaped_project_name.test
-sudo mkdir $PROJECTS_DIRECTORY/$escaped_project_name/certs
-sudo mv ./$escaped_project_name.test.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
-sudo mv ./$escaped_project_name.test-key.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
+mkdir $PROJECTS_DIRECTORY/$escaped_project_name/certs
+mv ./$escaped_project_name.test.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
+mv ./$escaped_project_name.test-key.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
 EOF
 
 echo -e "\nGenerated SSL certificate via mkcert..."
@@ -131,7 +133,7 @@ echo -e "\nInstalling all Composer packages; please be patient..."
 
 composer require --dev laravel/telescope pestphp/pest pestphp/pest-plugin-faker pestphp/pest-plugin-laravel pestphp/pest-plugin-livewire laravel-lang/lang --with-all-dependencies -n --quiet
 
-composer require "league/flysystem-aws-s3-v3:^3.0" livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-settings:"^2.2" filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons danharrin/livewire-rate-limiting goodm4ven/blurred-image --with-all-dependencies -n --quiet
+composer require "league/flysystem-aws-s3-v3:^3.0" livewire/livewire qruto/laravel-wave predis/predis mcamara/laravel-localization laravel/scout "spatie/laravel-medialibrary:^10.0.0" filament/filament:"^2.0" filament/forms:"^2.0" filament/tables:"^2.0" filament/notifications:"^2.0" filament/spatie-laravel-media-library-plugin:"^2.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-translatable filament/spatie-laravel-translatable-plugin:"^2.0" spatie/laravel-tags filament/spatie-laravel-tags-plugin:"^2.0" spatie/laravel-settings:"^2.2" filament/spatie-laravel-settings-plugin:"^2.0" spatie/laravel-options blade-ui-kit/blade-icons danharrin/livewire-rate-limiting goodm4ven/blurred-image spatie/laravel-permission bezhansalleh/filament-shield --with-all-dependencies -n --quiet
 
 # ? Install all NPM packages right here
 echo -e "\nInstalling all NPM packages; please stay patient...!"
@@ -373,17 +375,18 @@ sudo cp $TALL_STACKER_DIRECTORY/files/app/Services/Support/Traits/Enumerifier.ph
 
 echo -e "\nInstalled Laravel Options and extracted an Enumerifier helper trait..."
 
-
-# TODO rework and ensure User model is copied here instead
 # Laravel Permission
-# php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --quiet
-# php artisan vendor:publish --tag=filament-shield-config --quiet
-# php artisan shield:install --fresh --only --quiet
+sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
 
-# sed -i "s~\/\/~return true;~g" ./app/Policies/RolePolicy.php
-# sed -i "s~'navigation_group' => true,~'navigation_group' => false,~g" ./config/filament-shield.php
+cp $TALL_STACKER_DIRECTORY/files/app/Models/User.php ./app/Models/
 
-# echo -e "\nInstalled Laravel Permission and Filament Shield for role management page..."
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --quiet
+php artisan vendor:publish --tag=filament-shield-config --quiet
+php artisan shield:install --fresh --only --quiet >/dev/null 2>&1
+
+sed -i "s~'navigation_group' => true,~'navigation_group' => false,~g" ./config/filament-shield.php
+
+echo -e "\nInstalled Laravel Permission and Filament Shield for role management page..."
 
 # Laravel Settings
 php artisan vendor:publish --provider="Spatie\LaravelSettings\LaravelSettingsServiceProvider" --tag="migrations" --quiet
@@ -394,7 +397,6 @@ echo -e "\nInstalled Laravel Settings..."
 
 # Filament Admin
 php artisan vendor:publish --tag=filament-config --quiet
-sudo cp $TALL_STACKER_DIRECTORY/files/app/Models/User.php ./app/Models/
 sudo cp $TALL_STACKER_DIRECTORY/files/resources/css/filament.css ./resources/css/
 
 sed -i "s/\"@php artisan vendor:publish --tag=laravel-assets --ansi --force\"/\"@php artisan vendor:publish --tag=laravel-assets --ansi --force\",\n            \"@php artisan filament:upgrade\"/g" ./composer.json
