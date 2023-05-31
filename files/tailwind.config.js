@@ -1,13 +1,17 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
+import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
+import aspectRatio from '@tailwindcss/aspect-ratio';
+import containerQueries from '@tailwindcss/container-queries';
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
     content: [
-        './resources/views/**/*.blade.php',
-        './storage/framework/views/*.php',
-        './vendor/filament/**/*.blade.php',
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        './vendor/filament/**/*.blade.php',
     ],
 
     darkMode: 'class',
@@ -56,10 +60,9 @@ module.exports = {
     },
 
     plugins: [
-        require('@tailwindcss/typography'),
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/aspect-ratio'),
-        require('@tailwindcss/line-clamp'),
-        require('@tailwindcss/container-queries'),
+        forms,
+        typography,
+        aspectRatio,
+        containerQueries,
     ],
 };

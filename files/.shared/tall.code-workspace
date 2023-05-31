@@ -18,6 +18,12 @@
 		}
 	],
 	"settings": {
+		"files.watcherExclude": {
+			"**/.git/objects/**": true,
+			"**/.git/subtree-cache/**": true,
+			"**/node_modules/*/**": true,
+			"**/vendor/*/**": true
+		},
 		// [Laravel Goto View]
 		"laravelGotoView.showCodeLens": false,
 		// [PHP Resolver]
