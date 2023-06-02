@@ -13,7 +13,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 - Customizations such as SSL and 3rd party tools setup is way easier if you deal with it locally; and doesn't necessarily mean that you'd a have a messy setup.
 - Package development, when having most of the tools installed out of boxes!
 
-### TALL Stack List
+### Tech Stack List
 
 - <details><summary>System</summary>
   <p>
@@ -62,37 +62,38 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - phpcs (CodeSniffer)
   - Local
     - league/flysystem-aws-s3-v3
-    - livewire/livewire
     - qruto/laravel-wave
     - predis/predis
-    - mcamara/laravel-localization
     - laravel/scout
     - "spatie/laravel-medialibrary:^10.0.0"
-    - filament/filament:"^2.0"
-    - filament/forms:"^2.0"
-    - filament/tables:"^2.0"
-    - filament/notifications:"^2.0"
-    - filament/spatie-laravel-media-library-plugin:"^2.0"
     - spatie/eloquent-sortable
     - spatie/laravel-sluggable
-    - spatie/laravel-translatable
-    - filament/spatie-laravel-translatable-plugin:"^2.0"
+    - mcamara/laravel-localization (multilingual option)
+    - spatie/laravel-translatable (multilingual option)
     - spatie/laravel-tags
-    - filament/spatie-laravel-tags-plugin:"^2.0"
     - spatie/laravel-settings
-    - filament/spatie-laravel-settings-plugin:"^2.0"
     - spatie/laravel-options
     - blade-ui-kit/blade-icons
-    - danharrin/livewire-rate-limiting
     - spatie/laravel-permission
-    - bezhansalleh/filament-shield
+    - livewire/livewire (tall stack option)
+    - filament/filament:"^2.0" (tall stack option)
+    - filament/forms:"^2.0" (tall stack option)
+    - filament/tables:"^2.0" (tall stack option)
+    - filament/notifications:"^2.0" (tall stack option)
+    - filament/spatie-laravel-media-library-plugin:"^2.0" (tall stack option)
+    - filament/spatie-laravel-translatable-plugin:"^2.0" (multilingual option && tall stack option)
+    - filament/spatie-laravel-tags-plugin:"^2.0" (tall stack option)
+    - filament/spatie-laravel-settings-plugin:"^2.0" (tall stack option)
+    - danharrin/livewire-rate-limiting (tall stack option)
+    - bezhansalleh/filament-shield (tall stack option)
   - Local Development
+    - laravel/breeze
     - laravel/telescope
-    - pestphp/pest
-    - pestphp/pest-plugin-faker
-    - pestphp/pest-plugin-laravel
-    - pestphp/pest-plugin-livewire
-    - laravel-lang/lang
+    - pestphp/pest (pest option)
+    - pestphp/pest-plugin-faker (pest option)
+    - pestphp/pest-plugin-laravel (pest option)
+    - pestphp/pest-plugin-livewire (pest option && tall stack option)
+    - laravel-lang/lang (multilingual option)
 
   </p>
   </details>
@@ -101,13 +102,13 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
   <p>
 
   - Local
-    - alpinejs
-    - @alpinejs/mask
-    - @alpinejs/intersect
-    - @alpinejs/persist
-    - @alpinejs/focus
-    - @alpinejs/collapse
-    - @alpinejs/morph
+    - alpinejs (tall stack option)
+    - @alpinejs/mask (tall stack option)
+    - @alpinejs/intersect (tall stack option)
+    - @alpinejs/persist (tall stack option)
+    - @alpinejs/focus (tall stack option)
+    - @alpinejs/collapse (tall stack option)
+    - @alpinejs/morph (tall stack option)
     - laravel-wave
   - Local Development
     - tailwindcss
@@ -116,12 +117,11 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - @tailwindcss/typography
     - @tailwindcss/forms
     - @tailwindcss/aspect-ratio
-    - @tailwindcss/line-clamp
     - @tailwindcss/container-queries
-    - @defstudio/vite-livewire-plugin
     - tippy.js
-    - @awcodes/alpine-floating-ui
-    - alpinejs-breakpoints
+    - @defstudio/vite-livewire-plugin [temporarily disabled] (tall stack option)
+    - @awcodes/alpine-floating-ui (tall stack option)
+    - alpinejs-breakpoints (tall stack option)
 
   </p>
   </details>
@@ -166,6 +166,7 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Todos For Development:
 
+- [ ] Add the rest of the laravel stacks
 - [ ] Link to the repos of all the packages in the stack list
 - [ ] Auto-complete or suggestion mechanism while deleting the project
   - [ ] OR selection mechanism with an interface listing projects in rectangles (arrow up and down then enter)
@@ -178,14 +179,15 @@ That's it. You'll have your first project accessible in the end (displaying the 
 ## Credits
 
 - [TailwindCSS](https://tailwindcss.com)
-- [Alpine.js](https://alpinejs.dev)
-- [Livewire](https://laravel-livewire.com)
-- [Laravel](https://laravel.com)
-- [FilamentPHP](https://filamentphp.com)
 - [Spatie](https://github.com/spatie)
-- ( [TALL Stack List](#tall-stack-list) )
+- TALL Stack
+  - [Alpine.js](https://alpinejs.dev)
+  - [Livewire](https://laravel-livewire.com)
+  - [Laravel](https://laravel.com)
+  - [FilamentPHP](https://filamentphp.com)
+- ( [Tech Stack List](#tech-stack-list) )
 - ( [VSC Extensions](./files/.opinionated/extensions.md) )
-- ( [Workspace VSC Extensions](./files/.shared/tall.code-workspace) )
+- ( [Workspace VSC Extensions](./files/.opinionated/project.code-workspace) )
 - ( [Contributers](https://github.com/GoodM4ven/tall-stacker/graphs/contributors) )
 
 
