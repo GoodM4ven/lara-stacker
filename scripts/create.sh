@@ -288,7 +288,11 @@ if [ "$laravel_stack" = "tall" ]; then
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/css/app.css ./resources/css/
 fi
 sudo cp $TALL_STACKER_DIRECTORY/files/postcss.config.js ./
-sudo cp $TALL_STACKER_DIRECTORY/files/tailwind.config.js ./
+if [ "$is_multilingual" == true ]; then
+  sudo cp $TALL_STACKER_DIRECTORY/files/tailwind-multi-lingual.config.js ./tailwind.config.js
+else
+  sudo cp $TALL_STACKER_DIRECTORY/files/tailwind-non-multi-lingual.config.js ./tailwind.config.js
+fi
 
 echo -e "\nConfigured TailwindCSS framework."
 
@@ -442,7 +446,11 @@ if [ "$laravel_stack" = "tall" ]; then
   sudo cp $TALL_STACKER_DIRECTORY/files/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
   sudo cp $TALL_STACKER_DIRECTORY/files/routes/web.php ./routes/
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/home.blade.php ./resources/views/
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/app.blade.php ./resources/views/components/
+  if [ "$is_multilingual" == true ]; then
+    sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/app-multi-lingual.blade.php ./resources/views/components/app.blade.php
+  else
+    sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/app-non-multi-lingual.blade.php ./resources/views/components/app.blade.php
+  fi
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/home/link.blade.php ./resources/views/components/home/
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/partials/fader.blade.php ./resources/views/partials/
 
