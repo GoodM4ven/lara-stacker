@@ -2,6 +2,16 @@
 
 All notable changes to `tall-stacker` will be documented in this file.
 
+## v1.1.1 - 2023-06-02
+
+- Making VSC workspace setup separate for each project
+- Reworked the execution order and syntax
+- Organized the package files
+- Archived Docker testing
+- Still need testing the setup script in a virtual box
+- Disabled Livewire Hot-Reload temporarily
+- Rewritten README.md
+
 ## v1.1.0 - 2023-05-31
 
 - Setup a boilerplate for all the possible laravel stacks now
@@ -28,6 +38,7 @@ All notable changes to `tall-stacker` will be documented in this file.
 - 
 - 
 - 
+- 
 - Added the missing MIT license
 - Added [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting) to the stack
 - Accepting an initial argument as an option for tall-stacker script
@@ -44,7 +55,9 @@ All notable changes to `tall-stacker` will be documented in this file.
 - - Fixed bucket deletion
 - 
 - 
+- 
 - - Set livewire's temp uploads disk to 's3' as well
+- 
 - 
 - 
 - 
@@ -55,6 +68,7 @@ All notable changes to `tall-stacker` will be documented in this file.
 
 - Added PHP Namespace Resolver extension and keybindings
 - - Replaced the namespace generation shortcut with this new extension's
+- 
 - 
 - 
 - 
