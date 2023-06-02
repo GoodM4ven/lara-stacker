@@ -18,11 +18,16 @@ echo -e "=- TALL STACKER |> SETUP -="
 echo -e "===========================\n"
 
 origin_dir=$PWD
+
 # Get environment variables and defaults
 source $origin_dir/.env
 
 # Make the helper script executable
 sudo chmod +x $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh
+
+# * ================
+# * System Packages
+# * ==============
 
 # git, php, apache2, redis and npm
 sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath redis-server npm -y >/dev/null 2>&1
@@ -38,6 +43,11 @@ sudo a2enmod ssl >/dev/null 2>&1
 sudo systemctl restart apache2 >/dev/null 2>&1
 
 echo -e "Installed Git, PHP, Apache, Redis and npm packages."
+
+# Grant user write permissions
+sudo usermod -a -G www-data $USERNAME
+
+echo -e "\nAdded the environment's user to [www-data] group."
 
 # media packages
 sudo apt install php-imagick php-gd ghostscript ffmpeg -y >/dev/null 2>&1
@@ -67,15 +77,6 @@ nvm use 14 &&
 npm install -g npm@8.5.1
 EOF
 
-# mkcert
-sudo apt install mkcert libnss3-tools -y >/dev/null 2>&1
-
-sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
-mkcert -install
-EOF
-
-echo -e "\nInstalled mkcert for SSL generation."
-
 # Composer (globally)
 sudo apt install composer -y >/dev/null 2>&1
 
@@ -84,70 +85,14 @@ source /home/$USERNAME/.bashrc
 
 echo -e "\nInstalled composer globally."
 
-# Grant user write permissions
-sudo usermod -a -G www-data $USERNAME
-
-echo -e "\nAdded the environment's user to [www-data] group."
-
-# Opinionated VSC Keybindings
-if [ "$OPINIONATED_KEYBINDINGS" == true ]; then
-  # Copy settings first (which only initialize keybindings for now)
-  sudo mkdir $PROJECTS_DIRECTORY/.vscode
-  sudo cp $TALL_STACKER_DIRECTORY/files/.vscode/settings.json $PROJECTS_DIRECTORY/.vscode/
-  sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/keybindings.json $PROJECTS_DIRECTORY/.vscode/
-
-  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.vscode
-
-  echo -e "\nCopied VSC workspace settings and extension key-bindings..."
-fi
-
-# CodeSniffer
-composer global require "squizlabs/php_codesniffer=*" --dev --quiet
-
-sudo mkdir $PROJECTS_DIRECTORY/.shared
-sudo cp $TALL_STACKER_DIRECTORY/files/.shared/phpcs.xml $PROJECTS_DIRECTORY/.shared/
-
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.shared
-
-echo -e "\nInstalled CodeSniffer globally."
-
-# Link projects directory
-mkdir /home/$USERNAME/Code/ >/dev/null 2>&1
+# mkcert
+sudo apt install mkcert libnss3-tools -y >/dev/null 2>&1
 
 sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
-cd /home/$USERNAME/Code
-ln -s $PROJECTS_DIRECTORY/
-final_folder=$(basename $PROJECTS_DIRECTORY)
-mv $final_folder TALL
+mkcert -install
 EOF
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
-
-echo -e "\nLinked projects directory into [~/Code/TALL] directory."
-
-# Create a VSC workspace (if installed)
-if [[ $found_vsc == true ]]; then
-  sudo apt install fonts-firacode -y >/dev/null 2>&1
-
-  sudo mkdir /home/$USERNAME/Code/Workspaces
-  sudo mkdir $PROJECTS_DIRECTORY/.packages
-
-  sudo cp $TALL_STACKER_DIRECTORY/files/.shared/tall.code-workspace /home/$USERNAME/Code/Workspaces/
-
-  sudo sed -i "s/<username>/$USERNAME/g" /home/$USERNAME/Code/Workspaces/tall.code-workspace
-  sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" /home/$USERNAME/Code/Workspaces/tall.code-workspace
-
-  sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
-cd /home/$USERNAME/Desktop
-ln -s /home/$USERNAME/Code/Workspaces/tall.code-workspace
-EOF
-
-  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code/Workspaces
-  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
-  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
-
-  echo -e "\nCreated a VSC workspace on Desktop."
-fi
+echo -e "\nInstalled mkcert for SSL generation."
 
 # MySQL
 sudo apt install mysql-server -y >/dev/null 2>&1
@@ -165,6 +110,7 @@ echo -e "\nInstalled MySQL and set the password to the environment's."
 # Mailpit (service)
 mkdir /home/$USERNAME/Downloads/mailpit
 cd /home/$USERNAME/Downloads/mailpit
+
 release_url=$(curl -s https://api.github.com/repos/axllent/mailpit/releases/latest | grep "browser_download_url.*mailpit-linux-amd64.tar.gz" | cut -d : -f 2,3 | tr -d \")
 curl -L -o mailpit-linux-amd64.tar.gz $release_url >/dev/null 2>&1
 
@@ -198,8 +144,8 @@ sudo systemctl start mailpit.service
 echo -e "\nInstalled Mailpit and set up a service for it."
 
 # MinIO (server, client and service)
-mkdir minio
-cd minio
+mkdir /home/$USERNAME/Downloads/minio
+cd /home/$USERNAME/Downloads/minio
 
 wget https://dl.min.io/server/minio/release/linux-amd64/minio >/dev/null 2>&1
 wget https://dl.min.io/client/mc/release/linux-amd64/mc >/dev/null 2>&1
@@ -245,6 +191,7 @@ EOF
 echo -e "\nInstalled MinIO and set up a service for it."
 
 # Expose
+cd /home/$USERNAME/Downloads
 curl https://github.com/beyondcode/expose/raw/master/builds/expose -L --output expose >/dev/null 2>&1
 
 sudo chown $USERNAME:$USERNAME expose
@@ -257,5 +204,49 @@ expose token $EXPOSE_TOKEN
 EOF
 
 echo -e "\nInstalled Expose and set up its token to be ready to use."
+
+# * ==================
+# * Opinionated Setup
+# * ================
+
+# CodeSniffer
+composer global require "squizlabs/php_codesniffer=*" --dev --quiet
+
+sudo mkdir $PROJECTS_DIRECTORY/.shared
+sudo cp $TALL_STACKER_DIRECTORY/files/.shared/phpcs.xml $PROJECTS_DIRECTORY/.shared/
+
+sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.shared
+
+echo -e "\nInstalled CodeSniffer globally."
+
+# Link projects directory
+mkdir /home/$USERNAME/Code >/dev/null 2>&1
+
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+cd /home/$USERNAME/Code
+ln -s $PROJECTS_DIRECTORY/
+final_folder=$(basename $PROJECTS_DIRECTORY)
+mv $final_folder TALL
+EOF
+
+sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
+
+echo -e "\nLinked projects directory into [~/Code/TALL] directory."
+
+# Install Firacode font (if VSC installed)
+if [[ $found_vsc == true ]]; then
+  sudo apt install fonts-firacode -y >/dev/null 2>&1
+
+  echo -e "\nInstalled Firacode font for VSC."
+fi
+
+# Create .packages directory
+sudo mkdir $PROJECTS_DIRECTORY/.packages
+
+sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
+
+echo -e "\nCreated a .packages directory."
+
+# ! DONE
 
 touch $origin_dir/done-setup

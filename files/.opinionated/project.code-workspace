@@ -1,6 +1,7 @@
 {
 	"extensions": {
 		"recommendations": [
+			"pcbowers.alpine-intellisense",
 			"ctf0.laravel-goto-config",
 			"ctf0.laravel-goto-lang",
 			"ctf0.laravel-goto-view",
@@ -14,16 +15,12 @@
 	},
 	"folders": [
 		{
-			"path": "/var/www/html/.packages"
+			"path": "/var/www/html/<projectName>"
 		}
 	],
 	"settings": {
-		"files.watcherExclude": {
-			"**/.git/objects/**": true,
-			"**/.git/subtree-cache/**": true,
-			"**/node_modules/*/**": true,
-			"**/vendor/*/**": true
-		},
+		// [Alpine.js IntelliSense]
+		"alpine-intellisense.settings.languageScopes": "blade",
 		// [Laravel Goto View]
 		"laravelGotoView.showCodeLens": false,
 		// [PHP Resolver]
@@ -41,7 +38,6 @@
 		"files.associations": {
 			"*.css": "tailwindcss"
 		},
-		"tailwindCSS.experimental.configFile": {},
 		"tailwindCSS.includeLanguages": {
 			"blade": "html"
 		},

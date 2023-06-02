@@ -48,33 +48,25 @@ if ! [ -d "$PROJECTS_DIRECTORY/$escaped_project_name" ]; then
   exit 1
 fi
 
+# Remove the site references from workspace settings
+if [[ $found_vsc == true && $VSC_WORKSPACE ]]; then
+  sudo rm /home/$USERNAME/Desktop/$escaped_project_name.code-workspace >/dev/null 2>&1
+  sudo rm /home/$USERNAME/Code/Workspaces/$escaped_project_name.code-workspace >/dev/null 2>&1
+
+  echo -e "\nRemoved the the VSC workspace."
+fi
+
 # Remove site's url from /etc/hosts
 sudo sed -i "/^127\.0\.0\.1\s*$escaped_project_name\.test/d" /etc/hosts
 
-echo -e "\nRemoved $escaped_project_name.test from [/etc/hosts] file."
-
-# Delete project files
-sudo rm -rf $PROJECTS_DIRECTORY/$escaped_project_name
-
-echo -e "\nDeleted project files."
+echo -e "\nRemoved the site from [/etc/hosts] file."
 
 # Delete its Apache's config file then restart the service
 sudo rm /etc/apache2/sites-available/$escaped_project_name.conf
 
 sudo service apache2 restart
 
-echo -e "\nDeleted Apache config file and restarted the service."
-
-# Remove the site references from workspace settings
-if [[ $found_vsc == true ]]; then
-  workspace="/home/$USERNAME/Code/Workspaces/tall.code-workspace"
-
-  sed '/^\s*\/\// d' "$workspace" > tmp_no_comments.json
-  jq --arg path "$PROJECTS_DIRECTORY/$escaped_project_name" 'del(.folders[] | select(.path == $path)) | del(.settings["tailwindCSS.experimental.configFile"][($path + "/tailwind.config.js")])' tmp_no_comments.json > tmp.json && mv tmp.json "$workspace"
-  rm tmp_no_comments.json
-
-  echo -e "\nRemoved the site references from the VSC workspace settings..."
-fi
+echo -e "\nDeleted the site's Apache config file and restarted the service."
 
 # Drop its MySQL database
 project_db_name=$(echo "$escaped_project_name" | sed 's/\([[:lower:]]\)\([[:upper:]]\)/\1_\2/g' | sed 's/\([[:upper:]]\)\([[:upper:]][[:lower:]]\)/\1_\2/g' | tr '-' '_' | tr '[:upper:]' '[:lower:]' | sed 's/__/_/g' | sed 's/^_//')
@@ -82,18 +74,20 @@ project_db_name=$(echo "$escaped_project_name" | sed 's/\([[:lower:]]\)\([[:uppe
 if mysql -u root -p$DB_PASSWORD -e "use $project_db_name" 2> /dev/null; then
   mysql -u root -p$DB_PASSWORD -e "DROP DATABASE $project_db_name;" 2>/dev/null
 
-  echo -e "\nDropped $project_db_name database."
+  echo -e "\nDropped '$project_db_name' database."
 fi
 
 # Delete the MinIO storage
 if [ -d "/home/$USERNAME/.config/minio/data/$escaped_project_name" ]; then
-  cd /home/$USERNAME/.config/minio/data
-  rm -rf $escaped_project_name >/dev/null 2>&1
+  rm -rf /home/$USERNAME/.config/minio/data/$escaped_project_name >/dev/null 2>&1
 
-  cd $PROJECTS_DIRECTORY
-
-  echo -e "\nDeleted $escaped_project_name's MinIO storage."
+  echo -e "\nDeleted '$escaped_project_name' MinIO storage."
 fi
+
+# Delete project files
+sudo rm -rf $PROJECTS_DIRECTORY/$escaped_project_name
+
+echo -e "\nDeleted project files."
 
 # Display a success message
 echo -e "\nProject $project_name deleted successfully!\n"
