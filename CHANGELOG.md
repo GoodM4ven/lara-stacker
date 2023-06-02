@@ -2,6 +2,10 @@
 
 All notable changes to `tall-stacker` will be documented in this file.
 
+## v1.1.2 - 2023-06-02
+
+Fixed the multilingual option set
+
 ## v1.1.1 - 2023-06-02
 
 - Making VSC workspace setup separate for each project
@@ -39,6 +43,7 @@ All notable changes to `tall-stacker` will be documented in this file.
 - 
 - 
 - 
+- 
 - Added the missing MIT license
 - Added [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting) to the stack
 - Accepting an initial argument as an option for tall-stacker script
@@ -56,7 +61,9 @@ All notable changes to `tall-stacker` will be documented in this file.
 - 
 - 
 - 
+- 
 - - Set livewire's temp uploads disk to 's3' as well
+- 
 - 
 - 
 - 
@@ -68,6 +75,7 @@ All notable changes to `tall-stacker` will be documented in this file.
 
 - Added PHP Namespace Resolver extension and keybindings
 - - Replaced the namespace generation shortcut with this new extension's
+- 
 - 
 - 
 - 
