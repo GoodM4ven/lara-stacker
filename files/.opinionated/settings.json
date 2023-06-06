@@ -85,7 +85,8 @@
     // [Laravel Blade formatter]
     "[blade]": {
         "editor.defaultFormatter": "shufo.vscode-blade-formatter",
-        "editor.autoClosingBrackets": "always"
+        "editor.autoClosingBrackets": "always",
+        "editor.suggest.showSnippets": false
     },
     "bladeFormatter.format.wrapAttributes": "force-expand-multiline",
     "bladeFormatter.format.sortHtmlAttributes": "none",

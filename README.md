@@ -37,6 +37,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - MinIO
   - Active Services
     - Expose
+      - Use `expose share https://[site-name].test` to work properly
 
   </p>
   </details>
@@ -153,7 +154,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 That's it. You'll have your first project accessible in the end (displaying the site's URL too). JUST be PATIENT! `:)`
 
 > **Warning**
-> Please remember to install the "recommended extensions" after opening the VSC Workspace as prompted to, or "Show Recommended Extensions" from the command palette if not.
+> Please remember to install the "recommended extensions" after opening the VSC Workspace as prompted to, or "Show Recommended Extensions" from the command palette if not. I found the best way to deal with this is to add them to your VSC profile's extensions, but then disable them, and every time you open a new workspace (project), you enable them for the workspace only.
 
 > **Note**
 > You're free to take a look at and apply the VSC [settings](./files/.opinionated/settings.json) I'm using locally, as well as their complete [extension list](./files/.opinionated/extensions.md). (You can also set up both in their own "tall" VSC profile or something)
@@ -166,6 +167,7 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Todos For Development:
 
+- [ ] Allow html attribute suggestion without endless blade snippets then enable blade snippet suggestions again
 - [ ] Add the rest of the laravel stacks
 - [ ] Link to the repos of all the packages in the stack list
 - [ ] Auto-complete or suggestion mechanism while deleting the project

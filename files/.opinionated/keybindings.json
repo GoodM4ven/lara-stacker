@@ -550,6 +550,11 @@
         "command": "wrap.with",
         "when": "editorHasSelection"
     },
+    // [PHP Constructor]
+    {
+        "key": "shift+alt+i",
+        "command": "phpConstructor.insert"
+    },
     // [PHP Namespace Resolver]
     {
         "key": "ctrl+alt+e",

@@ -573,6 +573,11 @@ php artisan db:seed --quiet
 
 echo -e "\nAdded an environment-user for quick generation."
 
+# Prettier config
+sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/.prettierrc ./.prettierrc
+
+echo -e "\nCopied Prettier configuration file."
+
 # Updated .gitignore file
 sudo cp $TALL_STACKER_DIRECTORY/files/.gitignore ./
 

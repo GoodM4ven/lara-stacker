@@ -5,7 +5,6 @@
 > **Note**: Some are workspace-level extensions; you find them in the workspace [settings](../.shared/tall.code-workspace) file.
 
 - [patbenatar.advanced-new-file](https://github.com/patbenatar/vscode-advanced-new-file)
-- [pcbowers.alpine-intellisense](https://github.com/pcbowers/alpine-intellisense)
 - [formulahendry.auto-rename-tag](https://github.com/formulahendry/vscode-auto-rename-tag)
 - [chouzz.vscode-better-align](https://github.com/chouzz/vscode-better-align)
 - [aaron-bond.better-comments](https://github.com/aaron-bond/better-comments)
@@ -15,6 +14,7 @@
 - [Equinusocio.vsc-community-material-theme](https://github.com/material-theme/vsc-community-material-theme) (Darker High Contrast)
 - [moshfeu.compare-folders](https://github.com/moshfeu/vscode-compare-folders)
 - [cshum.convert-newline-list-to-array](https://github.com/colinshum/vsc-newline-to-array)
+- [ctf0.env-symbol-provider](https://github.com/ctf0/env-symbol-provider.git)
 - [sleistner.vscode-fileutils](https://github.com/sleistner/vscode-fileutils)
 - [prantlf.fold-on-open](https://github.com/prantlf/vscode-fold-on-open)
 - [eamodio.gitlens](https://github.com/gitkraken/vscode-gitlens)
@@ -32,6 +32,7 @@
 - [PKief.material-icon-theme](https://github.com/PKief/vscode-material-icon-theme)
 - [ryuta46.multi-command](https://github.com/ryuta46/vscode-multi-command)
 - [ctf0.php-array-symbols](https://github.com/ctf0/vscode-php-array-symbol-provider)
+- [MehediDracula.php-constructor](https://github.com/MehediDracula/PHP-Constructor)
 - [xdebug.php-debug](https://github.com/xdebug/vscode-php-debug)
 - [bmewburn.vscode-intelephense-client](https://github.com/bmewburn/vscode-intelephense)
 - [ctf0.php-namespace-resolver](https://github.com/ctf0/php-namespace-resolver)
