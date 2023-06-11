@@ -238,8 +238,9 @@ if [ "$is_multilingual" == true ]; then
   composer require --dev -n --quiet laravel-lang/lang
 fi
 
+# TODO Add `qruto/laravel-wave` after module fix
 # Non-dev Packages...
-composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3 "^3.0" qruto/laravel-wave predis/predis laravel/scout "spatie/laravel-medialibrary:^10.0.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings:"^2.2" spatie/laravel-options blade-ui-kit/blade-icons spatie/laravel-permission
+composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3 "^3.0" predis/predis laravel/scout "spatie/laravel-medialibrary:^10.0.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings:"^2.2" spatie/laravel-options blade-ui-kit/blade-icons spatie/laravel-permission
 
 # Language Packages...
 if [ "$is_multilingual" == true ]; then
@@ -271,8 +272,9 @@ if [ "$laravel_stack" = "tall" ]; then
   npm install -D @awcodes/alpine-floating-ui alpinejs-breakpoints >/dev/null 2>&1
 fi
 
-# Laravel-Wave
-npm install laravel-wave >/dev/null 2>&1
+# TODO Uncomment after module fix
+# # Laravel-Wave
+# npm install laravel-wave >/dev/null 2>&1
 
 # Dev Packages...
 npm install -D tailwindcss postcss autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio @tailwindcss/container-queries tippy.js >/dev/null 2>&1
@@ -409,16 +411,17 @@ php artisan migrate --quiet
 echo -e "\nConfigured Laravel Settings."
 
 # TODO needs testing
-# Laravel-Wave
-php artisan vendor:publish --tag="wave-config" --quiet
+# TODO Uncomment after module fix
+# # Laravel-Wave
+# php artisan vendor:publish --tag="wave-config" --quiet
 
-sed -i "s/BROADCAST_DRIVER=log/BROADCAST_DRIVER=redis/g" ./.env
+# sed -i "s/BROADCAST_DRIVER=log/BROADCAST_DRIVER=redis/g" ./.env
 
-mkdir ./resources/js/core
-sudo cp $TALL_STACKER_DIRECTORY/files/resources/js/core/echo.js ./resources/js/core/
-rm ./resources/js/bootstrap.js
+# mkdir ./resources/js/core
+# sudo cp $TALL_STACKER_DIRECTORY/files/resources/js/core/echo.js ./resources/js/core/
+# rm ./resources/js/bootstrap.js
 
-echo -e "\nConfigured Laravel-Wave as Laravel Echo implementation."
+# echo -e "\nConfigured Laravel-Wave as Laravel Echo implementation."
 
 # * =============
 # * Stacks Setup
@@ -427,6 +430,7 @@ echo -e "\nConfigured Laravel-Wave as Laravel Echo implementation."
 if [ "$laravel_stack" = "tall" ]; then
   # Alpine.js
   mkdir ./resources/js/packages
+  mkdir ./resources/js/core >/dev/null 2>&1
 
   sudo cp -r $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/js/packages ./resources/js/
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/alpine.js ./resources/js/core/
@@ -446,7 +450,7 @@ if [ "$laravel_stack" = "tall" ]; then
   sudo cp $TALL_STACKER_DIRECTORY/files/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
   sudo cp $TALL_STACKER_DIRECTORY/files/routes/web.php ./routes/
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/home.blade.php ./resources/views/
-  if [ "$is_multilingual" == true ]; then
+  if [[ "$OPINIONATED" == true && "$is_multilingual" == true ]]; then
     sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/app-multi-lingual.blade.php ./resources/views/components/app.blade.php
   else
     sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/app-non-multi-lingual.blade.php ./resources/views/components/app.blade.php
@@ -462,6 +466,8 @@ if [ "$laravel_stack" = "tall" ]; then
 
   # TODO Follow Livewire Hot-Reload fix then apply
   # Livewire Hot-Reload
+  mkdir ./resources/js/core >/dev/null 2>&1
+
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/vite.config.js ./
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/livewire-hot-reload.js ./resources/js/core/
   echo -e "\nVITE_LIVEWIRE_OPT_IN=true" | tee -a ./.env >/dev/null 2>&1
@@ -531,79 +537,81 @@ fi
 # * Opinionated Modifications
 # * ========================
 
-cd $PROJECTS_DIRECTORY/$escaped_project_name
+if [ "$OPINIONATED" == true ]; then
+  cd $PROJECTS_DIRECTORY/$escaped_project_name
 
-if [ "$is_multilingual" == true ]; then
-  # Move lang folder to resources folder
-  mv ./lang ./resources/
+  if [ "$is_multilingual" == true ]; then
+    # Move lang folder to resources folder
+    mv ./lang ./resources/
 
-  echo -e "\nMoved lang folder to [resources] folder."
+    echo -e "\nMoved lang folder to [resources] folder."
 
-  # Add Arabic helper functions file
-  mkdir -p ./app/Services/Support
-  sudo cp $TALL_STACKER_DIRECTORY/files/app/Services/Support/functions.php ./app/Services/Support/
-  sed -i '0,/"psr-4": {/s//"files": [\n            "app\/Services\/Support\/functions.php"\n        ],\n        "psr-4": {/' ./composer.json
+    # Add Arabic helper functions file
+    mkdir -p ./app/Services/Support
+    sudo cp $TALL_STACKER_DIRECTORY/files/app/Services/Support/functions.php ./app/Services/Support/
+    sed -i '0,/"psr-4": {/s//"files": [\n            "app\/Services\/Support\/functions.php"\n        ],\n        "psr-4": {/' ./composer.json
 
-  composer dump-autoload -n --quiet
+    composer dump-autoload -n --quiet
 
-  sed -i "s/\[config('app.locale')\]/available_locales(withoutEn: true)/g" ./config/filament-spatie-laravel-translatable-plugin.php
+    sed -i "s/\[config('app.locale')\]/available_locales(withoutEn: true)/g" ./config/filament-spatie-laravel-translatable-plugin.php
 
-  echo -e "\nCreated a helper functions file and registered it in [composer.json]."
-fi
+    echo -e "\nCreated a helper functions file and registered it in [composer.json]."
+  fi
 
-# Add an environment variable for password timeout
-sed -i "s/'password_timeout' => 10800,/'password_timeout' => config('PASSWORD_TIMEOUT', 10800),/g" ./config/auth.php
-sed -i "s/SESSION_LIFETIME=120/SESSION_LIFETIME=120\nPASSWORD_TIMEOUT=10800/g" ./.env
+  # Add an environment variable for password timeout
+  sed -i "s/'password_timeout' => 10800,/'password_timeout' => config('PASSWORD_TIMEOUT', 10800),/g" ./config/auth.php
+  sed -i "s/SESSION_LIFETIME=120/SESSION_LIFETIME=120\nPASSWORD_TIMEOUT=10800/g" ./.env
 
-echo -e "\nAdded an environment variable for password timeout."
+  echo -e "\nAdded an environment variable for password timeout."
 
-# Extract an Enumerifier helper trait
-mkdir -p ./app/Services/Support/Traits
-sudo cp $TALL_STACKER_DIRECTORY/files/app/Services/Support/Traits/Enumerifier.php ./app/Services/Support/Traits/
+  # Extract an Enumerifier helper trait
+  mkdir -p ./app/Services/Support/Traits
+  sudo cp $TALL_STACKER_DIRECTORY/files/app/Services/Support/Traits/Enumerifier.php ./app/Services/Support/Traits/
 
-echo -e "\nExtracted an Enumerifier helper trait."
+  echo -e "\nExtracted an Enumerifier helper trait."
 
-# Add an environment-user seeder
-sudo cp $TALL_STACKER_DIRECTORY/files/database/seeders/DatabaseSeeder.php ./database/seeders/
-echo -e "\nENV_USER_NAME=Admin" | tee -a ./.env >/dev/null 2>&1
-echo -e "ENV_USER_EMAIL=admin@laravel.com" | tee -a ./.env >/dev/null 2>&1
-echo -e "ENV_USER_PASSWORD=password" | tee -a ./.env >/dev/null 2>&1
+  # Add an environment-user seeder
+  sudo cp $TALL_STACKER_DIRECTORY/files/database/seeders/DatabaseSeeder.php ./database/seeders/
+  echo -e "\nENV_USER_NAME=Admin" | tee -a ./.env >/dev/null 2>&1
+  echo -e "ENV_USER_EMAIL=admin@laravel.com" | tee -a ./.env >/dev/null 2>&1
+  echo -e "ENV_USER_PASSWORD=password" | tee -a ./.env >/dev/null 2>&1
 
-php artisan db:seed --quiet
+  php artisan db:seed --quiet
 
-echo -e "\nAdded an environment-user for quick generation."
+  echo -e "\nAdded an environment-user for quick generation."
 
-# Prettier config
-sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/.prettierrc ./.prettierrc
+  # Prettier config
+  sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/.prettierrc ./.prettierrc
 
-echo -e "\nCopied Prettier configuration file."
+  echo -e "\nCopied Prettier configuration file."
 
-# Updated .gitignore file
-sudo cp $TALL_STACKER_DIRECTORY/files/.gitignore ./
+  # Updated .gitignore file
+  sudo cp $TALL_STACKER_DIRECTORY/files/.gitignore ./
 
-echo -e "\nUpdated .gitignore file."
+  echo -e "\nUpdated .gitignore file."
 
-# Copy the opinionated VSC keybindings
-if [[ $found_vsc == true && $VSC_KEYBINDINGS == true ]]; then
-  sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/keybindings.json ./.vscode/
+  # Copy the opinionated VSC keybindings
+  if [[ $found_vsc == true && $VSC_KEYBINDINGS == true ]]; then
+    sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/keybindings.json ./.vscode/
 
-  echo -e "\nCopied VSC workspace key-bindings."
-fi
+    echo -e "\nCopied VSC workspace key-bindings."
+  fi
 
-# Create a dedicated VSC workspace in Desktop
-if [[ $found_vsc == true && $VSC_WORKSPACE == true ]]; then
-  cd /home/$USERNAME/Desktop
+  # Create a dedicated VSC workspace in Desktop
+  if [[ $found_vsc == true && $VSC_WORKSPACE == true ]]; then
+    cd /home/$USERNAME/Desktop
 
-  sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/project.code-workspace ./$escaped_project_name.code-workspace
+    sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/project.code-workspace ./$escaped_project_name.code-workspace
 
-  sudo sed -i "s/<projectName>/$escaped_project_name/g" ./$escaped_project_name.code-workspace
-  sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
-  sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" ./$escaped_project_name.code-workspace
-  sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
+    sudo sed -i "s/<projectName>/$escaped_project_name/g" ./$escaped_project_name.code-workspace
+    sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
+    sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" ./$escaped_project_name.code-workspace
+    sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
 
-  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
+    sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
 
-  echo -e "\nCreated a dedicated VSC workspace in Desktop."
+    echo -e "\nCreated a dedicated VSC workspace in Desktop."
+  fi
 fi
 
 # ! Done

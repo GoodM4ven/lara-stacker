@@ -52,6 +52,7 @@ while true; do
   echo -e "- Username: $USERNAME"
   echo -e "- Database Password: $DB_PASSWORD"
   echo -e "- Expose Token: $EXPOSE_TOKEN"
+  echo -e "- Opinionated: $OPINIONATED"
   echo -e "- VSC Workspace: $VSC_WORKSPACE"
   echo -e "- VSC Keybindings: $VSC_KEYBINDINGS\n"
   echo -e "Available Operations:\n"

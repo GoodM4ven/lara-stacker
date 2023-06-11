@@ -532,12 +532,27 @@
         "command": "-better-pest.run-file"
     },
     {
-        "key": "ctrl+shift+r",
-        "command": "better-pest.run"
-    },
-    {
         "key": "meta+k meta+r",
         "command": "-better-pest.run"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "-editor.action.refactor",
+        "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "-rerunSearchEditorSearch",
+        "when": "inSearchEditor"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "-workbench.action.quickOpenNavigatePreviousInRecentFilesPicker",
+        "when": "inQuickOpen && inRecentFilesPicker"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "better-pest.run"
     },
     // [Laravel Blade Wrapper]
     {

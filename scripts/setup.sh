@@ -209,43 +209,45 @@ echo -e "\nInstalled Expose and set up its token to be ready to use."
 # * Opinionated Setup
 # * ================
 
-# CodeSniffer
-composer global require "squizlabs/php_codesniffer=*" --dev --quiet
+if [ "$OPINIONATED" == true ]; then
+  # CodeSniffer
+  composer global require "squizlabs/php_codesniffer=*" --dev --quiet
 
-sudo mkdir $PROJECTS_DIRECTORY/.shared
-sudo cp $TALL_STACKER_DIRECTORY/files/.shared/phpcs.xml $PROJECTS_DIRECTORY/.shared/
+  sudo mkdir $PROJECTS_DIRECTORY/.shared
+  sudo cp $TALL_STACKER_DIRECTORY/files/.shared/phpcs.xml $PROJECTS_DIRECTORY/.shared/
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.shared
+  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.shared
 
-echo -e "\nInstalled CodeSniffer globally."
+  echo -e "\nInstalled CodeSniffer globally."
 
-# Link projects directory
-mkdir /home/$USERNAME/Code >/dev/null 2>&1
+  # Link projects directory
+  mkdir /home/$USERNAME/Code >/dev/null 2>&1
 
-sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
-cd /home/$USERNAME/Code
-ln -s $PROJECTS_DIRECTORY/
-final_folder=$(basename $PROJECTS_DIRECTORY)
-mv $final_folder TALL
+  sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+  cd /home/$USERNAME/Code
+  ln -s $PROJECTS_DIRECTORY/
+  final_folder=$(basename $PROJECTS_DIRECTORY)
+  mv $final_folder TALL
 EOF
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
+  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
 
-echo -e "\nLinked projects directory into [~/Code/TALL] directory."
+  echo -e "\nLinked projects directory into [~/Code/TALL] directory."
 
-# Install Firacode font (if VSC installed)
-if [[ $found_vsc == true ]]; then
-  sudo apt install fonts-firacode -y >/dev/null 2>&1
+  # Install Firacode font (if VSC installed)
+  if [[ $found_vsc == true ]]; then
+    sudo apt install fonts-firacode -y >/dev/null 2>&1
 
-  echo -e "\nInstalled Firacode font for VSC."
+    echo -e "\nInstalled Firacode font for VSC."
+  fi
+
+  # Create .packages directory
+  sudo mkdir $PROJECTS_DIRECTORY/.packages
+
+  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
+
+  echo -e "\nCreated a .packages directory."
 fi
-
-# Create .packages directory
-sudo mkdir $PROJECTS_DIRECTORY/.packages
-
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
-
-echo -e "\nCreated a .packages directory."
 
 # ! DONE
 

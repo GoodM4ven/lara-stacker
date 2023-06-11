@@ -1,5 +1,6 @@
 import './core/alpine';
-import './core/echo';
+// TODO Uncomment after module fix
+// import './core/echo';
 // TODO Follow livewire-hot-reload fix and then apply
 // import './core/livewire-hot-reload';
 
