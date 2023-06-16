@@ -33,6 +33,9 @@ for script in "${SCRIPTS[@]}"; do
   fi
 done
 
+# Obfuscate Credentials
+obfuscated_token="${EXPOSE_TOKEN:0:4}****-****-****-****-********${EXPOSE_TOKEN:32}"
+
 # Menu options
 options=("1. List Projects" "2. Create Project" "3. Delete Project" "4. Exit" "0. Initial Setup")
 options_count=$(( ${#options[@]} - 1 ))
@@ -51,7 +54,7 @@ while true; do
   echo -e "- Projects Directory: $PROJECTS_DIRECTORY"
   echo -e "- Username: $USERNAME"
   echo -e "- Database Password: $DB_PASSWORD"
-  echo -e "- Expose Token: $EXPOSE_TOKEN"
+  echo -e "- Expose Token: $obfuscated_token"
   echo -e "- Opinionated: $OPINIONATED"
   echo -e "- VSC Workspace: $VSC_WORKSPACE"
   echo -e "- VSC Keybindings: $VSC_KEYBINDINGS\n"

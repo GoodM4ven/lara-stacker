@@ -6,6 +6,11 @@ use Spatie\LaravelOptions\Options;
 
 trait Enumerifier
 {
+    public static function count(): int
+    {
+        return count(self::cases());
+    }
+
     public static function random($isLabel = false, $translated = false)
     {
         $random = collect(Options::forEnum(self::class))->random()[$isLabel ? 'label' : 'value'];

@@ -1,8 +1,4 @@
 {
-    // * =========
-    // * Original
-    // * =======
-    "window.menuBarVisibility": "hidden",
     "window.zoomLevel": 0.8,
     "explorer.autoReveal": false,
     "explorer.confirmDragAndDrop": false,
@@ -29,9 +25,9 @@
     "workbench.localHistory.maxFileEntries": 500,
     "workbench.editor.untitled.hint": "hidden",
     "workbench.startupEditor": "none",
+    "workbench.activityBar.visible": false,
     "workbench.editor.enablePreview": true,
     "workbench.editor.enablePreviewFromQuickOpen": true,
-    "workbench.activityBar.visible": false,
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -41,11 +37,14 @@
         "**/Thumbs.db": true
     },
     "git.autofetch": true,
+    "git.confirmSync": false,
     "git.enableSmartCommit": true,
     "diffEditor.ignoreTrimWhitespace": false,
     "emmet.triggerExpansionOnTab": true,
     "emmet.showExpandedAbbreviation": "always",
+    "html.suggest.html5": true,
     "javascript.updateImportsOnFileMove.enabled": "always",
+    "json.validate.enable": false,
     // * ===========
     // * Extensions
     // * =========
@@ -55,12 +54,14 @@
     "gitlens.hovers.enabled": false,
     "gitlens.statusBar.enabled": true,
     "gitlens.telemetry.enabled": false,
-    // [Community Material Theme]
+    // [Material Theme]
     "workbench.iconTheme": "material-icon-theme",
     "workbench.colorTheme": "Community Material Theme Darker High Contrast",
     "workbench.colorCustomizations": {
         "[Community Material Theme Darker High Contrast]": {
-            "breadcrumb.background": "#1a1a1a"
+            "breadcrumb.background": "#1a1a1a",
+            "editor.selectionBackground": "#000000dd",
+            "editor.wordHighlightBackground": "#66666699"
         }
     },
     // [Markdown Preview Github Styling]
@@ -80,8 +81,6 @@
         // [PHP Intelephense]
         "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
     },
-    // [Alpine.js IntelliSense]
-    "alpine-intellisense.settings.languageScopes": "blade",
     // [Laravel Blade formatter]
     "[blade]": {
         "editor.defaultFormatter": "shufo.vscode-blade-formatter",

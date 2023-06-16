@@ -30,7 +30,7 @@ sudo chmod +x $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh
 # * ==============
 
 # git, php, apache2, redis and npm
-sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath redis-server npm -y >/dev/null 2>&1
+sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server npm -y >/dev/null 2>&1
 
 sudo sed -i "s~post_max_size = 8M~post_max_size = 100M~g" /etc/php/8.1/apache2/php.ini
 sudo sed -i "s~upload_max_filesize = 2M~upload_max_filesize = 100M~g" /etc/php/8.1/apache2/php.ini

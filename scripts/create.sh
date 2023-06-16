@@ -145,7 +145,11 @@ sudo service apache2 restart
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 sed -i "s/APP_NAME=Laravel/APP_NAME=\"$project_name\"/g" ./.env
-sed -i "s|APP_URL=http://localhost|APP_URL=https://$escaped_project_name.test\nAPP_LOCALES=ar,en|g" ./.env
+if [ "$is_multilingual" == true ]; then
+  sed -i "s|APP_URL=http://localhost|APP_URL=https://$escaped_project_name.test\nAPP_LOCALES=ar,en|g" ./.env
+else
+  sed -i "s|APP_URL=http://localhost|APP_URL=https://$escaped_project_name.test|g" ./.env
+fi
 
 echo -e "\nCreated and activated the site's Apache config file."
 
@@ -262,7 +266,7 @@ cd $PROJECTS_DIRECTORY/$escaped_project_name
 
 # TALL packages...
 if [ "$laravel_stack" = "tall" ]; then
-  npm install @alpinejs/mask @alpinejs/intersect @alpinejs/persist @alpinejs/focus @alpinejs/collapse @alpinejs/morph >/dev/null 2>&1
+  npm install @alpinejs/mask @alpinejs/intersect @alpinejs/persist @alpinejs/focus @alpinejs/collapse @alpinejs/morph @ryangjchandler/alpine-hooks >/dev/null 2>&1
 
   # Uninstall axios
   npm uninstall axios >/dev/null 2>&1

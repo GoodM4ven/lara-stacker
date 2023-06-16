@@ -24,6 +24,8 @@
 		// "alpine-intellisense.settings.languageScopes": "blade", // TODO until intellisense is limited to html tags
 		// [Laravel Goto View]
 		"laravelGotoView.showCodeLens": false,
+		// [Laraphense]
+		"Laraphense.disableBladeCompletion": true,
 		// [PHP Resolver]
 		"phpResolver.showMessageOnStatusBar": false,
 		"phpResolver.phpSnifferCommand": "/home/<username>/.config/composer/vendor/bin/phpcs",
