@@ -2,6 +2,17 @@
 
 All notable changes to `tall-stacker` will be documented in this file.
 
+## v1.1.5 - 2023-06-16
+
+- Obfuscated credentials
+- Updated VSC profile settings
+- Added Enumerifier helper count method
+- Removed hashing for default user password
+- Added `php-zip` extension
+- Added alpine-hooks package to the TALL stack
+- Modified VSCodium theme again
+- Disabled Blade snippet completion by Laraphense
+
 ## v1.1.4 - 2023-06-11
 
 - Conditioned opinionated changes
@@ -14,9 +25,12 @@ All notable changes to `tall-stacker` will be documented in this file.
 - Modified VSC extensions
 - - Commented out Alpine Intellisense until fix
 - 
+- 
 - - Added PHP Contstructor and its keybinding
 - 
+- 
 - - Added Laravel Goto Env
+- 
 - 
 - 
 - Moved Prettier config to a file
@@ -67,6 +81,7 @@ Fixed the multilingual option set
 - 
 - 
 - 
+- 
 - Added the missing MIT license
 - Added [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting) to the stack
 - Accepting an initial argument as an option for tall-stacker script
@@ -87,7 +102,9 @@ Fixed the multilingual option set
 - 
 - 
 - 
+- 
 - - Set livewire's temp uploads disk to 's3' as well
+- 
 - 
 - 
 - 
@@ -102,6 +119,7 @@ Fixed the multilingual option set
 
 - Added PHP Namespace Resolver extension and keybindings
 - - Replaced the namespace generation shortcut with this new extension's
+- 
 - 
 - 
 - 
