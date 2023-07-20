@@ -593,20 +593,12 @@ if [[ $found_vsc == true && $VSC_WORKSPACE == true ]]; then
   sudo cp $LARA_STACKER_DIRECTORY/files/.opinionated/project.code-workspace ./$escaped_project_name.code-workspace
 
   sudo sed -i "s/<projectName>/$escaped_project_name/g" ./$escaped_project_name.code-workspace
-  sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
-  sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" ./$escaped_project_name.code-workspace
-  sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
+  # sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" ./$escaped_project_name.code-workspace
+  # sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
 
   sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
 
-    sudo sed -i "s/<projectName>/$escaped_project_name/g" ./$escaped_project_name.code-workspace
-    # sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" ./$escaped_project_name.code-workspace
-    # sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
-
-    sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
-
-    echo -e "\nCreated a dedicated VSC workspace in Desktop."
-  fi
+  echo -e "\nCreated a dedicated VSC workspace in Desktop."
 fi
 
 # ! Done
