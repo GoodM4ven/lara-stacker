@@ -7,11 +7,6 @@
     "explorer.autoReveal": false,
     "explorer.confirmDragAndDrop": false,
     "explorer.confirmDelete": false,
-    "editor.quickSuggestions": {
-        "other": true,
-        "comments": false,
-        "strings": true
-    },
     "editor.unicodeHighlight.ambiguousCharacters": false,
     "editor.unicodeHighlight.nonBasicASCII": false,
     "editor.hover.above": false,
@@ -63,8 +58,6 @@
             "breadcrumb.background": "#1a1a1a"
         }
     },
-    // [Markdown Preview Github Styling]
-    "markdown-preview-github-styles.colorTheme": "dark",
     // [Todo Tree]
     "todo-tree.tree.showBadges": true,
     "todo-tree.tree.showCountsInTree": true,

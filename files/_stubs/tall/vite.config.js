@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-// TODO Follow @defstudio/vite-livewire-plugin fix and then apply
-// import livewire from "@defstudio/vite-livewire-plugin";
+import livewire from "@defstudio/vite-livewire-plugin";
 import path from "path";
 
 const certPath = path.resolve(__dirname, "./certs/<projectName>.test.pem");
@@ -15,23 +14,22 @@ export default defineConfig({
                 "resources/js/app.js",
                 "resources/css/filament.css",
             ],
-            // refresh: false,
-            refresh: true,
+            refresh: false,
         }),
-        // livewire({
-        //     refresh: ["resources/css/app.css"],
-        //     watch: [
-        //         "resources/views/**",
-        //         "app/Http/Livewire/**",
-        //         "app/Filament/**",
-        //         "app/Forms/Components/**",
-        //         "app/Tables/Columns/**",
-        //         // TODO apply conditionally
-        //         "resources/lang/**",
-        //         "routes/**",
-        //     ],
-        //     bottomPosition: 34,
-        // }),
+        livewire({
+            refresh: ["resources/css/app.css"],
+            watch: [
+                "resources/views/**",
+                "app/Http/Livewire/**",
+                "app/Filament/**",
+                "app/Forms/Components/**",
+                "app/Tables/Columns/**",
+                // TODO apply conditionally
+                // "resources/lang/**",
+                // "routes/**",
+            ],
+            bottomPosition: 34,
+        }),
     ],
     server: {
         https: {

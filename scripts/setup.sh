@@ -10,12 +10,14 @@ fi
 found_vsc=false
 if command -v code &>/dev/null; then
   found_vsc=true
+elif command -v codium &>/dev/null; then
+  found_vsc=true
 fi
 
-# Beginning Indicator
-echo -e "\n==========================="
-echo -e "=- TALL STACKER |> SETUP -="
-echo -e "===========================\n"
+clear
+
+# Beginning indicator
+echo -e "-=|[ Lara-Stacker |> SETUP ]|=-\n"
 
 origin_dir=$PWD
 
@@ -23,7 +25,7 @@ origin_dir=$PWD
 source $origin_dir/.env
 
 # Make the helper script executable
-sudo chmod +x $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh
+sudo chmod +x $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh
 
 # * ================
 # * System Packages
@@ -42,7 +44,14 @@ sudo systemctl restart apache2 >/dev/null 2>&1
 sudo a2enmod ssl >/dev/null 2>&1
 sudo systemctl restart apache2 >/dev/null 2>&1
 
-echo -e "Installed Git, PHP, Apache, Redis and npm packages."
+echo -e "Installed Git, Curl, PHP, Apache, Redis and npm packages."
+
+# Setup permissions permanently
+sudo setfacl -Rdm g:www-data:rwx $PROJECTS_DIRECTORY
+sudo chown -R :www-data $PROJECTS_DIRECTORY
+sudo chmod -R g+rwx $PROJECTS_DIRECTORY
+
+echo -e "\nSet up permissions in the projects directly permanently."
 
 # Grant user write permissions
 sudo usermod -a -G www-data $USERNAME
@@ -52,7 +61,7 @@ echo -e "\nAdded the environment's user to [www-data] group."
 # media packages
 sudo apt install php-imagick php-gd ghostscript ffmpeg -y >/dev/null 2>&1
 
-echo -e "\nInstalled media packages. (imagick, GD, etc.)"
+echo -e "\nInstalled Imagick, GD, Ghostscript and FFMPEG media packages."
 
 # Xdebug
 sudo apt install php-xdebug -y >/dev/null 2>&1
@@ -61,11 +70,16 @@ mkdir -p /home/$USERNAME/.config/xdebug
 
 sudo sed -i "s~zend_extension=xdebug.so~zend_extension=xdebug.so\n\nxdebug.log=\"/home/$USERNAME/.config/xdebug/xdebug.log\"\nxdebug.log_level=10\nxdebug.mode=develop,debug,coverage\nxdebug.client_port=9003\nxdebug.start_with_request=yes\nxdebug.discover_client_host=true~g" /etc/php/8.1/mods-available/xdebug.ini
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/.config/xdebug
+sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/.config/xdebug
 
 sudo systemctl restart apache2 >/dev/null 2>&1
 
 echo -e "\nInstalled PHP Xdebug."
+
+# Cypress.io
+sudo apt install libgbm-dev libnotify-dev libgconf-2-4 xvfb -y >/dev/null 2>&1
+
+echo -e "\nInstalled Cypress.io dependency packages."
 
 # NodeJS Upgrades
 sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
@@ -76,6 +90,8 @@ nvm install 14 &&
 nvm use 14 &&
 npm install -g npm@8.5.1
 EOF
+
+echo -e "\nInstalled NVM to support installing custom NodeJS and NPM versions."
 
 # Composer (globally)
 sudo apt install composer -y >/dev/null 2>&1
@@ -212,10 +228,10 @@ echo -e "\nInstalled Expose and set up its token to be ready to use."
 # CodeSniffer
 composer global require "squizlabs/php_codesniffer=*" --dev --quiet
 
-sudo mkdir $PROJECTS_DIRECTORY/.shared
-sudo cp $TALL_STACKER_DIRECTORY/files/.shared/phpcs.xml $PROJECTS_DIRECTORY/.shared/
+  sudo mkdir $PROJECTS_DIRECTORY/.shared
+  sudo cp $LARA_STACKER_DIRECTORY/files/.shared/phpcs.xml $PROJECTS_DIRECTORY/.shared/
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.shared
+  sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.shared
 
 echo -e "\nInstalled CodeSniffer globally."
 
@@ -229,7 +245,7 @@ final_folder=$(basename $PROJECTS_DIRECTORY)
 mv $final_folder TALL
 EOF
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
+  sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
 
 echo -e "\nLinked projects directory into [~/Code/TALL] directory."
 
@@ -237,7 +253,15 @@ echo -e "\nLinked projects directory into [~/Code/TALL] directory."
 if [[ $found_vsc == true ]]; then
   sudo apt install fonts-firacode -y >/dev/null 2>&1
 
-  echo -e "\nInstalled Firacode font for VSC."
+    echo -e "\nInstalled Firacode font for VSC."
+  fi
+
+  # Create .packages directory
+  sudo mkdir $PROJECTS_DIRECTORY/.packages
+
+  sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
+
+  echo -e "\nCreated a .packages directory."
 fi
 
 # Create .packages directory
@@ -250,3 +274,9 @@ echo -e "\nCreated a .packages directory."
 # ! DONE
 
 touch $origin_dir/done-setup
+
+echo -e "\nSetup done successfully!\n"
+
+read -p "Press any key to continue..." whatever
+
+clear

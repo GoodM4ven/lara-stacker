@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `tall-stacker` will be documented in this file.
+All notable changes to `lara-stacker` will be documented in this file.
 
 ## v1.0.8 - 2023-04-21
 
@@ -22,7 +22,7 @@ All notable changes to `tall-stacker` will be documented in this file.
 - 
 - Added the missing MIT license
 - Added [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting) to the stack
-- Accepting an initial argument as an option for tall-stacker script
+- Accepting an initial argument as an option for lara-stacker script
 - Added a keybinding for Compare Folders package
 - Added automated changelogs
 

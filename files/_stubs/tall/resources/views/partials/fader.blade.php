@@ -1,5 +1,5 @@
 <div
-    id="tall-stacker-fader"
+    id="tall-fader"
     class="fixed inset-0 z-[99] bg-white transition-opacity duration-1000 pointer-events-none"
 ></div>
 
@@ -7,7 +7,7 @@
     <script>
         document.fonts.ready.then(() => {
             setTimeout(() => {
-                const fader = document.getElementById('tall-stacker-fader');
+                const fader = document.getElementById('tall-fader');
 
                 fader.classList.add('opacity-0');
                 setTimeout(() => fader.remove(), 500);

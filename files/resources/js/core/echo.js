@@ -6,7 +6,7 @@
 
 import Echo from 'laravel-echo';
 import { WaveConnector } from 'laravel-wave';
-import Wave from 'laravel-wave';
+import { Wave } from 'laravel-wave';
 
 window.Echo = new Echo({ broadcaster: WaveConnector });
 window.Wave = new Wave();

@@ -23,12 +23,14 @@ fi
 found_vsc=false
 if command -v code &>/dev/null; then
   found_vsc=true
+elif command -v codium &>/dev/null; then
+  found_vsc=true
 fi
 
-# Beginning Indicator
-echo -e "\n============================"
-echo -e "=- TALL STACKER |> CREATE -="
-echo -e "============================\n"
+clear
+
+# Beginning indicator
+echo -e "-=|[ Lara-Stacker |> CREATE ]|=-\n"
 
 # Get environment variables and defaults
 source $PWD/.env
@@ -238,8 +240,11 @@ if [ "$is_multilingual" == true ]; then
   composer require --dev -n --quiet laravel-lang/lang
 fi
 
+# Dev Packages
+composer require laracasts/cypress --dev -n --quiet
+
 # Non-dev Packages...
-composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3 "^3.0" qruto/laravel-wave predis/predis laravel/scout "spatie/laravel-medialibrary:^10.0.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings:"^2.2" spatie/laravel-options blade-ui-kit/blade-icons spatie/laravel-permission
+composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3 "^3.0" predis/predis laravel/scout "spatie/laravel-medialibrary:^10.0.0" spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings:"^2.2" spatie/laravel-options blade-ui-kit/blade-icons spatie/laravel-permission qruto/laravel-wave gehrisandro/tailwind-merge-laravel
 
 # Language Packages...
 if [ "$is_multilingual" == true ]; then
@@ -267,15 +272,14 @@ if [ "$laravel_stack" = "tall" ]; then
   npm uninstall axios >/dev/null 2>&1
 
   # TALL Dev Packages...
-  # TODO Follow @defstudio/vite-livewire-plugin fix and then add
-  npm install -D @awcodes/alpine-floating-ui alpinejs-breakpoints >/dev/null 2>&1
+  npm install -D @defstudio/vite-livewire-plugin @awcodes/alpine-floating-ui alpinejs-breakpoints >/dev/null 2>&1
 fi
 
 # Laravel-Wave
 npm install laravel-wave >/dev/null 2>&1
 
 # Dev Packages...
-npm install -D tailwindcss postcss autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio @tailwindcss/container-queries tippy.js >/dev/null 2>&1
+npm install -D tailwindcss postcss autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio @tailwindcss/container-queries tippy.js cypress >/dev/null 2>&1
 
 # * =======================
 # * Package Configurations
@@ -290,7 +294,14 @@ fi
 sudo cp $TALL_STACKER_DIRECTORY/files/postcss.config.js ./
 sudo cp $TALL_STACKER_DIRECTORY/files/tailwind.config.js ./
 
-echo -e "\nConfigured TailwindCSS framework."
+php artisan vendor:publish --provider="TailwindMerge\Laravel\ServiceProvider" --quiet
+
+echo -e "\nConfigured TailwindCSS framework and TailwindMerge package."
+
+# Cypress setup
+php artisan cypress:boilerplate --quiet
+
+echo -e "\nConfigured front-end testing with Cypress."
 
 # Blade Icons
 mkdir -p ./resources/svgs/custom
@@ -404,7 +415,6 @@ php artisan migrate --quiet
 
 echo -e "\nConfigured Laravel Settings."
 
-# TODO needs testing
 # Laravel-Wave
 php artisan vendor:publish --tag="wave-config" --quiet
 
@@ -452,7 +462,6 @@ if [ "$laravel_stack" = "tall" ]; then
 
   echo -e "\nConfigured Livewire framework."
 
-  # TODO Follow Livewire Hot-Reload fix then apply
   # Livewire Hot-Reload
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/vite.config.js ./
   sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/livewire-hot-reload.js ./resources/js/core/
@@ -590,7 +599,14 @@ if [[ $found_vsc == true && $VSC_WORKSPACE == true ]]; then
 
   sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
 
-  echo -e "\nCreated a dedicated VSC workspace in Desktop."
+    sudo sed -i "s/<projectName>/$escaped_project_name/g" ./$escaped_project_name.code-workspace
+    # sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" ./$escaped_project_name.code-workspace
+    # sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
+
+    sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
+
+    echo -e "\nCreated a dedicated VSC workspace in Desktop."
+  fi
 fi
 
 # ! Done
@@ -602,3 +618,7 @@ echo -e "\nUpdated directory and file permissions all around."
 
 # Display a success message
 echo -e "\nProject created successfully! You can access it at: [https://$escaped_project_name.test].\n"
+
+read -p "Press any key to continue..." whatever
+
+clear

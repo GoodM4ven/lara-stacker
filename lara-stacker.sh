@@ -43,20 +43,12 @@ echo ""
 counter=0
 while true; do
   counter=$((counter+1))
-  echo -e "=================="
-  echo -e "=- TALL-Stacker -="
-  echo -e "==================\n"
-  echo -e "Environment Variables:\n"
-  echo -e "- TALL Stacker Directory: $TALL_STACKER_DIRECTORY"
-  echo -e "- Projects Directory: $PROJECTS_DIRECTORY"
-  echo -e "- Username: $USERNAME"
-  echo -e "- Database Password: $DB_PASSWORD"
-  echo -e "- Expose Token: $EXPOSE_TOKEN"
-  echo -e "- VSC Workspace: $VSC_WORKSPACE"
-  echo -e "- VSC Keybindings: $VSC_KEYBINDINGS\n"
+  echo -e "-=|[ Lara-Stacker ]|=-\n"
+  echo -e "Supported Stacks:\n"
+  echo -e "- TALL (TailwindCSS, AlpineJS, Livewire, Laravel)\n"
   echo -e "Available Operations:\n"
   for opt in "${options[@]}"; do
-    echo "$opt"
+    echo "$opt "
   done
   echo ""
   if [[ $counter -eq 1 && "$1" ]]; then
@@ -78,7 +70,7 @@ while true; do
       sudo ./scripts/delete.sh
       ;;
     4)
-      echo -e "\nExiting TALL-Stacker..."
+      echo -e "\nExiting Lara-Stacker..."
       exit 0
       ;;
     *)

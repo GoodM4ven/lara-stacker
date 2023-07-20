@@ -23,12 +23,14 @@ fi
 found_vsc=false
 if command -v code &>/dev/null; then
   found_vsc=true
+elif command -v codium &>/dev/null; then
+  found_vsc=true
 fi
 
-# Beginning Indicator
-echo -e "\n============================"
-echo -e "=- TALL STACKER |> DELETE -="
-echo -e "============================\n"
+clear
+
+# Beginning indicator
+echo -e "-=|[ Lara-Stacker |> DELETE ]|=-\n"
 
 # Get environment variables and defaults
 source $PWD/.env
@@ -91,3 +93,7 @@ echo -e "\nDeleted project files."
 
 # Display a success message
 echo -e "\nProject $project_name deleted successfully!\n"
+
+read -p "Press any key to continue..." whatever
+
+clear
