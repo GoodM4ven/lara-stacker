@@ -2,7 +2,7 @@
 
 # Check if the script is run with sudo
 if [ "$EUID" -ne 0 ]; then
-  echo -e "\nPlease run the script as super-user (sudo)."
+  echo -e "\nPlease run the script as super-user (sudo).\n"
   exit
 fi
 
@@ -97,7 +97,7 @@ echo -e "\nInstalled NVM to support installing custom NodeJS and NPM versions."
 sudo apt install composer -y >/dev/null 2>&1
 
 echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >> /home/$USERNAME/.bashrc >/dev/null 2>&1
-source /home/$USERNAME/.bashrc
+# source /home/$USERNAME/.bashrc
 
 echo -e "\nInstalled composer globally."
 
@@ -226,7 +226,7 @@ echo -e "\nInstalled Expose and set up its token to be ready to use."
 # * ================
 
 # CodeSniffer
-composer global require "squizlabs/php_codesniffer=*" --dev --quiet
+/usr/bin/composer global require "squizlabs/php_codesniffer=*" --dev --quiet
 
   sudo mkdir $PROJECTS_DIRECTORY/.shared
   sudo cp $LARA_STACKER_DIRECTORY/files/.shared/phpcs.xml $PROJECTS_DIRECTORY/.shared/

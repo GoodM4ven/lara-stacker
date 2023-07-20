@@ -2,7 +2,7 @@
 
 # Check if the script is run with sudo
 if [ "$EUID" -ne 0 ]; then
-  echo -e "\nPlease run the script as super-user (sudo)."
+  echo -e "\nPlease run the script as super-user (sudo).\n"
   exit
 fi
 
@@ -13,7 +13,7 @@ if [ ! -e "$PWD/done-setup" ]; then
 
   case "$confirmation" in
     n|N|no|NO ) 
-      echo -e "\nAborting..."
+      echo -e "\nAborting...\n"
       exit 1
       ;;
   esac

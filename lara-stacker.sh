@@ -2,13 +2,13 @@
 
 # Check if the script is run with sudo
 if [ "$EUID" -ne 0 ]; then
-  echo -e "\nPlease run the script as super-user (sudo)."
+  echo -e "\nPlease run the script as super-user (sudo).\n"
   exit
 fi
 
 # Get environment variables
 if [ ! -f "./.env" ]; then
-  echo -e "\nPlease run the script from the directory where [.env] file is at."
+  echo -e "\nPlease run the script from the directory where [.env] file is at.\n"
   exit
 fi
 
