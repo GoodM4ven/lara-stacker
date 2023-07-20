@@ -93,7 +93,7 @@ echo -e "Installing the project via Composer..."
 cd $PROJECTS_DIRECTORY/
 composer create-project --prefer-dist laravel/laravel $escaped_project_name -n --quiet
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
+sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
 
 # Generate an SSL certificate via mkcert
 sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
@@ -169,7 +169,7 @@ fi
 mkdir $PROJECTS_DIRECTORY/$escaped_project_name/.vscode
 cd $PROJECTS_DIRECTORY/$escaped_project_name/.vscode
 
-sudo cp $TALL_STACKER_DIRECTORY/files/.vscode/launch.json ./
+sudo cp $LARA_STACKER_DIRECTORY/files/.vscode/launch.json ./
 
 sed -i "s~\[projectsDirectory\]~$PROJECTS_DIRECTORY~g" ./launch.json
 sed -i "s~\[projectName\]~$escaped_project_name~g" ./launch.json
@@ -185,7 +185,7 @@ cd /home/$USERNAME/
 minio-client anonymous set public myminio/$escaped_project_name
 EOF
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/.config/minio/data/$escaped_project_name
+sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/.config/minio/data/$escaped_project_name
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 sed -i "s/FILESYSTEM_DISK=local/FILESYSTEM_DISK=s3/g" ./.env
@@ -289,10 +289,10 @@ cd $PROJECTS_DIRECTORY/$escaped_project_name
 
 # TaliwindCSS
 if [ "$laravel_stack" = "tall" ]; then
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/css/app.css ./resources/css/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/css/app.css ./resources/css/
 fi
-sudo cp $TALL_STACKER_DIRECTORY/files/postcss.config.js ./
-sudo cp $TALL_STACKER_DIRECTORY/files/tailwind.config.js ./
+sudo cp $LARA_STACKER_DIRECTORY/files/postcss.config.js ./
+sudo cp $LARA_STACKER_DIRECTORY/files/tailwind.config.js ./
 
 php artisan vendor:publish --provider="TailwindMerge\Laravel\ServiceProvider" --quiet
 
@@ -305,18 +305,18 @@ echo -e "\nConfigured front-end testing with Cypress."
 
 # Blade Icons
 mkdir -p ./resources/svgs/custom
-sudo cp $TALL_STACKER_DIRECTORY/files/config/blade-icons.php ./config/
-sudo cp -r $TALL_STACKER_DIRECTORY/files/resources/svgs/general ./resources/svgs/
-sudo cp $TALL_STACKER_DIRECTORY/files/resources/svgs/custom/laravel.svg ./resources/svgs/custom/
+sudo cp $LARA_STACKER_DIRECTORY/files/config/blade-icons.php ./config/
+sudo cp -r $LARA_STACKER_DIRECTORY/files/resources/svgs/general ./resources/svgs/
+sudo cp $LARA_STACKER_DIRECTORY/files/resources/svgs/custom/laravel.svg ./resources/svgs/custom/
 
 echo -e "\nConfigured Blade Icons with Heroicons as the 'general' set."
 
 # Install Redis, predis and the facade alias
 if [ "$laravel_stack" = "tall" ]; then
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/app/Providers/FilamentServiceProvider.php ./app/Providers/
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/config/app.php ./config/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Providers/FilamentServiceProvider.php ./app/Providers/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/config/app.php ./config/
 else
-  sudo cp $TALL_STACKER_DIRECTORY/files/config/app.php ./config/
+  sudo cp $LARA_STACKER_DIRECTORY/files/config/app.php ./config/
 fi
 
 sed -i "s/REDIS_HOST=127.0.0.1/REDIS_CLIENT=predis\nREDIS_HOST=127.0.0.1/g" ./.env
@@ -337,8 +337,8 @@ if [ "$is_multilingual" == true ]; then
   # Laravel Localization
   php artisan vendor:publish --provider="Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider" --quiet
 
-  sudo cp $TALL_STACKER_DIRECTORY/files/app/Http/Kernel.php ./app/Http/
-  sudo cp $TALL_STACKER_DIRECTORY/files/config/laravellocalization.php ./config/
+  sudo cp $LARA_STACKER_DIRECTORY/files/app/Http/Kernel.php ./app/Http/
+  sudo cp $LARA_STACKER_DIRECTORY/files/config/laravellocalization.php ./config/
   php artisan lang:add ar --quiet
 
   echo -e "\nConfigured Laravel Localization and enabled AR & EN locales."
@@ -354,7 +354,7 @@ php artisan telescope:install --quiet
 
 php artisan migrate --quiet
 
-sudo cp $TALL_STACKER_DIRECTORY/files/app/Providers/AppServiceProvider.php ./app/Providers/
+sudo cp $LARA_STACKER_DIRECTORY/files/app/Providers/AppServiceProvider.php ./app/Providers/
 sed -i "s~\"dont-discover\": \[\]~\"dont-discover\": \[\n                \"laravel/telescope\"\n            \]~g" ./composer.json
 echo -e "\nTELESCOPE_ENABLED=true" | tee -a ./.env >/dev/null 2>&1
 
@@ -403,7 +403,7 @@ php artisan vendor:publish --tag="options-config" --quiet
 echo -e "\nConfigured Laravel Options."
 
 # Laravel Permission
-cp $TALL_STACKER_DIRECTORY/files/app/Models/User.php ./app/Models/
+cp $LARA_STACKER_DIRECTORY/files/app/Models/User.php ./app/Models/
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --quiet
 
 echo -e "\nConfigured Laravel Permission."
@@ -421,7 +421,7 @@ php artisan vendor:publish --tag="wave-config" --quiet
 sed -i "s/BROADCAST_DRIVER=log/BROADCAST_DRIVER=redis/g" ./.env
 
 mkdir ./resources/js/core
-sudo cp $TALL_STACKER_DIRECTORY/files/resources/js/core/echo.js ./resources/js/core/
+sudo cp $LARA_STACKER_DIRECTORY/files/resources/js/core/echo.js ./resources/js/core/
 rm ./resources/js/bootstrap.js
 
 echo -e "\nConfigured Laravel-Wave as Laravel Echo implementation."
@@ -434,9 +434,9 @@ if [ "$laravel_stack" = "tall" ]; then
   # Alpine.js
   mkdir ./resources/js/packages
 
-  sudo cp -r $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/js/packages ./resources/js/
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/alpine.js ./resources/js/core/
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/js/app.js ./resources/js/
+  sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/packages ./resources/js/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/alpine.js ./resources/js/core/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/app.js ./resources/js/
 
   echo -e "\nConfigured ALpine.js framework."
 
@@ -449,12 +449,12 @@ if [ "$laravel_stack" = "tall" ]; then
   rm ./resources/views/welcome.blade.php
   mkdir -p ./resources/views/components/home
   mkdir -p ./resources/views/partials
-  sudo cp $TALL_STACKER_DIRECTORY/files/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
-  sudo cp $TALL_STACKER_DIRECTORY/files/routes/web.php ./routes/
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/home.blade.php ./resources/views/
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/app.blade.php ./resources/views/components/
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/home/link.blade.php ./resources/views/components/home/
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/views/partials/fader.blade.php ./resources/views/partials/
+  sudo cp $LARA_STACKER_DIRECTORY/files/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
+  sudo cp $LARA_STACKER_DIRECTORY/files/routes/web.php ./routes/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/home.blade.php ./resources/views/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/app.blade.php ./resources/views/components/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/home/link.blade.php ./resources/views/components/home/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/partials/fader.blade.php ./resources/views/partials/
 
   sed -i "s/\"@php artisan package:discover --ansi\"/\"@php artisan package:discover --ansi\",\n            \"@php artisan vendor:publish --force --tag=livewire:assets --ansi\"/g" ./composer.json
   sed -i "s/'layout' => 'layouts.app',/'layout' => 'components.app',/g" ./config/livewire.php
@@ -463,8 +463,8 @@ if [ "$laravel_stack" = "tall" ]; then
   echo -e "\nConfigured Livewire framework."
 
   # Livewire Hot-Reload
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/vite.config.js ./
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/livewire-hot-reload.js ./resources/js/core/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/vite.config.js ./
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/livewire-hot-reload.js ./resources/js/core/
   echo -e "\nVITE_LIVEWIRE_OPT_IN=true" | tee -a ./.env >/dev/null 2>&1
 
   sed -i "s~<projectName>~$escaped_project_name~g" ./vite.config.js
@@ -477,7 +477,7 @@ if [ "$laravel_stack" = "tall" ]; then
   echo -e "\nConfigured Blurred Image and Blurhash."
 
   # Filament Shield
-  cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/app/Models/User.php ./app/Models/
+  cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Models/User.php ./app/Models/
   php artisan vendor:publish --tag=filament-shield-config --quiet
 
   sed -i "s~'navigation_group' => true,~'navigation_group' => false,~g" ./config/filament-shield.php
@@ -488,7 +488,7 @@ if [ "$laravel_stack" = "tall" ]; then
 
   # Filament Admin
   php artisan vendor:publish --tag=filament-config --quiet
-  sudo cp $TALL_STACKER_DIRECTORY/files/_stubs/tall/resources/css/filament.css ./resources/css/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/css/filament.css ./resources/css/
 
   sed -i "s/\"@php artisan vendor:publish --tag=laravel-assets --ansi --force\"/\"@php artisan vendor:publish --tag=laravel-assets --ansi --force\",\n            \"@php artisan filament:upgrade\"/g" ./composer.json
   sed -i "s/Widgets\\\AccountWidget::class,/\/\/ Widgets\\\AccountWidget::class,/g" ./config/filament.php
@@ -542,7 +542,7 @@ if [ "$is_multilingual" == true ]; then
 
   # Add Arabic helper functions file
   mkdir -p ./app/Services/Support
-  sudo cp $TALL_STACKER_DIRECTORY/files/app/Services/Support/functions.php ./app/Services/Support/
+  sudo cp $LARA_STACKER_DIRECTORY/files/app/Services/Support/functions.php ./app/Services/Support/
   sed -i '0,/"psr-4": {/s//"files": [\n            "app\/Services\/Support\/functions.php"\n        ],\n        "psr-4": {/' ./composer.json
 
   composer dump-autoload -n --quiet
@@ -560,12 +560,12 @@ echo -e "\nAdded an environment variable for password timeout."
 
 # Extract an Enumerifier helper trait
 mkdir -p ./app/Services/Support/Traits
-sudo cp $TALL_STACKER_DIRECTORY/files/app/Services/Support/Traits/Enumerifier.php ./app/Services/Support/Traits/
+sudo cp $LARA_STACKER_DIRECTORY/files/app/Services/Support/Traits/Enumerifier.php ./app/Services/Support/Traits/
 
 echo -e "\nExtracted an Enumerifier helper trait."
 
 # Add an environment-user seeder
-sudo cp $TALL_STACKER_DIRECTORY/files/database/seeders/DatabaseSeeder.php ./database/seeders/
+sudo cp $LARA_STACKER_DIRECTORY/files/database/seeders/DatabaseSeeder.php ./database/seeders/
 echo -e "\nENV_USER_NAME=Admin" | tee -a ./.env >/dev/null 2>&1
 echo -e "ENV_USER_EMAIL=admin@laravel.com" | tee -a ./.env >/dev/null 2>&1
 echo -e "ENV_USER_PASSWORD=password" | tee -a ./.env >/dev/null 2>&1
@@ -575,13 +575,13 @@ php artisan db:seed --quiet
 echo -e "\nAdded an environment-user for quick generation."
 
 # Updated .gitignore file
-sudo cp $TALL_STACKER_DIRECTORY/files/.gitignore ./
+sudo cp $LARA_STACKER_DIRECTORY/files/.gitignore ./
 
 echo -e "\nUpdated .gitignore file."
 
 # Copy the opinionated VSC keybindings
 if [[ $found_vsc == true && $VSC_KEYBINDINGS == true ]]; then
-  sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/keybindings.json ./.vscode/
+  sudo cp $LARA_STACKER_DIRECTORY/files/.opinionated/keybindings.json ./.vscode/
 
   echo -e "\nCopied VSC workspace key-bindings."
 fi
@@ -590,20 +590,20 @@ fi
 if [[ $found_vsc == true && $VSC_WORKSPACE == true ]]; then
   cd /home/$USERNAME/Desktop
 
-  sudo cp $TALL_STACKER_DIRECTORY/files/.opinionated/project.code-workspace ./$escaped_project_name.code-workspace
+  sudo cp $LARA_STACKER_DIRECTORY/files/.opinionated/project.code-workspace ./$escaped_project_name.code-workspace
 
   sudo sed -i "s/<projectName>/$escaped_project_name/g" ./$escaped_project_name.code-workspace
   sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
   sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" ./$escaped_project_name.code-workspace
   sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
 
-  sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
+  sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
 
     sudo sed -i "s/<projectName>/$escaped_project_name/g" ./$escaped_project_name.code-workspace
     # sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" ./$escaped_project_name.code-workspace
     # sudo sed -i "s/<username>/$USERNAME/g" ./$escaped_project_name.code-workspace
 
-    sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
+    sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
 
     echo -e "\nCreated a dedicated VSC workspace in Desktop."
   fi
@@ -612,7 +612,7 @@ fi
 # ! Done
 
 # Update the permissions all around
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
+sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
 
 echo -e "\nUpdated directory and file permissions all around."
 
