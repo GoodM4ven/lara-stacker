@@ -46,15 +46,15 @@ sudo systemctl restart apache2 >/dev/null 2>&1
 
 echo -e "Installed Git, Curl, PHP, Apache, Redis and npm packages."
 
-# Setup permissions permanently
-sudo setfacl -Rdm g:www-data:rwx $PROJECTS_DIRECTORY
-sudo chown -R :www-data $PROJECTS_DIRECTORY
-sudo chmod -R g+rwx $PROJECTS_DIRECTORY
-
 echo -e "\nSet up permissions in the projects directly permanently."
 
 # Grant user write permissions
 sudo usermod -a -G www-data $USERNAME
+
+# Setup permissions permanently
+sudo setfacl -Rdm g:www-data:rwx $PROJECTS_DIRECTORY
+sudo chown -R :www-data $PROJECTS_DIRECTORY
+sudo chmod -R g+rwx $PROJECTS_DIRECTORY
 
 echo -e "\nAdded the environment's user to [www-data] group."
 
@@ -267,7 +267,7 @@ fi
 # Create .packages directory
 sudo mkdir $PROJECTS_DIRECTORY/.packages
 
-sudo $TALL_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
+sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
 
 echo -e "\nCreated a .packages directory."
 
@@ -275,7 +275,7 @@ echo -e "\nCreated a .packages directory."
 
 touch $origin_dir/done-setup
 
-echo -e "\nSetup done successfully!\n"
+echo -e "\nSetup done successfully. Restarting the operating system is required.\n"
 
 read -p "Press any key to continue..." whatever
 

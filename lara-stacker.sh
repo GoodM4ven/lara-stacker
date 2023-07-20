@@ -70,7 +70,7 @@ while true; do
       sudo ./scripts/delete.sh
       ;;
     4)
-      echo -e "\nExiting Lara-Stacker..."
+      echo -e "\nExiting Lara-Stacker...\n"
       exit 0
       ;;
     *)

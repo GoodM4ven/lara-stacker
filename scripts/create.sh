@@ -264,22 +264,22 @@ echo -e "\nInstalling NPM packages..."
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 
-# TALL packages...
 if [ "$laravel_stack" = "tall" ]; then
+  # TALL packages...
   npm install @alpinejs/mask @alpinejs/intersect @alpinejs/persist @alpinejs/focus @alpinejs/collapse @alpinejs/morph >/dev/null 2>&1
 
   # Uninstall axios
   npm uninstall axios >/dev/null 2>&1
 
   # TALL Dev Packages...
-  npm install -D @defstudio/vite-livewire-plugin @awcodes/alpine-floating-ui alpinejs-breakpoints >/dev/null 2>&1
+  npm install --save-dev @defstudio/vite-livewire-plugin @awcodes/alpine-floating-ui alpinejs-breakpoints >/dev/null 2>&1
 fi
 
-# Laravel-Wave
-npm install laravel-wave >/dev/null 2>&1
-
 # Dev Packages...
-npm install -D tailwindcss postcss autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio @tailwindcss/container-queries tippy.js cypress >/dev/null 2>&1
+npm install --save-dev tailwindcss postcss autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio >/dev/null 2>&1
+
+# Packages...
+npm install --force @tailwindcss/container-queries tippy.js laravel-wave cypress >/dev/null 2>&1
 
 # * =======================
 # * Package Configurations
