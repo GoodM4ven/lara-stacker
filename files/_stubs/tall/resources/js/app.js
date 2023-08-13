@@ -1,7 +1,7 @@
 import './core/alpine-livewire';
-import './core/echo';
 // TODO reimplement after livewire v3 fix
 // import './core/livewire-hot-reload';
+import './core/echo';
 
 import './packages/alpine-hooks';
 import './packages/alpinejs-breakpoints';

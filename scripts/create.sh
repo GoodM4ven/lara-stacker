@@ -147,7 +147,6 @@ sudo service apache2 restart
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 
-cd $PROJECTS_DIRECTORY/$escaped_project_name
 sed -i "s/APP_NAME=Laravel/APP_NAME=\"$project_name\"/g" ./.env
 sed -i "s|APP_URL=http://localhost|APP_URL=https://$escaped_project_name.test|g" ./.env
 
@@ -271,7 +270,6 @@ echo -e "\nInstalling NPM packages..."
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 
-# TALL packages...
 if [ "$laravel_stack" = "tall" ]; then
   # TALL packages...
   npm install @alpinejs/mask @alpinejs/intersect @alpinejs/focus @alpinejs/collapse @alpinejs/morph @ryangjchandler/alpine-hooks >/dev/null 2>&1
@@ -644,7 +642,7 @@ sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$esca
 echo -e "\nUpdated directory and file permissions all around."
 
 # Build the front-end assets
-composer update -n --quiet
+composer update -n --quiet >/dev/null 2>&1
 npm update >/dev/null 2>&1
 npm run build >/dev/null 2>&1
 

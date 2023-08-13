@@ -3,6 +3,7 @@
 > **Warning**: Open Source Only
 
 - [patbenatar.advanced-new-file](https://github.com/patbenatar/vscode-advanced-new-file)
+- [pcbowers.alpine-intellisense](https://github.com/pcbowers/alpine-intellisense)
 - [formulahendry.auto-rename-tag](https://github.com/formulahendry/vscode-auto-rename-tag)
 - [chouzz.vscode-better-align](https://github.com/chouzz/vscode-better-align)
 - [aaron-bond.better-comments](https://github.com/aaron-bond/better-comments)

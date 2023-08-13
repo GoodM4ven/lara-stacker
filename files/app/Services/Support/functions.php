@@ -36,20 +36,3 @@ if (!function_exists('is_rtl')) {
         return current_direction() === 'rtl';
     }
 }
-
-if (!function_exists('arabify')) {
-    function arabify(string $arabicText)
-    {
-        // ? Remove Tashkeel
-        $harakat = ['ِ', 'ُ', 'ٓ', 'ٰ', 'ْ', 'ٌ', 'ٍ', 'ً', 'ّ', 'َ', 'ـ'];
-        $arabicText = str_replace($harakat, '', $arabicText);
-
-        // ? Replace Huroof
-        $huroof = ['أ', 'ى', 'إ'];
-        $arabicText = str_replace($huroof, 'ا', $arabicText);
-        $huroof = ['ئ', 'ؤ', 'آ'];
-        $arabicText = str_replace($huroof, 'ء', $arabicText);
-
-        return $arabicText;
-    }
-}
