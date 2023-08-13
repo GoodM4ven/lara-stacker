@@ -32,7 +32,7 @@ sudo chmod +x $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh
 # * ==============
 
 # git, php, apache2, redis and npm
-sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath redis-server npm -y >/dev/null 2>&1
+sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server npm -y >/dev/null 2>&1
 
 sudo sed -i "s~post_max_size = 8M~post_max_size = 100M~g" /etc/php/8.1/apache2/php.ini
 sudo sed -i "s~upload_max_filesize = 2M~upload_max_filesize = 100M~g" /etc/php/8.1/apache2/php.ini
@@ -97,7 +97,6 @@ echo -e "\nInstalled NVM to support installing custom NodeJS and NPM versions."
 sudo apt install composer -y >/dev/null 2>&1
 
 echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >> /home/$USERNAME/.bashrc >/dev/null 2>&1
-# source /home/$USERNAME/.bashrc
 
 echo -e "\nInstalled composer globally."
 
@@ -225,33 +224,24 @@ echo -e "\nInstalled Expose and set up its token to be ready to use."
 # * Opinionated Setup
 # * ================
 
-# CodeSniffer
-/usr/bin/composer global require "squizlabs/php_codesniffer=*" --dev --quiet
+if [ "$OPINIONATED" == true ]; then
+  # Link projects directory
+  mkdir /home/$USERNAME/Code >/dev/null 2>&1
 
-  sudo mkdir $PROJECTS_DIRECTORY/.shared
-  sudo cp $LARA_STACKER_DIRECTORY/files/.shared/phpcs.xml $PROJECTS_DIRECTORY/.shared/
-
-  sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.shared
-
-echo -e "\nInstalled CodeSniffer globally."
-
-# Link projects directory
-mkdir /home/$USERNAME/Code >/dev/null 2>&1
-
-sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
-cd /home/$USERNAME/Code
-ln -s $PROJECTS_DIRECTORY/
-final_folder=$(basename $PROJECTS_DIRECTORY)
-mv $final_folder TALL
+  sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+  cd /home/$USERNAME/Code
+  ln -s $PROJECTS_DIRECTORY/
+  final_folder=$(basename $PROJECTS_DIRECTORY)
+  mv $final_folder Laravel
 EOF
 
   sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/Code
 
-echo -e "\nLinked projects directory into [~/Code/TALL] directory."
+  echo -e "\nLinked projects directory into [~/Code/Laravel] directory."
 
-# Install Firacode font (if VSC installed)
-if [[ $found_vsc == true ]]; then
-  sudo apt install fonts-firacode -y >/dev/null 2>&1
+  # Install Firacode font (if VSC installed)
+  if [[ $found_vsc == true ]]; then
+    sudo apt install fonts-firacode -y >/dev/null 2>&1
 
     echo -e "\nInstalled Firacode font for VSC."
   fi
@@ -262,14 +252,12 @@ if [[ $found_vsc == true ]]; then
   sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
 
   echo -e "\nCreated a .packages directory."
+
+  # Add helper aliases to .bashrc
+  echo -e "\n# Laravel Aliases\nalias cda='composer dump-autoload'\nalias art='php artisan'\nalias fresh='php artisan migrate:fresh'\nalias mfs='php artisan migrate:fresh --seed'\nalias opt='php artisan optimize:clear'\nalias dev='npm run dev'\n" >> /home/$USERNAME/.bashrc
+
+  echo -e "\nAdded some helper aliases to [.bashrc]. Check 'art' out!"
 fi
-
-# Create .packages directory
-sudo mkdir $PROJECTS_DIRECTORY/.packages
-
-sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
-
-echo -e "\nCreated a .packages directory."
 
 # ! DONE
 

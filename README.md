@@ -13,7 +13,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 - Customizations such as SSL and 3rd party tools setup is way easier if you deal with it locally; and doesn't necessarily mean that you'd a have a messy setup.
 - Package development, when having most of the tools installed out of boxes!
 
-### TALL Stack List
+### Tech Stack List
 
 - <details><summary>System</summary>
   <p>
@@ -64,8 +64,10 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
   <p>
 
   - Essentials
-    - [phpcs](https://github.com/squizlabs/PHP_CodeSniffer) [Global]
     - [league/flysystem-aws-s3-v3](https://flysystem.thephpleague.com/docs/adapter/aws-s3-v3/)
+    - [laracasts/cypress](https://github.com/laracasts/cypress)
+      - Use `npx cypress open` to run the tester
+      - Checkout this [episode](https://laracasts.com/series/jeffreys-larabits/episodes/22) for more details
     - [predis/predis](https://github.com/predis/predis)
     - [laravel/scout](https://laravel.com/docs/10.x/scout)
     - [qruto/laravel-wave](https://github.com/qruto/laravel-wave)
@@ -111,6 +113,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
   <p>
 
   - Essentials
+    - [cypress](https://www.cypress.io/)
     - [laravel-wave](https://github.com/qruto/laravel-wave)
     - [tailwindcss](https://tailwindcss.com/) [Dev]
     - [postcss](https://github.com/postcss/postcss) [Dev]
@@ -164,10 +167,10 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 That's it. You'll have your first project accessible in the end (displaying the site's URL too). JUST be PATIENT! `:)`
 
 > **Warning**
-> Please remember to install the "recommended extensions" after opening the VSC Workspace as prompted to, or "Show Recommended Extensions" from the command palette if not.
+> I found the best way to deal with workspace settings or extensions ("recommended", they call them) is to add them to your VSC profile's extensions, but then disable them, and every time you open a new workspace (project), you enable them for the workspace only.
 
 > **Note**
-> You're free to take a look at and apply the VSC [settings](./files/.opinionated/settings.json) I'm using locally, as well as their complete [extension list](./files/.opinionated/extensions.md). (You can also set up both in their own "tall" VSC profile or something)
+> You're free to take a look at and apply the VSC [settings](./files/.opinionated/settings.json) I'm using locally, as well as their complete [extension list](./files/.opinionated/extensions.md). (You can also set up both in their own "TALL" VSC profile or something)
 
 
 ## Before Production
@@ -177,13 +180,14 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Todos For Development:
 
+- [ ] Add Spatie Google Fonts package + Filament integration for TALL
 - [ ] Allow html attribute suggestion without endless blade snippets then enable blade snippet suggestions again
-- [ ] Add laravel Vue stack (VILT)
-- [ ] Add laravel React stack (RILT)
-- [ ] Auto-complete or suggestion mechanism while deleting the project or selection mechanism with an interface listing projects in rectangles (arrow up and down then enter)
+- [ ] Add laravel Vue stack (VILT) with/without SSR
+- [ ] Add laravel React stack (RILT) with/without SSR
 - [ ] Open VSC if available (check the commented code in [scripts/create.sh])
 - [ ] Run PHPUnit tests with the keybinding (ctrl+shift+r) if in PHPUnit class, and BetterPest's otherwise
 - [ ] Selective installation process as a self-deleting Composer package (check [.draft/stacking-wip.md])
+- [ ] Laravel Prompts
 
 
 ## Credits
@@ -194,10 +198,11 @@ That's it. You'll have your first project accessible in the end (displaying the 
   - [Livewire](https://laravel-livewire.com)
   - [Laravel](https://laravel.com)
   - [FilamentPHP](https://filamentphp.com)
+- [Pest](https://pestphp.com)
+- [Cypress](https://cypress.io)
 - [Spatie](https://github.com/spatie)
 - ( [Tech Stack List](#tech-stack-list) )
 - ( [VSC Extensions](./files/.opinionated/extensions.md) )
-- ( [Workspace VSC Extensions](./files/.opinionated/project.code-workspace) )
 - ( [Contributers](https://github.com/GoodM4ven/lara-stacker/graphs/contributors) )
 
 

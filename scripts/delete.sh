@@ -64,7 +64,7 @@ sudo sed -i "/^127\.0\.0\.1\s*$escaped_project_name\.test/d" /etc/hosts
 echo -e "\nRemoved the site from [/etc/hosts] file."
 
 # Delete its Apache's config file then restart the service
-sudo rm /etc/apache2/sites-available/$escaped_project_name.conf
+sudo rm /etc/apache2/sites-available/$project_name.conf
 
 sudo service apache2 restart
 

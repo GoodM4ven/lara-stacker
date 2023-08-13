@@ -1,13 +1,12 @@
 @props([
     'title' => null,
-    'dir' => null,
+    'hideAppNameFromTitle' => false,
     'bodyClasses' => null,
 ])
 
 <!DOCTYPE html>
 <html
-    lang="{{ str_replace('_', '-', current_locale()) }}"
-    dir="{{ $dir ?? current_direction() }}"
+    lang="{{ config('app.locale') }}"
     class="h-full min-h-screen w-full antialiased"
     x-data="{
         atMobile: false,
@@ -66,7 +65,9 @@
         href="{{ asset('site.webmanifest') }}"
     > --}}
 
-    <title>{{ config('app.name') }} {{ $title ? " - {$title}" : null }}</title>
+    <title>
+        {{ filled($title) ? $title . ($hideAppNameFromTitle ? null : (' - ' . config('app.name'))) : config('app.name') }}
+    </title>
 
     <!-- Fonts -->
     <link
@@ -82,32 +83,23 @@
         href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
         rel="stylesheet"
     >
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
-    >
     @stack('fonts')
 
     <!-- Styles -->
     <style>
-        [x-cloak=""],
-        [x-cloak="x-cloak"],
-        [x-cloak="1"] {
+        [x-cloak] {
             display: none !important;
         }
     </style>
     @livewireStyles
+    @filamentStyles
+    @vite('resources/css/app.css')
     @stack('styles')
-
-    <!-- Head Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireScripts
 </head>
 
 <body
     @class([
         $bodyClasses => $bodyClasses,
-        'font-arabic' => is_ar(),
         'h-full w-full bg-white dark:bg-dark-background-1',
     ])
     x-bind:class="{ 'overflow-y-clip': isScrollingDisabled }"
@@ -124,7 +116,10 @@
 
     {{ $slot }}
 
+    @livewireScriptConfig
     @livewire('notifications')
+    @filamentScripts
+    @vite('resources/js/app.js')
     @stack('scripts')
 </body>
 

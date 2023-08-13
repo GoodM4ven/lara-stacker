@@ -1,10 +1,13 @@
-import './core/alpine';
+import './core/alpine-livewire';
+// TODO reimplement after livewire v3 fix
+// import './core/livewire-hot-reload';
 import './core/echo';
-import './core/livewire-hot-reload';
 
-import './packages/breakpoint';
-import './packages/filament';
+import './packages/alpine-hooks';
+import './packages/alpinejs-breakpoints';
+import './packages/tippy';
 
-Alpine.start();
+Livewire.start();
 
-LivewireHotReload();
+// TODO reimplement after livewire v3 fix
+// LivewireHotReload();

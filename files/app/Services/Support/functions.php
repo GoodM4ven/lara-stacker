@@ -3,11 +3,9 @@
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 if (!function_exists('available_locales')) {
-    function available_locales($withoutEn = false)
+    function available_locales()
     {
-        $locales = explode(',', env('APP_LOCALES'));
-
-        return $withoutEn ? array_diff($locales, ['en']) : $locales;
+        return array_keys(config('laravellocalization.supportedLocales'));
     }
 }
 

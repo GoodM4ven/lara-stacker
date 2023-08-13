@@ -97,10 +97,6 @@
         "when": "viewContainer.workbench.view.debug.enabled"
     },
     {
-        "key": "alt+5",
-        "command": "workbench.view.remote"
-    },
-    {
         "key": "alt+o",
         "command": "editor.action.refactor",
         "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
@@ -532,12 +528,27 @@
         "command": "-better-pest.run-file"
     },
     {
-        "key": "ctrl+shift+r",
-        "command": "better-pest.run"
-    },
-    {
         "key": "meta+k meta+r",
         "command": "-better-pest.run"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "-editor.action.refactor",
+        "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "-rerunSearchEditorSearch",
+        "when": "inSearchEditor"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "-workbench.action.quickOpenNavigatePreviousInRecentFilesPicker",
+        "when": "inQuickOpen && inRecentFilesPicker"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "better-pest.run"
     },
     // [Laravel Blade Wrapper]
     {
@@ -549,6 +560,11 @@
         "key": "ctrl+shift+w",
         "command": "wrap.with",
         "when": "editorHasSelection"
+    },
+    // [PHP Constructor]
+    {
+        "key": "shift+alt+i",
+        "command": "phpConstructor.insert"
     },
     // [PHP Namespace Resolver]
     {
@@ -618,5 +634,13 @@
     {
         "key": "ctrl+alt+e",
         "command": "phpResolver.expand"
+    },
+    {
+        "key": "alt+5",
+        "command": "-workbench.action.openEditorAtIndex5"
+    },
+    {
+        "key": "alt+5",
+        "command": "workbench.view.extension.foldersCompare"
     }
 ]

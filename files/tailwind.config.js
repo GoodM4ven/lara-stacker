@@ -1,5 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
+
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
 import aspectRatio from '@tailwindcss/aspect-ratio';
@@ -8,10 +9,9 @@ import containerQueries from '@tailwindcss/container-queries';
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
-        './vendor/filament/**/*.blade.php',
+        './storage/framework/views/*.php',
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     ],
 
     darkMode: 'class',
@@ -20,7 +20,6 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Ubuntu', ...defaultTheme.fontFamily.sans],
-                arabic: ['"Noto Sans Arabic"', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 'background-1': colors.gray['50'],
@@ -49,9 +48,6 @@ export default {
                     800: '#601b1b',
                     900: '#300e0e',
                 },
-                success: colors.green,
-                warning: colors.yellow,
-                danger: colors.rose,
             },
             transitionProperty: {},
             animation: {},
@@ -64,5 +60,10 @@ export default {
         typography,
         aspectRatio,
         containerQueries,
+        require('@whiterussianstudio/tailwind-easing'),
     ],
+
+    variants: {
+        transitionTimingFunction: ['responsive', 'hover', 'groupHover', 'focus', 'dark'],
+    }
 };

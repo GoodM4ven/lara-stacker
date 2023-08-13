@@ -45,7 +45,7 @@
                         />
                         <x-home.link
                             caption="Livewire"
-                            link="https://laravel-livewire.com"
+                            link="https://livewire.laravel.com"
                         />
                         <x-home.link
                             caption="Laravel"

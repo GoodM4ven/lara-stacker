@@ -33,6 +33,8 @@ for script in "${SCRIPTS[@]}"; do
   fi
 done
 
+clear
+
 # Menu options
 options=("1. List Projects" "2. Create Project" "3. Delete Project" "4. Exit" "0. Initial Setup")
 options_count=$(( ${#options[@]} - 1 ))
