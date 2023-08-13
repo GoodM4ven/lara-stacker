@@ -502,6 +502,7 @@ if [ "$laravel_stack" = "tall" ]; then
   mkdir -p ./resources/views/components/home
   mkdir -p ./resources/views/partials
 
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/routes/web.php ./routes/
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/home.blade.php ./resources/views/
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/home/link.blade.php ./resources/views/components/home/
