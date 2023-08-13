@@ -2,8 +2,6 @@
 
 > **Warning**: Open Source Only
 
-> **Note**: Some are workspace-level extensions; you find them in the workspace [settings](../.shared/tall.code-workspace) file.
-
 - [patbenatar.advanced-new-file](https://github.com/patbenatar/vscode-advanced-new-file)
 - [formulahendry.auto-rename-tag](https://github.com/formulahendry/vscode-auto-rename-tag)
 - [chouzz.vscode-better-align](https://github.com/chouzz/vscode-better-align)
@@ -20,11 +18,18 @@
 - [eamodio.gitlens](https://github.com/gitkraken/vscode-gitlens)
 - [wix.vscode-import-cost](https://github.com/wix/import-cost)
 - [albymor.increment-selection](https://github.com/albymor/Increment-Selection)
+- [porifa.laravel-intelephense](https://github.com/porifa/vscode-laraphense)
 - [shufo.vscode-blade-formatter](https://github.com/shufo/vscode-blade-formatter)
 - [onecentlin.laravel-blade](https://github.com/onecentlin/laravel-blade-snippets-vscode)
 - [IHunte.laravel-blade-wrapper](https://github.com/IHunte/Laravel-Blade-Wrapper)
 - [austenc.laravel-docs](https://github.com/austenc/vscode-laravel-docs)
+- [ctf0.laravel-goto-config](https://github.com/ctf0/laravel-goto-config)
+- [ctf0.laravel-goto-env](https://github.com/ctf0/laravel-goto-env)
+- [ctf0.laravel-goto-lang](https://github.com/ctf0/laravel-goto-lang)
+- [ctf0.laravel-goto-view](https://github.com/ctf0/laravel-goto-view)
+- [naoray.laravel-goto-components](https://github.com/Naoray/laravel-goto-components)
 - [austenc.livewire-docs](https://github.com/austenc/vscode-livewire-docs)
+- [lennardv.livewire-goto-updated](https://github.com/lennardv2/vscode-livewire-goto)
 - [cierra.livewire-vscode](https://github.com/cierrateam/vscode-livewire)
 - [bierner.markdown-checkbox](https://github.com/mjbvz/vscode-markdown-checkboxes)
 - [bierner.markdown-emoji](https://github.com/mjbvz/vscode-markdown-emoji)
@@ -38,11 +43,12 @@
 - [ctf0.php-namespace-resolver](https://github.com/ctf0/php-namespace-resolver)
 - [jeff-hykin.polacode-2019](https://github.com/jeff-hykin/polacode)
 - [csstools.postcss](https://github.com/csstools/postcss-language)
+- [esbenp.prettier-vscode](https://github.com/prettier/prettier-vscode)
 - [sainoba.px-to-rem](https://github.com/sainoba/vscode-px-to-rem)
 - [dbankier.vscode-quick-select](https://github.com/dbankier/vscode-quick-select)
-- [chrmarti.regex](https://github.com/chrmarti/vscode-regex)
 - [jock.svg](https://github.com/lishu/vscode-svg2)
 - [albert.TabOut](https://github.com/albertromkes/tabout)
+- [bradlc.vscode-tailwindcss](https://github.com/tailwindlabs/tailwindcss-intellisense)
 - [austenc.tailwind-docs](https://github.com/austenc/vscode-tailwind-docs)
 - [bourhaouta.tailwindshades](https://github.com/bourhaouta/vscode-tailwindshades)
 - [jkjustjoshing.vscode-text-pastry](https://github.com/jkjustjoshing/vscode-text-pastry)

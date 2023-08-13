@@ -1,12 +1,14 @@
 @props([
     'title' => null,
     'hideAppNameFromTitle' => false,
+    'dir' => null,
     'bodyClasses' => null,
 ])
 
 <!DOCTYPE html>
 <html
-    lang="{{ config('app.locale') }}"
+    lang="{{ current_locale() }}"
+    dir="{{ $dir ?? current_direction() }}"
     class="h-full min-h-screen w-full antialiased"
     x-data="{
         atMobile: false,
@@ -83,6 +85,10 @@
         href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
         rel="stylesheet"
     >
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
     @stack('fonts')
 
     <!-- Styles -->
@@ -100,6 +106,7 @@
 <body
     @class([
         $bodyClasses => $bodyClasses,
+        'font-arabic' => is_ar(),
         'h-full w-full bg-white dark:bg-dark-background-1',
     ])
     x-bind:class="{ 'overflow-y-clip': isScrollingDisabled }"

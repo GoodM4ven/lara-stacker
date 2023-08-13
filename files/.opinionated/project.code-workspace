@@ -1,54 +1,11 @@
 {
 	"extensions": {
-		"recommendations": [
-			"pcbowers.alpine-intellisense",
-			"ctf0.laravel-goto-config",
-			"ctf0.laravel-goto-env",
-			"ctf0.laravel-goto-lang",
-			"ctf0.laravel-goto-view",
-			"porifa.laravel-intelephense",
-			"naoray.laravel-goto-components",
-			"lennardv.livewire-goto-updated",
-			"StoilDobreff.php-resolver",
-			"esbenp.prettier-vscode",
-			"bradlc.vscode-tailwindcss"
-		]
+		"recommendations": []
 	},
 	"folders": [
 		{
-			"path": "/var/www/html/<projectName>"
+			"path": "<projectsDirectory>/<projectName>"
 		}
 	],
-	"settings": {
-		// // [Alpine.js IntelliSense]
-		// "alpine-intellisense.settings.languageScopes": "blade", // TODO until intellisense is limited to html tags
-		// [Laravel Goto View]
-		"laravelGotoView.showCodeLens": false,
-		// [Laraphense]
-		"Laraphense.disableBladeCompletion": true,
-		// [PHP Resolver]
-		"phpResolver.showMessageOnStatusBar": false,
-		"phpResolver.phpSnifferCommand": "/home/<username>/.config/composer/vendor/bin/phpcs",
-		"phpResolver.phpBeautifierCommand": "/home/<username>/.config/composer/vendor/bin/phpcbf",
-		"phpResolver.phpStandards": "PSR2,<projectsDirectory>/.shared/phpcs.xml",
-		// [Prettier - Code formatter]
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
-		"prettier.requireConfig": true,
-		// [Tailwind CSS IntelliSense]
-		"files.associations": {
-			"*.css": "tailwindcss"
-		},
-		"tailwindCSS.includeLanguages": {
-			"blade": "html"
-		},
-		"tailwindCSS.classAttributes": [
-			"class",
-			"x-transition:enter",
-			"x-transition:enter-start",
-			"x-transition:enter-end",
-			"x-transition:leave",
-			"x-transition:leave-start",
-			"x-transition:leave-end"
-		]
-	}
+	"settings": {}
 }

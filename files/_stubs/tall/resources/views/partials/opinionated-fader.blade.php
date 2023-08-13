@@ -8,5 +8,12 @@
     x-transition:leave="transition ease-in duration-[400ms]"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
-    x-init="setTimeout(() => shown = false, 100);"
+    x-init="
+        setTimeout(() => shown = false, 100);
+
+        let anchors = document.querySelectorAll('a.show-fader');
+        anchors.forEach(anchor => {
+            anchor.addEventListener('click', (e) => shown = true);
+        });
+    "
 ></div>

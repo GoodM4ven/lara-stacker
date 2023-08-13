@@ -19,25 +19,28 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
   <p>
 
   - Packages
-    - git
-    - curl
-    - ghostscript
-    - ffmpeg
-    - mkcert
-    - php
-    - apache2
-    - composer
-    - npm
-    - nvm
-    - libnss3-tools
+    - [git](https://github.com/git/git)
+    - [curl](https://github.com/curl/curl)
+    - [ghostscript](https://ghostscript.readthedocs.io)
+    - [ffmpeg](https://github.com/FFmpeg/FFmpeg)
+    - [mkcert](https://github.com/FiloSottile/mkcert)
+    - [php](https://www.php.net/)
+    - [apache2](https://httpd.apache.org/)
+    - [composer](https://getcomposer.org/)
+    - [npm](https://nodejs.org/en/download/package-manager)
+    - [nvm](https://github.com/nvm-sh/nvm)
+    - [libnss3-tools](https://packages.ubuntu.com/focal/libnss3-tools)
+    - [libgbm-dev](https://packages.debian.org/sid/libgbm-dev)
+    - [libnotify-dev](https://packages.debian.org/sid/libnotify-dev)
+    - [libgconf-2-4](https://packages.debian.org/unstable/libgconf-2-4)
+    - [xvfb](https://packages.ubuntu.com/kinetic/xvfb)
   - Passive Services
-    - Redis
-    - MySQL
-    - Mailpit
-    - MinIO
+    - [Redis](https://redis.io/) (port 6379)
+    - [MySQL](https://www.mysql.com/) (port 3306)
+    - [Mailpit](https://github.com/axllent/mailpit) (http://localhost:8025)
+    - [MinIO](https://min.io/) (http://localhost:9000)
   - Active Services
-    - Expose
-      - Use `expose share https://[site-name].test` to work properly
+    - [Expose](https://expose.dev/docs) (Use `expose share https://[site-name].test` to work properly)
 
   </p>
   </details>
@@ -45,13 +48,14 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 - <details><summary>PHP Extensions</summary>
   <p>
 
-  - php-curl
-  - php-xml
-  - php-dom
-  - php-bcmath
-  - php-imagick
-  - php-gd
-  - php-xdebug
+  - [php-curl](https://www.php.net/manual/en/book.curl.php)
+  - [php-xml](https://www.php.net/manual/en/refs.xml.php)
+  - [php-dom](https://www.php.net/manual/en/book.dom.php)
+  - [php-bcmath](https://www.php.net/manual/en/book.bc.php)
+  - [php-imagick](https://www.php.net/manual/en/book.imagick.php)
+  - [php-gd](https://www.php.net/manual/en/book.image.php)
+  - [php-xdebug](https://xdebug.org/)
+  - [php-zip](https://www.php.net/manual/en/book.zip.php)
 
   </p>
   </details>
@@ -59,42 +63,51 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 - <details><summary>Composer</summary>
   <p>
 
-  - Global
-    - phpcs (CodeSniffer)
-  - Local
-    - league/flysystem-aws-s3-v3
-    - qruto/laravel-wave
-    - predis/predis
-    - laravel/scout
-    - "spatie/laravel-medialibrary:^10.0.0"
-    - spatie/eloquent-sortable
-    - spatie/laravel-sluggable
-    - mcamara/laravel-localization (multilingual option)
-    - spatie/laravel-translatable (multilingual option)
-    - spatie/laravel-tags
-    - spatie/laravel-settings
-    - spatie/laravel-options
-    - blade-ui-kit/blade-icons
-    - spatie/laravel-permission
-    - livewire/livewire (tall stack option)
-    - filament/filament:"^2.0" (tall stack option)
-    - filament/forms:"^2.0" (tall stack option)
-    - filament/tables:"^2.0" (tall stack option)
-    - filament/notifications:"^2.0" (tall stack option)
-    - filament/spatie-laravel-media-library-plugin:"^2.0" (tall stack option)
-    - filament/spatie-laravel-translatable-plugin:"^2.0" (multilingual option && tall stack option)
-    - filament/spatie-laravel-tags-plugin:"^2.0" (tall stack option)
-    - filament/spatie-laravel-settings-plugin:"^2.0" (tall stack option)
-    - danharrin/livewire-rate-limiting (tall stack option)
-    - bezhansalleh/filament-shield (tall stack option)
-  - Local Development
-    - laravel/breeze
-    - laravel/telescope
-    - pestphp/pest (pest option)
-    - pestphp/pest-plugin-faker (pest option)
-    - pestphp/pest-plugin-laravel (pest option)
-    - pestphp/pest-plugin-livewire (pest option && tall stack option)
-    - laravel-lang/lang (multilingual option)
+  - Essentials
+    - [league/flysystem-aws-s3-v3](https://flysystem.thephpleague.com/docs/adapter/aws-s3-v3/)
+    - [laracasts/cypress](https://github.com/laracasts/cypress)
+      - Use `npx cypress open` to run the tester
+      - Checkout this [episode](https://laracasts.com/series/jeffreys-larabits/episodes/22) for more details
+    - [predis/predis](https://github.com/predis/predis)
+    - [laravel/scout](https://laravel.com/docs/10.x/scout)
+    - [qruto/laravel-wave](https://github.com/qruto/laravel-wave)
+    - ["spatie/laravel-medialibrary:^10.0.0"](https://spatie.be/docs/laravel-medialibrary/v10)
+    - [spatie/eloquent-sortable](https://github.com/spatie/eloquent-sortable)
+    - [spatie/laravel-sluggable](https://github.com/spatie/laravel-sluggable)
+    - [spatie/laravel-tags](https://spatie.be/docs/laravel-tags/v4)
+    - [spatie/laravel-settings](https://github.com/spatie/laravel-settings)
+    - [spatie/laravel-options](https://github.com/spatie/laravel-options)
+    - [spatie/laravel-permission](https://spatie.be/docs/laravel-permission/v5)
+    - [blade-ui-kit/blade-icons](https://github.com/blade-ui-kit/blade-icons)
+    - [gehrisandro/tailwind-merge-laravel](https://github.com/gehrisandro/tailwind-merge-laravel)
+    - [laravel/breeze](https://laravel.com/docs/10.x/starter-kits#laravel-breeze) [Dev]
+    - [laravel/telescope](https://laravel.com/docs/10.x/telescope) (https://project-name.test/telescope) [Dev]
+  - [Option] TALL Stack
+    - [livewire/livewire:"^3.0@beta"](https://livewire.laravel.com/)
+    - [filament/filament:"^3.0-stable"](https://filamentphp.com/docs/3.x/panels/installation) (https://project-name.test/admin)
+    - [filament/forms:"^3.0-stable"](https://filamentphp.com/docs/3.x/forms/installation)
+    - [filament/tables:"^3.0-stable"](https://filamentphp.com/docs/3.x/tables/installation)
+    - [filament/notifications:"^3.0-stable"](https://filamentphp.com/docs/3.x/notifications/installation)
+    - [filament/actions:"^3.0-stable"](https://filamentphp.com/docs/3.x/actions/installation)
+    - [filament/infolists:"^3.0-stable"](https://filamentphp.com/docs/3.x/infolists/installation)
+    - [filament/widgets:"^3.0-stable"](https://filamentphp.com/docs/3.x/widgets/installation)
+    - [filament/spatie-laravel-media-library-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-media-library)
+    - [filament/spatie-laravel-tags-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-tags)
+    - [filament/spatie-laravel-settings-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-settings)
+    - [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting)
+    - [bezhansalleh/filament-shield:"^3.0@beta"](https://github.com/bezhanSalleh/filament-shield)
+  - [Option] PEST
+    - [pestphp/pest](https://pestphp.com/) [Dev]
+    - [pestphp/pest-plugin-faker](https://pestphp.com/docs/plugins#faker) [Dev]
+    - [pestphp/pest-plugin-laravel](https://pestphp.com/docs/plugins#content-laravel) [Dev]
+  - [Option] TALL Stack && PEST
+    - [pestphp/pest-plugin-livewire](https://pestphp.com/docs/plugins#content-livewire) [Dev]
+  - [Option] Multilingual
+    - [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization)
+    - [spatie/laravel-translatable](https://spatie.be/docs/laravel-translatable/v6)
+    - [laravel-lang/lang](https://laravel-lang.com) [Dev]
+  - [Option] TALL Stack && Multilingual
+    - [filament/spatie-laravel-translatable-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-translatable)
 
   </p>
   </details>
@@ -102,27 +115,29 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 - <details><summary>NPM</summary>
   <p>
 
-  - Local
-    - alpinejs (tall stack option)
-    - @alpinejs/mask (tall stack option)
-    - @alpinejs/intersect (tall stack option)
-    - @alpinejs/persist (tall stack option)
-    - @alpinejs/focus (tall stack option)
-    - @alpinejs/collapse (tall stack option)
-    - @alpinejs/morph (tall stack option)
-    - laravel-wave
-  - Local Development
-    - tailwindcss
-    - postcss
-    - autoprefixer
-    - @tailwindcss/typography
-    - @tailwindcss/forms
-    - @tailwindcss/aspect-ratio
-    - @tailwindcss/container-queries
-    - tippy.js
-    - @defstudio/vite-livewire-plugin [temporarily disabled] (tall stack option)
-    - @awcodes/alpine-floating-ui (tall stack option)
-    - alpinejs-breakpoints (tall stack option)
+  - Essentials
+    - [cypress](https://www.cypress.io/)
+    - [laravel-wave](https://github.com/qruto/laravel-wave)
+    - [tailwindcss](https://tailwindcss.com/) [Dev]
+    - [postcss](https://github.com/postcss/postcss) [Dev]
+    - [autoprefixer](https://github.com/postcss/autoprefixer) [Dev]
+    - [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin) [Dev]
+    - [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms) [Dev]
+    - [@tailwindcss/aspect-ratio](https://github.com/tailwindlabs/tailwindcss-aspect-ratio) [Dev]
+    - [@tailwindcss/container-queries](https://github.com/tailwindlabs/tailwindcss-container-queries) [Dev]
+    - [tippy.js](https://atomiks.github.io/tippyjs/) [Dev]
+  - [Option] TALL Stack
+    - [alpinejs](https://alpinejs.dev/) (Already included in Livewire now!)
+    - [@alpinejs/mask](https://alpinejs.dev/plugins/mask)
+    - [@alpinejs/intersect](https://alpinejs.dev/plugins/intersect)
+    - [@alpinejs/persist](https://alpinejs.dev/plugins/persist) (Already included in Livewire now!)
+    - [@alpinejs/focus](https://alpinejs.dev/plugins/focus)
+    - [@alpinejs/collapse](https://alpinejs.dev/plugins/collapse)
+    - [@alpinejs/morph](https://alpinejs.dev/plugins/morph)
+    - [@ryangjchandler/alpine-hooks](https://github.com/ryangjchandler/alpine-hooks)
+    - [@defstudio/vite-livewire-plugin](https://github.com/defstudio/vite-livewire-plugin) [Dev] (Disabled again until a fix!)
+    - [alpinejs-breakpoints](https://github.com/wrsdesign/alpinejs-breakpoints) [Dev]
+    - [tailwind-easing](https://github.com/wrsdesign/tailwind-easing) [Dev]
 
   </p>
   </details>
@@ -132,7 +147,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
 - Extract the scripter somewhere and navigate into it:
   ```bash
-  cd ~/Downloads && unzip ./tall-stacker-x.x.x.zip -d ./ && cd tall-stacker-x.x.x
+  cd ~/Downloads && unzip ./lara-stacker-x.x.x.zip -d ./ && cd lara-stacker-x.x.x
   ```
 
 - Create a [[.env](./.env)] file from the [[.env.example](./.env.example)] one, check its content and then fill it in; replacing the `<placeholders>`.
@@ -142,22 +157,22 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
 - Run the script with super-user permissions:
   ```bash
-  sudo ./tall-stacker.sh
+  sudo chmod +x ./lara-stacker.sh && sudo ./lara-stacker.sh
   ```
 
 - Ensure that the environment variables are all showing up in the output before selecting anything.
 
-- Choose to [**setup**](./scripts/setup.sh) the tall stacker first, which will install everything necessary and eventually create a [[done-setup](./done-setup)] empty file in the directory.
+- Choose to [**setup**](./scripts/setup.sh) the lara stacker first, which will install everything necessary and eventually create a [[done-setup](./done-setup)] empty file in the directory.
 
-- Then choose to [**create**](./scripts/create.sh) your first tall stack project and provide it its name.
+- Then choose to [**create**](./scripts/create.sh) your first stacked project and provide it its name.
 
 That's it. You'll have your first project accessible in the end (displaying the site's URL too). JUST be PATIENT! `:)`
 
 > **Warning**
-> Please remember to install the "recommended extensions" after opening the VSC Workspace as prompted to, or "Show Recommended Extensions" from the command palette if not. I found the best way to deal with this is to add them to your VSC profile's extensions, but then disable them, and every time you open a new workspace (project), you enable them for the workspace only.
+> I found the best way to deal with workspace settings or extensions ("recommended", they call them) is to add them to your VSC profile's extensions, but then disable them, and every time you open a new workspace (project), you enable them for the workspace only.
 
 > **Note**
-> You're free to take a look at and apply the VSC [settings](./files/.opinionated/settings.json) I'm using locally, as well as their complete [extension list](./files/.opinionated/extensions.md). (You can also set up both in their own "tall" VSC profile or something)
+> You're free to take a look at and apply the VSC [settings](./files/.opinionated/settings.json) I'm using locally, as well as their complete [extension list](./files/.opinionated/extensions.md). (You can also set up both in their own "TALL" VSC profile or something)
 
 
 ## Before Production
@@ -168,29 +183,28 @@ That's it. You'll have your first project accessible in the end (displaying the 
 ## Todos For Development:
 
 - [ ] Allow html attribute suggestion without endless blade snippets then enable blade snippet suggestions again
-- [ ] Add the rest of the laravel stacks
-- [ ] Link to the repos of all the packages in the stack list
-- [ ] Auto-complete or suggestion mechanism while deleting the project
-  - [ ] OR selection mechanism with an interface listing projects in rectangles (arrow up and down then enter)
+- [ ] Add laravel Vue stack (VILT) with/without SSR
+- [ ] Add laravel React stack (RILT) with/without SSR
 - [ ] Open VSC if available (check the commented code in [scripts/create.sh])
 - [ ] Run PHPUnit tests with the keybinding (ctrl+shift+r) if in PHPUnit class, and BetterPest's otherwise
-- [ ] Selective installation process (check [.draft/stacking-wip.md])
-- [ ] TheatreJS (Alpination)
+- [ ] Selective installation process as a self-deleting Composer package (check [.draft/stacking-wip.md])
+- [ ] Laravel Prompts
 
 
 ## Credits
 
 - [TailwindCSS](https://tailwindcss.com)
-- [Spatie](https://github.com/spatie)
 - TALL Stack
   - [Alpine.js](https://alpinejs.dev)
-  - [Livewire](https://laravel-livewire.com)
+  - [Livewire](https://livewire.laravel.com)
   - [Laravel](https://laravel.com)
   - [FilamentPHP](https://filamentphp.com)
+- [Pest](https://pestphp.com)
+- [Cypress](https://cypress.io)
+- [Spatie](https://github.com/spatie)
 - ( [Tech Stack List](#tech-stack-list) )
 - ( [VSC Extensions](./files/.opinionated/extensions.md) )
-- ( [Workspace VSC Extensions](./files/.opinionated/project.code-workspace) )
-- ( [Contributers](https://github.com/GoodM4ven/tall-stacker/graphs/contributors) )
+- ( [Contributers](https://github.com/GoodM4ven/lara-stacker/graphs/contributors) )
 
 
 ## Support

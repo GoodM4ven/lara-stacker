@@ -1,13 +1,12 @@
 {
+    // * =========
+    // * Original
+    // * =======
+    "window.menuBarVisibility": "hidden",
     "window.zoomLevel": 0.8,
     "explorer.autoReveal": false,
     "explorer.confirmDragAndDrop": false,
     "explorer.confirmDelete": false,
-    "editor.quickSuggestions": {
-        "other": true,
-        "comments": false,
-        "strings": true
-    },
     "editor.unicodeHighlight.ambiguousCharacters": false,
     "editor.unicodeHighlight.nonBasicASCII": false,
     "editor.hover.above": false,
@@ -22,6 +21,7 @@
     "editor.fontSize": 14,
     "editor.lineHeight": 2,
     "editor.guides.bracketPairs": true,
+    "workbench.activityBar.visible": false,
     "workbench.localHistory.maxFileEntries": 500,
     "workbench.editor.untitled.hint": "hidden",
     "workbench.startupEditor": "none",
@@ -64,8 +64,6 @@
             "editor.wordHighlightBackground": "#66666699"
         }
     },
-    // [Markdown Preview Github Styling]
-    "markdown-preview-github-styles.colorTheme": "dark",
     // [Todo Tree]
     "todo-tree.tree.showBadges": true,
     "todo-tree.tree.showCountsInTree": true,
@@ -98,8 +96,33 @@
     "bladeFormatter.format.noPhpSyntaxCheck": false,
     "bladeFormatter.format.customHtmlAttributesOrder": "",
     "bladeFormatter.misc.dontShowNewVersionMessage": false,
+    // [Alpine.js IntelliSense]
+    "alpine-intellisense.settings.languageScopes": "blade", // TODO until intellisense is limited to html tags
+    // [Laravel Goto View]
+    "laravelGotoView.showCodeLens": false,
+    // [Laraphense]
+    "Laraphense.disableBladeCompletion": true,
+    // [Prettier - Code formatter]
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.requireConfig": true,
+    // [Tailwind CSS IntelliSense]
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "tailwindCSS.includeLanguages": {
+        "blade": "html"
+    },
+    "tailwindCSS.classAttributes": [
+        "class",
+        "x-transition:enter",
+        "x-transition:enter-start",
+        "x-transition:enter-end",
+        "x-transition:leave",
+        "x-transition:leave-start",
+        "x-transition:leave-end"
+    ],
     // [PHP Intelephense]
     // ! Disable @builtin php > PHP Language Features
-    // ! Enter your Intelephense licence key in your user's [settings.json] (not workspace, not the profile)
+    // ! Enter your Intelephense licence key in your application's [settings.json] (not workspace, not the user)
     "intelephense.telemetry.enabled": false
 }

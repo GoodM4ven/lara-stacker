@@ -2,13 +2,13 @@
 
 # Check if the script is run with sudo
 if [ "$EUID" -ne 0 ]; then
-  echo -e "\nPlease run the script as super-user (sudo)."
+  echo -e "\nPlease run the script as super-user (sudo).\n"
   exit
 fi
 
 # Get environment variables
 if [ ! -f "./.env" ]; then
-  echo -e "\nPlease run the script from the directory where [.env] file is at."
+  echo -e "\nPlease run the script from the directory where [.env] file is at.\n"
   exit
 fi
 
@@ -33,8 +33,7 @@ for script in "${SCRIPTS[@]}"; do
   fi
 done
 
-# Obfuscate Credentials
-obfuscated_token="${EXPOSE_TOKEN:0:4}****-****-****-****-********${EXPOSE_TOKEN:32}"
+clear
 
 # Menu options
 options=("1. List Projects" "2. Create Project" "3. Delete Project" "4. Exit" "0. Initial Setup")
@@ -46,21 +45,12 @@ echo ""
 counter=0
 while true; do
   counter=$((counter+1))
-  echo -e "=================="
-  echo -e "=- TALL-Stacker -="
-  echo -e "==================\n"
-  echo -e "Environment Variables:\n"
-  echo -e "- TALL Stacker Directory: $TALL_STACKER_DIRECTORY"
-  echo -e "- Projects Directory: $PROJECTS_DIRECTORY"
-  echo -e "- Username: $USERNAME"
-  echo -e "- Database Password: $DB_PASSWORD"
-  echo -e "- Expose Token: $obfuscated_token"
-  echo -e "- Opinionated: $OPINIONATED"
-  echo -e "- VSC Workspace: $VSC_WORKSPACE"
-  echo -e "- VSC Keybindings: $VSC_KEYBINDINGS\n"
+  echo -e "-=|[ Lara-Stacker ]|=-\n"
+  echo -e "Supported Stacks:\n"
+  echo -e "- TALL (TailwindCSS, AlpineJS, Livewire, Laravel)\n"
   echo -e "Available Operations:\n"
   for opt in "${options[@]}"; do
-    echo "$opt"
+    echo "$opt "
   done
   echo ""
   if [[ $counter -eq 1 && "$1" ]]; then
@@ -82,7 +72,7 @@ while true; do
       sudo ./scripts/delete.sh
       ;;
     4)
-      echo -e "\nExiting TALL-Stacker..."
+      echo -e "\nExiting Lara-Stacker...\n"
       exit 0
       ;;
     *)

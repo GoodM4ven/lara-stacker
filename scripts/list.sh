@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Beginning Indicator
-echo -e "\n=========================="
-echo -e "=- TALL STACKER |> LIST -="
-echo -e "==========================\n"
+clear
+
+# Beginning indicator
+echo -e "-=|[ Lara-Stacker |> LIST ]|=-\n"
 
 # Get environment variables
 source $PWD/.env
@@ -26,3 +26,7 @@ fi
 
 # Display the total count of directories found
 echo -e "Total projects: $count\n"
+
+read -p "Press any key to continue..." whatever
+
+clear

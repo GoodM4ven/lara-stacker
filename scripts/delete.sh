@@ -2,7 +2,7 @@
 
 # Check if the script is run with sudo
 if [ "$EUID" -ne 0 ]; then
-  echo -e "\nPlease run the script as super-user (sudo)."
+  echo -e "\nPlease run the script as super-user (sudo).\n"
   exit
 fi
 
@@ -23,12 +23,14 @@ fi
 found_vsc=false
 if command -v code &>/dev/null; then
   found_vsc=true
+elif command -v codium &>/dev/null; then
+  found_vsc=true
 fi
 
-# Beginning Indicator
-echo -e "\n============================"
-echo -e "=- TALL STACKER |> DELETE -="
-echo -e "============================\n"
+clear
+
+# Beginning indicator
+echo -e "-=|[ Lara-Stacker |> DELETE ]|=-\n"
 
 # Get environment variables and defaults
 source $PWD/.env
@@ -62,7 +64,7 @@ sudo sed -i "/^127\.0\.0\.1\s*$escaped_project_name\.test/d" /etc/hosts
 echo -e "\nRemoved the site from [/etc/hosts] file."
 
 # Delete its Apache's config file then restart the service
-sudo rm /etc/apache2/sites-available/$escaped_project_name.conf
+sudo rm /etc/apache2/sites-available/$project_name.conf
 
 sudo service apache2 restart
 
@@ -91,3 +93,7 @@ echo -e "\nDeleted project files."
 
 # Display a success message
 echo -e "\nProject $project_name deleted successfully!\n"
+
+read -p "Press any key to continue..." whatever
+
+clear

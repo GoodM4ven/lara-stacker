@@ -97,10 +97,6 @@
         "when": "viewContainer.workbench.view.debug.enabled"
     },
     {
-        "key": "alt+5",
-        "command": "workbench.view.remote"
-    },
-    {
         "key": "alt+o",
         "command": "editor.action.refactor",
         "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
@@ -638,5 +634,13 @@
     {
         "key": "ctrl+alt+e",
         "command": "phpResolver.expand"
+    },
+    {
+        "key": "alt+5",
+        "command": "-workbench.action.openEditorAtIndex5"
+    },
+    {
+        "key": "alt+5",
+        "command": "workbench.view.extension.foldersCompare"
     }
 ]

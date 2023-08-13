@@ -1,8 +1,8 @@
+import path from "path";
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-// TODO Follow @defstudio/vite-livewire-plugin fix and then apply
-// import livewire from "@defstudio/vite-livewire-plugin";
-import path from "path";
+// TODO reimplement after livewire v3 fix
+// import livewire from '@defstudio/vite-livewire-plugin';
 
 const certPath = path.resolve(__dirname, "./certs/<projectName>.test.pem");
 const keyPath = path.resolve(__dirname, "./certs/<projectName>.test-key.pem");
@@ -11,26 +11,39 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                "resources/css/app.css",
-                "resources/js/app.js",
-                "resources/css/filament.css",
+                'resources/css/app.css',
+                'resources/css/filament/admin/theme.css',
+                'resources/js/app.js',
             ],
-            // refresh: false,
-            refresh: true,
+            refresh: [
+                "app/Filament/**/*.php",
+                "app/Forms/**/*.php",
+                "app/Infolists/**/*.php",
+                "app/Livewire/**/*.php",
+                "app/Providers/Filament/**/*.php",
+                "app/Tables/**/*.php",
+                "app/View/Components/**/*.php",
+                "lang/**",
+                "resources/views/**/*.blade.php",
+                "resources/lang/**",
+                "routes/**",
+            ],
         }),
         // livewire({
-        //     refresh: ["resources/css/app.css"],
+        //     refresh: ['resources/css/app.css'],
         //     watch: [
-        //         "resources/views/**",
-        //         "app/Http/Livewire/**",
-        //         "app/Filament/**",
-        //         "app/Forms/Components/**",
-        //         "app/Tables/Columns/**",
-        //         // TODO apply conditionally
+        //         "app/Filament/**/*.php",
+        //         "app/Forms/**/*.php",
+        //         "app/Infolists/**/*.php",
+        //         "app/Livewire/**/*.php",
+        //         "app/Providers/Filament/**/*.php",
+        //         "app/Tables/**/*.php",
+        //         "app/View/Components/**/*.php",
+        //         "lang/**",
+        //         "resources/views/**/*.blade.php",
         //         "resources/lang/**",
         //         "routes/**",
         //     ],
-        //     bottomPosition: 34,
         // }),
     ],
     server: {
