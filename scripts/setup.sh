@@ -125,7 +125,6 @@ echo -e "\nInstalled MySQL and set the password to the environment's."
 # Mailpit (service)
 mkdir /home/$USERNAME/Downloads/mailpit
 cd /home/$USERNAME/Downloads/mailpit
-
 release_url=$(curl -s https://api.github.com/repos/axllent/mailpit/releases/latest | grep "browser_download_url.*mailpit-linux-amd64.tar.gz" | cut -d : -f 2,3 | tr -d \")
 curl -L -o mailpit-linux-amd64.tar.gz $release_url >/dev/null 2>&1
 

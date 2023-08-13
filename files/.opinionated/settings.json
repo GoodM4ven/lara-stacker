@@ -1,4 +1,7 @@
 {
+    // * =========
+    // * Original
+    // * =======
     "window.menuBarVisibility": "hidden",
     "window.zoomLevel": 0.8,
     "explorer.autoReveal": false,
@@ -22,6 +25,7 @@
     "workbench.localHistory.maxFileEntries": 500,
     "workbench.editor.untitled.hint": "hidden",
     "workbench.startupEditor": "none",
+    "workbench.activityBar.visible": false,
     "workbench.editor.enablePreview": true,
     "workbench.editor.enablePreviewFromQuickOpen": true,
     "files.exclude": {
