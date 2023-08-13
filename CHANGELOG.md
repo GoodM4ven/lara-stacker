@@ -2,6 +2,10 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v1.2.1 - 2023-08-13
+
+Hotfix from a bad merge
+
 ## v1.2.0 - 2023-08-13
 
 - Clearer outputs through out the scripts
@@ -38,9 +42,10 @@ All notable changes to `lara-stacker` will be documented in this file.
 ## v1.1.3 - 2023-06-06
 
 - Modified VSC extensions   
-    - Commented out Alpine Intellisense until fix   
-    - Added PHP Contstructor and its keybinding   
-    - Added Laravel Goto Env   
+  - Commented out Alpine Intellisense until fix   
+  - Added PHP Contstructor and its keybinding   
+  - Added Laravel Goto Env   
+  
 - Moved Prettier config to a file
 - Disabled blade snippet suggestion
 - Written about using Expose
@@ -80,8 +85,9 @@ Fixed the multilingual option set
 
 ## v1.0.6 - 2023-04-09
 
-- Testing the setup script with Docker (WIP)
-    - Silenced most of the commands
+- Testing the setup script with Docker (WIP)   
+  - Silenced most of the commands   
+  
 - Added the missing MIT license
 - Added [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting) to the stack
 - Accepting an initial argument as an option for lara-stacker script
@@ -94,16 +100,18 @@ Fixed the multilingual option set
 
 ## v1.0.4 - 2023-03-30
 
-- Fixed MinIO's permissions issue
-    - Fixed bucket deletion
-    - Set livewire's temp uploads disk to 's3' as well
+- Fixed MinIO's permissions issue   
+  - Fixed bucket deletion   
+  - Set livewire's temp uploads disk to 's3' as well   
+  
 - Fixed `login` route not defined issue (Filament related)
 - Added [blurred-image](https://github.com/GoodM4ven/blurred-image) package to the roster!
 
 ## v1.0.3 - 2023-03-29
 
-- Added PHP Namespace Resolver extension and keybindings
-    - Replaced the namespace generation shortcut with this new extension's
+- Added PHP Namespace Resolver extension and keybindings   
+  - Replaced the namespace generation shortcut with this new extension's   
+  
 - Fixed HTML intellisense in Blade files
 - Added some VSC extensions
 - Moved some extensions to the workspace level
