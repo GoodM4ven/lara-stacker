@@ -75,24 +75,27 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [spatie/eloquent-sortable](https://github.com/spatie/eloquent-sortable)
     - [spatie/laravel-sluggable](https://github.com/spatie/laravel-sluggable)
     - [spatie/laravel-tags](https://spatie.be/docs/laravel-tags/v4)
-    - [spatie/laravel-tags](https://github.com/spatie/laravel-settings)
-    - [spatie/laravel-tags](https://github.com/spatie/laravel-options)
-    - [spatie/laravel-tags](https://spatie.be/docs/laravel-permission/v5)
+    - [spatie/laravel-settings](https://github.com/spatie/laravel-settings)
+    - [spatie/laravel-options](https://github.com/spatie/laravel-options)
+    - [spatie/laravel-permission](https://spatie.be/docs/laravel-permission/v5)
     - [blade-ui-kit/blade-icons](https://github.com/blade-ui-kit/blade-icons)
     - [gehrisandro/tailwind-merge-laravel](https://github.com/gehrisandro/tailwind-merge-laravel)
     - [laravel/breeze](https://laravel.com/docs/10.x/starter-kits#laravel-breeze) [Dev]
     - [laravel/telescope](https://laravel.com/docs/10.x/telescope) (https://project-name.test/telescope) [Dev]
   - [Option] TALL Stack
-    - [livewire/livewire](https://laravel-livewire.com/)
-    - [filament/filament:"^2.0"](https://filamentphp.com/docs/2.x/admin/) (https://project-name.test/admin)
-    - [filament/forms:"^2.0"](https://filamentphp.com/docs/2.x/forms/)
-    - [filament/tables:"^2.0"](https://filamentphp.com/docs/2.x/tables/)
-    - [filament/notifications:"^2.0"](https://filamentphp.com/docs/2.x/notifications/)
-    - [filament/spatie-laravel-media-library-plugin:"^2.0"](https://filamentphp.com/docs/2.x/spatie-laravel-media-library-plugin)
-    - [filament/spatie-laravel-tags-plugin:"^2.0"](https://filamentphp.com/docs/2.x/spatie-laravel-tags-plugin)
-    - [filament/spatie-laravel-settings-plugin:"^2.0"](https://filamentphp.com/docs/2.x/spatie-laravel-settings-plugin)
+    - [livewire/livewire:"^3.0@beta"](https://livewire.laravel.com/)
+    - [filament/filament:"^3.0-stable"](https://filamentphp.com/docs/3.x/panels/installation) (https://project-name.test/admin)
+    - [filament/forms:"^3.0-stable"](https://filamentphp.com/docs/3.x/forms/installation)
+    - [filament/tables:"^3.0-stable"](https://filamentphp.com/docs/3.x/tables/installation)
+    - [filament/notifications:"^3.0-stable"](https://filamentphp.com/docs/3.x/notifications/installation)
+    - [filament/actions:"^3.0-stable"](https://filamentphp.com/docs/3.x/actions/installation)
+    - [filament/infolists:"^3.0-stable"](https://filamentphp.com/docs/3.x/infolists/installation)
+    - [filament/widgets:"^3.0-stable"](https://filamentphp.com/docs/3.x/widgets/installation)
+    - [filament/spatie-laravel-media-library-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-media-library)
+    - [filament/spatie-laravel-tags-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-tags)
+    - [filament/spatie-laravel-settings-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-settings)
     - [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting)
-    - [bezhansalleh/filament-shield](https://github.com/bezhanSalleh/filament-shield)
+    - [bezhansalleh/filament-shield:"^3.0@beta"](https://github.com/bezhanSalleh/filament-shield)
   - [Option] PEST
     - [pestphp/pest](https://pestphp.com/) [Dev]
     - [pestphp/pest-plugin-faker](https://pestphp.com/docs/plugins#faker) [Dev]
@@ -104,7 +107,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [spatie/laravel-translatable](https://spatie.be/docs/laravel-translatable/v6)
     - [laravel-lang/lang](https://laravel-lang.com) [Dev]
   - [Option] TALL Stack && Multilingual
-    - [filament/spatie-laravel-translatable-plugin:"^2.0"](https://filamentphp.com/docs/2.x/spatie-laravel-translatable-plugin)
+    - [filament/spatie-laravel-translatable-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-translatable)
 
   </p>
   </details>
@@ -124,16 +127,15 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [@tailwindcss/container-queries](https://github.com/tailwindlabs/tailwindcss-container-queries) [Dev]
     - [tippy.js](https://atomiks.github.io/tippyjs/) [Dev]
   - [Option] TALL Stack
-    - [alpinejs](https://alpinejs.dev/)
+    - [alpinejs](https://alpinejs.dev/) (Already included in Livewire now!)
     - [@alpinejs/mask](https://alpinejs.dev/plugins/mask)
     - [@alpinejs/intersect](https://alpinejs.dev/plugins/intersect)
-    - [@alpinejs/persist](https://alpinejs.dev/plugins/persist)
+    - [@alpinejs/persist](https://alpinejs.dev/plugins/persist) (Already included in Livewire now!)
     - [@alpinejs/focus](https://alpinejs.dev/plugins/focus)
     - [@alpinejs/collapse](https://alpinejs.dev/plugins/collapse)
     - [@alpinejs/morph](https://alpinejs.dev/plugins/morph)
     - [@ryangjchandler/alpine-hooks](https://github.com/ryangjchandler/alpine-hooks)
-    - [@defstudio/vite-livewire-plugin](https://github.com/defstudio/vite-livewire-plugin) [Dev]
-    - [@awcodes/alpine-floating-ui](https://github.com/awcodes/alpine-floating-ui) [Dev]
+    - [@defstudio/vite-livewire-plugin](https://github.com/defstudio/vite-livewire-plugin) [Dev] (Disabled again until a fix!)
     - [alpinejs-breakpoints](https://github.com/wrsdesign/alpinejs-breakpoints) [Dev]
     - [tailwind-easing](https://github.com/wrsdesign/tailwind-easing) [Dev]
 
@@ -180,7 +182,6 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Todos For Development:
 
-- [ ] Add Spatie Google Fonts package + Filament integration for TALL
 - [ ] Allow html attribute suggestion without endless blade snippets then enable blade snippet suggestions again
 - [ ] Add laravel Vue stack (VILT) with/without SSR
 - [ ] Add laravel React stack (RILT) with/without SSR
@@ -195,7 +196,7 @@ That's it. You'll have your first project accessible in the end (displaying the 
 - [TailwindCSS](https://tailwindcss.com)
 - TALL Stack
   - [Alpine.js](https://alpinejs.dev)
-  - [Livewire](https://laravel-livewire.com)
+  - [Livewire](https://livewire.laravel.com)
   - [Laravel](https://laravel.com)
   - [FilamentPHP](https://filamentphp.com)
 - [Pest](https://pestphp.com)
