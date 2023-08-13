@@ -2,6 +2,23 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v1.2.0 - 2023-08-13
+
+v1.2.0
+
+- Clearer outputs through out the scripts
+- Moved all extensions locally, no more workspace ones
+- Upgraded the setup for Livewire and Filament to v3
+- Added missing keybindings
+- Dropped out CodeSniffer
+- Disabled Livewire Hotreload temporarily until fix
+- Renamed the whole package to lara-stacker
+- Added Alpine Hooks and Tippy.js
+- Added TailwindCSS Merge package
+- Updated Heroicons
+- Added helper aliases to Ubuntu
+- Fixed a project deletion bug
+
 ## v1.1.5 - 2023-06-16
 
 - Obfuscated credentials
@@ -22,10 +39,11 @@ All notable changes to `lara-stacker` will be documented in this file.
 
 ## v1.1.3 - 2023-06-06
 
-- Modified VSC extensions
-    - Commented out Alpine Intellisense until fix
-    - Added PHP Contstructor and its keybinding
-    - Added Laravel Goto Env
+- Modified VSC extensions   
+  - Commented out Alpine Intellisense until fix   
+  - Added PHP Contstructor and its keybinding   
+  - Added Laravel Goto Env   
+  
 - Moved Prettier config to a file
 - Disabled blade snippet suggestion
 - Written about using Expose
@@ -66,7 +84,8 @@ Fixed the multilingual option set
 ## v1.0.6 - 2023-04-09
 
 - Testing the setup script with Docker (WIP)
-- - Silenced most of the commands
+- - Silenced most of the commands   
+  
 - 
 - 
 - Added the missing MIT license
@@ -82,9 +101,11 @@ Fixed the multilingual option set
 ## v1.0.4 - 2023-03-30
 
 - Fixed MinIO's permissions issue
-- - Fixed bucket deletion
+- - Fixed bucket deletion   
+  
 - 
-- - Set livewire's temp uploads disk to 's3' as well
+- - Set livewire's temp uploads disk to 's3' as well   
+  
 - 
 - 
 - Fixed `login` route not defined issue (Filament related)
@@ -93,7 +114,8 @@ Fixed the multilingual option set
 ## v1.0.3 - 2023-03-29
 
 - Added PHP Namespace Resolver extension and keybindings
-- - Replaced the namespace generation shortcut with this new extension's
+- - Replaced the namespace generation shortcut with this new extension's   
+  
 - 
 - 
 - Fixed HTML intellisense in Blade files
