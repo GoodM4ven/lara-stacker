@@ -15,17 +15,17 @@ return [
 
     'sets' => [
 
-        'general' => [
-            'path' => 'resources/svgs/general',
-            'disk' => '',
-            'prefix' => 'general',
-            'fallback' => '',
-            'class' => '',
-            'attributes' => [
-                // 'width' => 50,
-                // 'height' => 50,
-            ],
-        ],
+        // 'general' => [
+        //     'path' => 'resources/svgs/general',
+        //     'disk' => '',
+        //     'prefix' => 'general',
+        //     'fallback' => '',
+        //     'class' => '',
+        //     'attributes' => [
+        //         // 'width' => 50,
+        //         // 'height' => 50,
+        //     ],
+        // ],
 
         'default' => [
         
@@ -42,7 +42,7 @@ return [
             |
             */
         
-            'path' => 'resources/svgs/custom',
+            'path' => 'resources/svgs',
         
             /*
             |-----------------------------------------------------------------

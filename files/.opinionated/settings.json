@@ -25,7 +25,6 @@
     "workbench.localHistory.maxFileEntries": 500,
     "workbench.editor.untitled.hint": "hidden",
     "workbench.startupEditor": "none",
-    "workbench.activityBar.visible": false,
     "workbench.editor.enablePreview": true,
     "workbench.editor.enablePreviewFromQuickOpen": true,
     "files.exclude": {

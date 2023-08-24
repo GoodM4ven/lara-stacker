@@ -245,7 +245,7 @@ fi
 composer require laracasts/cypress --dev -n --quiet
 
 # Non-dev Packages...
-composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3:"^3.0" predis/predis laravel/scout spatie/laravel-medialibrary spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings spatie/laravel-options blade-ui-kit/blade-icons spatie/laravel-permission qruto/laravel-wave gehrisandro/tailwind-merge-laravel
+composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3:"^3.0" predis/predis laravel/scout spatie/laravel-medialibrary spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings blade-ui-kit/blade-icons spatie/laravel-permission qruto/laravel-wave gehrisandro/tailwind-merge-laravel
 
 # TALL Packages...
 if [ "$laravel_stack" = "tall" ]; then
@@ -327,13 +327,12 @@ php artisan cypress:boilerplate --quiet
 echo -e "\nConfigured front-end testing with Cypress."
 
 # Blade Icons
-mkdir -p ./resources/svgs/custom
+mkdir ./resources/svgs
 
 sudo cp $LARA_STACKER_DIRECTORY/files/config/blade-icons.php ./config/
-sudo cp -r $LARA_STACKER_DIRECTORY/files/resources/svgs/general ./resources/svgs/
-sudo cp $LARA_STACKER_DIRECTORY/files/resources/svgs/custom/laravel.svg ./resources/svgs/custom/
+sudo cp $LARA_STACKER_DIRECTORY/files/resources/svgs/laravel.svg ./resources/svgs/
 
-echo -e "\nConfigured Blade Icons with Heroicons as the 'general' set."
+echo -e "\nConfigured Blade Icons in [resources/svgs] directory."
 
 if [[ "$OPINIONATED" == true && "$is_multilingual" == true ]]; then
   # Add Arabic helper functions file
@@ -431,11 +430,6 @@ php artisan vendor:publish --provider="Spatie\Tags\TagsServiceProvider" --tag="t
 php artisan migrate --quiet
 
 echo -e "\nConfigured Laravel Tags."
-
-# Laravel Options
-php artisan vendor:publish --tag="options-config" --quiet
-
-echo -e "\nConfigured Laravel Options."
 
 # Laravel Permission
 cp $LARA_STACKER_DIRECTORY/files/app/Models/User.php ./app/Models/
@@ -575,6 +569,11 @@ if [ "$OPINIONATED" == true ]; then
 
     echo -e "\nMoved lang folder to [resources] folder."
   fi
+
+  # Add a project-specific config file
+  cp $LARA_STACKER_DIRECTORY/files/config/project-name.php ./config/$escaped_project_name.php
+
+  echo -e "\nCreated a [config/$escaped_project_name.php] file."
 
   # Add an environment variable for password timeout
   sed -i "s/'password_timeout' => 10800,/'password_timeout' => config('PASSWORD_TIMEOUT', 10800),/g" ./config/auth.php

@@ -12,12 +12,12 @@ enum Example: string
     case Two = 'two';
     case Three = 'three';
 
-    public function translated()
+    public function translated($locale = null)
     {
         return match ($this) {
-            Example::One => __('One'),
-            Example::Two => __('Two'),
-            Example::Three => __('Three'),
+            Example::One => self::translation('One', $locale),
+            Example::Two => self::translation('Two', $locale),
+            Example::Three => self::translation('Three', $locale),
         };
     }
 }

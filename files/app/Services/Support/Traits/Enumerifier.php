@@ -18,7 +18,7 @@ trait Enumerifier
                 $cases = $cases->reject(fn (int $value, int $key) => $value === $excluded);
             }
         }
-        
+
         if ($translated) {
             return $cases->map(fn ($item) => $item->translated())->toArray();
         }
@@ -37,7 +37,7 @@ trait Enumerifier
         }
 
         $values = $cases->pluck('value');
-        
+
         if ($asString) {
             return $values->implode(',');
         }
@@ -45,10 +45,10 @@ trait Enumerifier
         return $values->toArray();
     }
 
-    public static function random($count = 1, $asValue = false, $translated = false, $excluding = []): string|array
+    public static function random($count = 1, $asValue = false, $asTranslatedName = false, $excluding = []): string|array
     {
         $cases = collect(self::cases());
-        
+
         if (filled($excluding)) {
             foreach ($excluding as $excluded) {
                 $cases = $cases->reject(fn (int $value, int $key) => $value === $excluded);
@@ -63,7 +63,7 @@ trait Enumerifier
             if ($asValue) {
                 $returns[] = $r['value'];
             } else {
-                $returns[] = $translated ? __($r['name']) : $r['name'];
+                $returns[] = $asTranslatedName ? __($r['name']) : $r;
             }
         }
 
@@ -74,10 +74,10 @@ trait Enumerifier
         return $returns;
     }
 
-    public static function collection($translated = false, $excluding = []): array
+    public static function nameValueCollection($translatedNames = false, $excluding = []): array
     {
         $cases = collect(self::cases());
-        
+
         if (filled($excluding)) {
             foreach ($excluding as $excluded) {
                 $cases = $cases->reject(fn (int $value, int $key) => $value === $excluded);
@@ -85,7 +85,18 @@ trait Enumerifier
         }
 
         return $cases
-            ->map(fn ($item) => [$item['value'] => $translated ? $item->translated() : $item['name']])
-            ->collapse();
+            ->map(function ($item) use ($translatedNames) {
+                $array = [];
+                $array[$item->value] = $translatedNames ? $item->translated() : $item->name;
+
+                return $array;
+            })
+            ->collapse()
+            ->toArray();
+    }
+
+    public static function translation(string $key, $locale = null): string
+    {
+        return __($key, locale: $locale);
     }
 }

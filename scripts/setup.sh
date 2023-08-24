@@ -46,17 +46,17 @@ sudo systemctl restart apache2 >/dev/null 2>&1
 
 echo -e "Installed Git, Curl, PHP, Apache, Redis and npm packages."
 
-echo -e "\nSet up permissions in the projects directly permanently."
-
 # Grant user write permissions
 sudo usermod -a -G www-data $USERNAME
+
+echo -e "\nAdded the environment's user to [www-data] group."
 
 # Setup permissions permanently
 sudo setfacl -Rdm g:www-data:rwx $PROJECTS_DIRECTORY
 sudo chown -R :www-data $PROJECTS_DIRECTORY
 sudo chmod -R g+rwx $PROJECTS_DIRECTORY
 
-echo -e "\nAdded the environment's user to [www-data] group."
+echo -e "\nSet up permissions in the projects directly permanently."
 
 # media packages
 sudo apt install php-imagick php-gd ghostscript ffmpeg -y >/dev/null 2>&1
@@ -84,7 +84,7 @@ echo -e "\nInstalled Cypress.io dependency packages."
 # NodeJS Upgrades
 sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
 cd /home/$USERNAME/Downloads &&
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash &&
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash &&
 source /home/$USERNAME/.bashrc &&
 nvm install 14 &&
 nvm use 14 &&
