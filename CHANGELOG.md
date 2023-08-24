@@ -2,6 +2,18 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v1.2.3 - 2023-08-24
+
+- Creating an opinionated application config file during the script
+- Dropped manual heroicon svgs   
+  - Defaulted svgs to its folder directly   
+  
+- Dropped Laravel Options package
+- Reworked Enumerifier without LO package   
+  - Accounted for locale   
+  - Dealing with cases mainly   
+  
+
 ## v1.2.2 - 2023-08-13
 
 Removed an extra method in HomeController
