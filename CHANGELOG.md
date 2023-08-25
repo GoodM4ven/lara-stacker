@@ -2,14 +2,33 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v1.2.4 - 2023-08-25
+
+- Added SEOTools package
+- Added Alpine Animate plugin   
+  - Applied both reverse & remote animations in the home view   
+  
+- Refactored app and home tall views   
+  - Encapsulated Alpine bindings and data   
+  
+- Added Filament Overlook plugin
+- Added Filament Translation Manager plugin for multilingual setup
+- Commented out Laravel Echo and Wave for manual activation when needed
+- Replaced Tailwind's gray with zinc color for TALL stack!
+- Updated the docs
+
 ## v1.2.3 - 2023-08-24
 
-- Creating an opinionated application config file during the script
+- Creating an opinionated application config file during the script   
+  
 - Dropped manual heroicon svgs   
+     
   - Defaulted svgs to its folder directly   
   
-- Dropped Laravel Options package
+- Dropped Laravel Options package   
+  
 - Reworked Enumerifier without LO package   
+     
   - Accounted for locale   
   - Dealing with cases mainly   
   
