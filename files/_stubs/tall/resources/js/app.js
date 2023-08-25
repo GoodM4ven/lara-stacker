@@ -1,11 +1,16 @@
 import './core/alpine-livewire';
 // TODO reimplement after livewire v3 fix
 // import './core/livewire-hot-reload';
-import './core/echo';
+// import './core/echo';
 
+import './packages/alpine-animate';
 import './packages/alpine-hooks';
 import './packages/alpinejs-breakpoints';
 import './packages/tippy';
+
+import './data/dark-mode';
+
+import './bindings/breakpointer';
 
 Livewire.start();
 

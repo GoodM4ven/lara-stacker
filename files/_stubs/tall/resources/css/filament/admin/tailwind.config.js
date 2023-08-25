@@ -5,6 +5,7 @@ export default {
     content: [
         './app/Filament/**/*.php',
         './resources/views/filament/**/*.blade.php',
+        './vendor/awcodes/overlook/resources/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
     ],
 };

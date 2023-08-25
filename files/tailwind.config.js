@@ -22,6 +22,7 @@ export default {
                 sans: ['Ubuntu', ...defaultTheme.fontFamily.sans],
             },
             colors: {
+                gray: colors.zinc,
                 'background-1': colors.gray['50'],
                 'background-2': colors.gray['100'],
                 'dark-background-1': colors.gray['800'],

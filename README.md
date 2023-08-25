@@ -65,10 +65,11 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
   - Essentials
     - [league/flysystem-aws-s3-v3](https://flysystem.thephpleague.com/docs/adapter/aws-s3-v3/)
-    - [laracasts/cypress](https://github.com/laracasts/cypress)
+    - [laracasts/cypress](https://github.com/laracasts/cypress) [Dev]
       - Use `npx cypress open` to run the tester
       - Checkout this [episode](https://laracasts.com/series/jeffreys-larabits/episodes/22) for more details
     - [predis/predis](https://github.com/predis/predis)
+    - [artesaos/seotools](https://github.com/artesaos/seotools)
     - [laravel/scout](https://laravel.com/docs/10.x/scout)
     - [qruto/laravel-wave](https://github.com/qruto/laravel-wave)
     - ["spatie/laravel-medialibrary:^10.0.0"](https://spatie.be/docs/laravel-medialibrary/v10)
@@ -76,9 +77,9 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [spatie/laravel-sluggable](https://github.com/spatie/laravel-sluggable)
     - [spatie/laravel-tags](https://spatie.be/docs/laravel-tags/v4)
     - [spatie/laravel-settings](https://github.com/spatie/laravel-settings)
-    - [spatie/laravel-options](https://github.com/spatie/laravel-options)
     - [spatie/laravel-permission](https://spatie.be/docs/laravel-permission/v5)
     - [blade-ui-kit/blade-icons](https://github.com/blade-ui-kit/blade-icons)
+    - [blade-ui-kit/blade-heroicons](https://github.com/blade-ui-kit/blade-heroicons)
     - [gehrisandro/tailwind-merge-laravel](https://github.com/gehrisandro/tailwind-merge-laravel)
     - [laravel/breeze](https://laravel.com/docs/10.x/starter-kits#laravel-breeze) [Dev]
     - [laravel/telescope](https://laravel.com/docs/10.x/telescope) (https://project-name.test/telescope) [Dev]
@@ -95,7 +96,9 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [filament/spatie-laravel-tags-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-tags)
     - [filament/spatie-laravel-settings-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-settings)
     - [danharrin/livewire-rate-limiting](https://github.com/danharrin/livewire-rate-limiting)
-    - [bezhansalleh/filament-shield:"^3.0@beta"](https://github.com/bezhanSalleh/filament-shield)
+    - [bezhansalleh/filament-shield:"^3.0@beta"](https://filamentphp.com/plugins/bezhansalleh-shield)
+    - [awcodes/overlook](https://filamentphp.com/plugins/awcodes-overlook)
+    - [goodm4ven/blurred-image](https://github.com/GoodM4ven/blurred-image)
   - [Option] PEST
     - [pestphp/pest](https://pestphp.com/) [Dev]
     - [pestphp/pest-plugin-faker](https://pestphp.com/docs/plugins#faker) [Dev]
@@ -108,6 +111,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [laravel-lang/lang](https://laravel-lang.com) [Dev]
   - [Option] TALL Stack && Multilingual
     - [filament/spatie-laravel-translatable-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-translatable)
+    - [kenepa/translation-manager](https://filamentphp.com/plugins/kenepa-translation-manager)
 
   </p>
   </details>
@@ -135,6 +139,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [@alpinejs/collapse](https://alpinejs.dev/plugins/collapse)
     - [@alpinejs/morph](https://alpinejs.dev/plugins/morph)
     - [@ryangjchandler/alpine-hooks](https://github.com/ryangjchandler/alpine-hooks)
+    - [@ralphjsmit/alpine-animate](https://github.com/ralphjsmit/alpine-animate)
     - [@defstudio/vite-livewire-plugin](https://github.com/defstudio/vite-livewire-plugin) [Dev] (Disabled again until a fix!)
     - [alpinejs-breakpoints](https://github.com/wrsdesign/alpinejs-breakpoints) [Dev]
     - [tailwind-easing](https://github.com/wrsdesign/tailwind-easing) [Dev]

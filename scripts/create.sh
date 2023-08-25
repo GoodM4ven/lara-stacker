@@ -245,21 +245,21 @@ fi
 composer require laracasts/cypress --dev -n --quiet
 
 # Non-dev Packages...
-composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3:"^3.0" predis/predis laravel/scout spatie/laravel-medialibrary spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings blade-ui-kit/blade-icons spatie/laravel-permission qruto/laravel-wave gehrisandro/tailwind-merge-laravel
+composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3:"^3.0" predis/predis laravel/scout spatie/laravel-medialibrary spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings blade-ui-kit/blade-icons spatie/laravel-permission qruto/laravel-wave gehrisandro/tailwind-merge-laravel artesaos/seotools
 
 # TALL Packages...
 if [ "$laravel_stack" = "tall" ]; then
   sed -i "s~\"stable\"~\"dev\"~g" ./composer.json
-  composer require -n --quiet --with-all-dependencies livewire/livewire:"^3.0@beta" filament/filament:"^3.0-stable" filament/forms:"^3.0-stable" filament/tables:"^3.0-stable" filament/notifications:"^3.0-stable" filament/actions:"^3.0-stable" filament/infolists:"^3.0-stable" filament/widgets:"^3.0-stable" filament/spatie-laravel-media-library-plugin:"^3.0-stable" filament/spatie-laravel-tags-plugin:"^3.0-stable" filament/spatie-laravel-settings-plugin:"^3.0-stable" danharrin/livewire-rate-limiting bezhansalleh/filament-shield:"^3.0@beta" goodm4ven/blurred-image
+  composer require -n --quiet --with-all-dependencies livewire/livewire:"^3.0@beta" filament/filament:"^3.0-stable" filament/forms:"^3.0-stable" filament/tables:"^3.0-stable" filament/notifications:"^3.0-stable" filament/actions:"^3.0-stable" filament/infolists:"^3.0-stable" filament/widgets:"^3.0-stable" filament/spatie-laravel-media-library-plugin:"^3.0-stable" filament/spatie-laravel-tags-plugin:"^3.0-stable" filament/spatie-laravel-settings-plugin:"^3.0-stable" danharrin/livewire-rate-limiting bezhansalleh/filament-shield:"^3.0@beta" awcodes/overlook goodm4ven/blurred-image
 fi
 
 # Language Packages...
 if [ "$is_multilingual" == true ]; then
-  filament_translatable=""
+  filament_multilingual_packages=""
   if [ "$laravel_stack" = "tall" ]; then
-    filament_translatable="filament/spatie-laravel-translatable-plugin"
+    filament_multilingual_packages="filament/spatie-laravel-translatable-plugin kenepa/translation-manager"
   fi
-  composer require -n --quiet --with-all-dependencies mcamara/laravel-localization spatie/laravel-translatable $filament_translatable
+  composer require -n --quiet --with-all-dependencies mcamara/laravel-localization spatie/laravel-translatable $filament_multilingual_packages
 fi
 
 # * =============
@@ -272,7 +272,7 @@ cd $PROJECTS_DIRECTORY/$escaped_project_name
 
 if [ "$laravel_stack" = "tall" ]; then
   # TALL packages...
-  npm install @alpinejs/mask @alpinejs/intersect @alpinejs/focus @alpinejs/collapse @alpinejs/morph @ryangjchandler/alpine-hooks >/dev/null 2>&1
+  npm install @alpinejs/mask @alpinejs/intersect @alpinejs/focus @alpinejs/collapse @alpinejs/morph @ryangjchandler/alpine-hooks @ralphjsmit/alpine-animate >/dev/null 2>&1
 
   # Uninstall axios
   npm uninstall axios >/dev/null 2>&1
@@ -325,6 +325,11 @@ echo -e "\nConfigured TailwindCSS framework and TailwindMerge package."
 php artisan cypress:boilerplate --quiet
 
 echo -e "\nConfigured front-end testing with Cypress."
+
+# SEOTools package
+php artisan vendor:publish --provider="Artesaos\SEOTools\Providers\SEOToolsServiceProvider" --quiet
+
+echo -e "\nConfigured SEOTools package."
 
 # Blade Icons
 mkdir ./resources/svgs
@@ -473,9 +478,9 @@ echo -e "\nSet up Breeze routes in place."
 
 if [ "$laravel_stack" = "tall" ]; then
   # Alpine.js
-  mkdir ./resources/js/packages
-
   sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/packages ./resources/js/
+  sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/data ./resources/js/
+  sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/bindings ./resources/js/
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/alpine-livewire.js ./resources/js/core/
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/app.js ./resources/js/
 
@@ -518,6 +523,9 @@ if [ "$laravel_stack" = "tall" ]; then
 
   echo -e "\nConfigured Livewire framework."
 
+  # Alpine Animate
+  echo -e "\nConfigured Alpine Animate plugin. (Reverse capability as seen in [home.blade.php])"
+
   # Alpine.js Breakpoints
   echo -e "\nConfigured AlpineJS Breakpoints plugin. (Check out the listeners in [app.blade.php])"
 
@@ -552,6 +560,29 @@ if [ "$laravel_stack" = "tall" ]; then
   sed -i "s/\"@php artisan package:discover --ansi\"/\"@php artisan package:discover --ansi\",\n            \"@php artisan filament:upgrade\"/g" ./composer.json
 
   echo -e "\nConfigured Filament admin panel."
+
+  # Overlook
+  echo -e "\nConfigured Filament Overlook plugin."
+
+  if [ "$is_multilingual" == true ]; then
+    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Providers/MultilingualAppServiceProvider.php ./app/Providers/AppServiceProvider.php
+    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/config/translation-manager.php ./config/
+
+    php artisan vendor:publish --provider="Spatie\TranslationLoader\TranslationServiceProvider" --tag="migrations" --quiet
+
+    cd ./database/migrations/
+    last_file=$(ls -A1 | tail -n 1)
+    sudo sed -i '/$table->bigIncrements('"'"'id'"'"');/,/$table->timestamps();/c\
+            $table->bigIncrements('"'"'id'"'"');\
+            $table->string('"'"'group'"'"')->index();\
+            $table->string('"'"'key'"'"')->index();\
+            $table->json('"'"'text'"'"');\
+            $table->timestamps();' ./$last_file
+
+    cd $PROJECTS_DIRECTORY/$escaped_project_name/
+
+    echo -e "\nConfigured Filament Translation Manager plugin."
+  fi
 fi
 
 # TODO other stacks...

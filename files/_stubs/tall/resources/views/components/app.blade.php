@@ -8,7 +8,9 @@
 <html
     lang="{{ config('app.locale') }}"
     class="h-full min-h-screen w-full antialiased"
+    x-bind:class="{ 'overflow-y-clip': isScrollingDisabled }"
     x-data="{
+        isScrollingDisabled: false,
         atMobile: false,
         atSm: false,
         atMd: false,
@@ -16,14 +18,7 @@
         atXl: false,
         at2xl: false,
     }"
-    x-breakpoint="
-        if ($isBreakpoint('2xl')) { at2xl = true; atXl = false; atLg = false; atMd = false; atSm = false; atMobile = false; }
-        else if ($isBreakpoint('xl')) { at2xl = false; atXl = true; atLg = false; atMd = false; atSm = false; atMobile = false; }
-        else if ($isBreakpoint('lg')) { at2xl = false; atXl = false; atLg = true; atMd = false; atSm = false; atMobile = false; }
-        else if ($isBreakpoint('md')) { at2xl = false; atXl = false; atLg = false; atMd = true; atSm = false; atMobile = false; }
-        else if ($isBreakpoint('sm')) { at2xl = false; atXl = false; atLg = false; atMd = false; atSm = true; atMobile = false; }
-        else { at2xl = false; atXl = false; atLg = false; atMd = false; atSm = false; atMobile = true; }
-    "
+    x-bind="Breakpointer"
 >
 
 <head>
@@ -102,15 +97,7 @@
         $bodyClasses => $bodyClasses,
         'h-full w-full bg-white dark:bg-dark-background-1',
     ])
-    x-bind:class="{ 'overflow-y-clip': isScrollingDisabled }"
-    x-data="{
-        isScrollingDisabled: false,
-        isDarkMode: false,
-        toggleDarkMode() {
-            document.querySelector('html').classList.toggle('dark');
-            this.isDarkMode = !this.isDarkMode;
-        },
-    }"
+    x-data="darkMode"
 >
     @include('partials.fader')
 
