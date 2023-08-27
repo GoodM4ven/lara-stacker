@@ -205,7 +205,7 @@ echo -e "\nInstalling Composer packages..."
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 
-# Breeze
+# Breeze package
 composer require --dev laravel/breeze laravel/telescope --with-all-dependencies -n --quiet >/dev/null 2>&1
 
 if [ "$laravel_stack" = "tall" ]; then
@@ -227,7 +227,7 @@ if [ "$use_pest" == true ]; then
 fi
 php artisan breeze:install $stack --dark --quiet $ssr $pest >/dev/null 2>&1
 
-# Pest
+# Pest framework
 if [ "$use_pest" == true ]; then
   livewire_plugin=""
   if [ "$laravel_stack" = "tall" ]; then
@@ -245,12 +245,11 @@ fi
 composer require laracasts/cypress --dev -n --quiet
 
 # Non-dev Packages...
-composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3:"^3.0" predis/predis laravel/scout spatie/laravel-medialibrary spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings blade-ui-kit/blade-icons spatie/laravel-permission qruto/laravel-wave gehrisandro/tailwind-merge-laravel artesaos/seotools
+composer require --with-all-dependencies -n --quiet league/flysystem-aws-s3-v3:"^3.0" predis/predis laravel/scout spatie/laravel-medialibrary spatie/laravel-data spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings blade-ui-kit/blade-icons spatie/laravel-permission qruto/laravel-wave gehrisandro/tailwind-merge-laravel artesaos/seotools
 
 # TALL Packages...
 if [ "$laravel_stack" = "tall" ]; then
-  sed -i "s~\"stable\"~\"dev\"~g" ./composer.json
-  composer require -n --quiet --with-all-dependencies livewire/livewire:"^3.0@beta" filament/filament:"^3.0-stable" filament/forms:"^3.0-stable" filament/tables:"^3.0-stable" filament/notifications:"^3.0-stable" filament/actions:"^3.0-stable" filament/infolists:"^3.0-stable" filament/widgets:"^3.0-stable" filament/spatie-laravel-media-library-plugin:"^3.0-stable" filament/spatie-laravel-tags-plugin:"^3.0-stable" filament/spatie-laravel-settings-plugin:"^3.0-stable" danharrin/livewire-rate-limiting bezhansalleh/filament-shield:"^3.0@beta" awcodes/overlook goodm4ven/blurred-image
+  composer require -n --quiet --with-all-dependencies livewire/livewire filament/filament:"^3.0-stable" filament/forms:"^3.0-stable" filament/tables:"^3.0-stable" filament/notifications:"^3.0-stable" filament/actions:"^3.0-stable" filament/infolists:"^3.0-stable" filament/widgets:"^3.0-stable" filament/spatie-laravel-media-library-plugin:"^3.0-stable" filament/spatie-laravel-tags-plugin:"^3.0-stable" filament/spatie-laravel-settings-plugin:"^3.0-stable" danharrin/livewire-rate-limiting bezhansalleh/filament-shield:"^3.0@beta" awcodes/overlook goodm4ven/blurred-image
 fi
 
 # Language Packages...
@@ -300,7 +299,7 @@ cd $PROJECTS_DIRECTORY/$escaped_project_name
 
 mkdir -p ./resources/css/packages
 
-# TaliwindCSS
+# TaliwindCSS framework
 if [ "$laravel_stack" = "tall" ]; then
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/css/app.css ./resources/css/
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/css/packages/alpinejs-breakpoints.css ./resources/css/packages/
@@ -321,17 +320,22 @@ php artisan vendor:publish --provider="TailwindMerge\Laravel\ServiceProvider" --
 
 echo -e "\nConfigured TailwindCSS framework and TailwindMerge package."
 
-# Cypress setup
+# Cypress framework
 php artisan cypress:boilerplate --quiet
 
 echo -e "\nConfigured front-end testing with Cypress."
+
+# Laravel Data package
+php artisan vendor:publish --provider="Spatie\LaravelData\LaravelDataServiceProvider" --tag="data-config" --quiet
+
+echo -e "\nConfigured Laravel Data package."
 
 # SEOTools package
 php artisan vendor:publish --provider="Artesaos\SEOTools\Providers\SEOToolsServiceProvider" --quiet
 
 echo -e "\nConfigured SEOTools package."
 
-# Blade Icons
+# Blade Icons package
 mkdir ./resources/svgs
 
 sudo cp $LARA_STACKER_DIRECTORY/files/config/blade-icons.php ./config/
@@ -380,7 +384,7 @@ if [ "$is_multilingual" == true ]; then
 
   echo -e "\nPublished the [lang] folder."
 
-  # Laravel Localization
+  # Laravel Localization package
   php artisan vendor:publish --provider="Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider" --quiet
 
   sudo cp $LARA_STACKER_DIRECTORY/files/app/Http/Kernel.php ./app/Http/
@@ -390,7 +394,7 @@ if [ "$is_multilingual" == true ]; then
   echo -e "\nConfigured Laravel Localization and enabled AR & EN locales."
 fi
 
-# Laravel Telescope
+# Laravel Telescope package
 php artisan telescope:install --quiet
 
 php artisan migrate --quiet
@@ -402,14 +406,14 @@ echo -e "\nTELESCOPE_ENABLED=true" | tee -a ./.env >/dev/null 2>&1
 
 echo -e "\nConfigured Laravel Telescope."
 
-# Laravel Scout
+# Laravel Scout package
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider" --quiet
 
 echo -e "\nSCOUT_DRIVER=database" | tee -a ./.env >/dev/null 2>&1
 
 echo -e "\nConfigured Laravel Scout."
 
-# Laravel Media Library
+# Laravel Media Library package
 php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations" --quiet
 php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config" --quiet
 
@@ -421,14 +425,14 @@ echo -e "\nMEDIA_DISK=s3" | tee -a ./.env >/dev/null 2>&1
 
 echo -e "\nConfigured Laravel Media Library to work with MinIO."
 
-# Eloquent Sortable
+# Eloquent Sortable package
 php artisan vendor:publish --tag=eloquent-sortable-config --quiet
 
 sed -i "s/'order_column',/'sorting_order',/g" ./config/eloquent-sortable.php
 
 echo -e "\nInstalled Eloquent Sortable and set 'sorting_order' as the default column."
 
-# Laravel Tags
+# Laravel Tags package
 php artisan vendor:publish --provider="Spatie\Tags\TagsServiceProvider" --tag="tags-migrations" --quiet
 php artisan vendor:publish --provider="Spatie\Tags\TagsServiceProvider" --tag="tags-config" --quiet
 
@@ -436,14 +440,14 @@ php artisan migrate --quiet
 
 echo -e "\nConfigured Laravel Tags."
 
-# Laravel Permission
+# Laravel Permission package
 cp $LARA_STACKER_DIRECTORY/files/app/Models/User.php ./app/Models/
 
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --quiet
 
 echo -e "\nConfigured Laravel Permission."
 
-# Laravel Settings
+# Laravel Settings package
 php artisan vendor:publish --provider="Spatie\LaravelSettings\LaravelSettingsServiceProvider" --tag="migrations" --quiet
 php artisan vendor:publish --provider="Spatie\LaravelSettings\LaravelSettingsServiceProvider" --tag="settings" --quiet
 
@@ -451,7 +455,7 @@ php artisan migrate --quiet
 
 echo -e "\nConfigured Laravel Settings."
 
-# Laravel-Wave
+# Laravel-Wave package
 php artisan vendor:publish --tag="wave-config" --quiet
 
 sed -i "s/BROADCAST_DRIVER=log/BROADCAST_DRIVER=redis/g" ./.env
@@ -477,7 +481,7 @@ echo -e "\nSet up Breeze routes in place."
 # * ===========
 
 if [ "$laravel_stack" = "tall" ]; then
-  # Alpine.js
+  # Alpine.js framework
   sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/packages ./resources/js/
   sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/data ./resources/js/
   sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/bindings ./resources/js/
@@ -486,7 +490,7 @@ if [ "$laravel_stack" = "tall" ]; then
 
   echo -e "\nConfigured Livewire and AlpineJS frameworks."
 
-  # Livewire
+  # Livewire framework
   php artisan livewire:publish --config --quiet
 
   rm -rf ./app/View
@@ -502,7 +506,11 @@ if [ "$laravel_stack" = "tall" ]; then
   mkdir -p ./resources/views/partials
 
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/routes/web.php ./routes/
+  if [ "$is_multilingual" == true ]; then
+    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/routes/multilingual-web.php ./routes/web.php
+  else
+    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/routes/web.php ./routes/
+  fi
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/home.blade.php ./resources/views/
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/home/link.blade.php ./resources/views/components/home/
 
@@ -523,13 +531,13 @@ if [ "$laravel_stack" = "tall" ]; then
 
   echo -e "\nConfigured Livewire framework."
 
-  # Alpine Animate
+  # Alpine Animate package
   echo -e "\nConfigured Alpine Animate plugin. (Reverse capability as seen in [home.blade.php])"
 
-  # Alpine.js Breakpoints
+  # Alpine.js Breakpoints package
   echo -e "\nConfigured AlpineJS Breakpoints plugin. (Check out the listeners in [app.blade.php])"
 
-  # Livewire Hot-Reload
+  # Livewire Hot-Reload package
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/vite.config.js ./
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/livewire-hot-reload.js ./resources/js/core/
   echo -e "\nVITE_LIVEWIRE_OPT_IN=true" | tee -a ./.env >/dev/null 2>&1
@@ -538,12 +546,12 @@ if [ "$laravel_stack" = "tall" ]; then
 
   echo -e "\nConfigured Livewire Hot-Reload watcher."
 
-  # Blurred Image
+  # Blurred Image package
   php artisan blurred-image:install --quiet
 
   echo -e "\nConfigured Blurred Image and Blurhash."
 
-  # Filament Shield
+  # Filament Shield package
   cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Models/User.php ./app/Models/
   php artisan vendor:publish --tag=filament-shield-config --quiet
 
@@ -553,15 +561,18 @@ if [ "$laravel_stack" = "tall" ]; then
 
   echo -e "\nConfigured Filament Shield for role management page."
 
-  # Filament Admin
+  # Filament Admin package
   php artisan vendor:publish --tag=filament-config --quiet
   php artisan make:filament-theme --quiet >/dev/null 2>&1
+
+  mkdir ./app/Http/Controllers/Invokables
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Http/Controllers/Invokables/LoginRedirect.php ./app/Http/Controllers/Invokables/
 
   sed -i "s/\"@php artisan package:discover --ansi\"/\"@php artisan package:discover --ansi\",\n            \"@php artisan filament:upgrade\"/g" ./composer.json
 
   echo -e "\nConfigured Filament admin panel."
 
-  # Overlook
+  # Overlook package
   echo -e "\nConfigured Filament Overlook plugin."
 
   if [ "$is_multilingual" == true ]; then

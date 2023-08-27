@@ -90,6 +90,9 @@
     @filamentStyles
     @vite('resources/css/app.css')
     @stack('styles')
+
+    <!-- Head Scripts - Load only once by default -->
+    @stack('head-scripts')
 </head>
 
 <body
@@ -103,11 +106,12 @@
 
     {{ $slot }}
 
+    <!-- Body Scripts - Load on every navigation -->
     @livewireScriptConfig
     @livewire('notifications')
     @filamentScripts
     @vite('resources/js/app.js')
-    @stack('scripts')
+    @stack('body-scripts')
 </body>
 
 </html>

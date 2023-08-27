@@ -70,6 +70,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
       - Checkout this [episode](https://laracasts.com/series/jeffreys-larabits/episodes/22) for more details
     - [predis/predis](https://github.com/predis/predis)
     - [artesaos/seotools](https://github.com/artesaos/seotools)
+    - [spatie/laravel-data](https://github.com/spatie/laravel-data)
     - [laravel/scout](https://laravel.com/docs/10.x/scout)
     - [qruto/laravel-wave](https://github.com/qruto/laravel-wave)
     - ["spatie/laravel-medialibrary:^10.0.0"](https://spatie.be/docs/laravel-medialibrary/v10)
@@ -84,7 +85,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [laravel/breeze](https://laravel.com/docs/10.x/starter-kits#laravel-breeze) [Dev]
     - [laravel/telescope](https://laravel.com/docs/10.x/telescope) (https://project-name.test/telescope) [Dev]
   - [Option] TALL Stack
-    - [livewire/livewire:"^3.0@beta"](https://livewire.laravel.com/)
+    - [livewire/livewire](https://livewire.laravel.com/)
     - [filament/filament:"^3.0-stable"](https://filamentphp.com/docs/3.x/panels/installation) (https://project-name.test/admin)
     - [filament/forms:"^3.0-stable"](https://filamentphp.com/docs/3.x/forms/installation)
     - [filament/tables:"^3.0-stable"](https://filamentphp.com/docs/3.x/tables/installation)

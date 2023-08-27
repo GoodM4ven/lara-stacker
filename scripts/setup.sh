@@ -88,7 +88,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash 
 source /home/$USERNAME/.bashrc &&
 nvm install 14 &&
 nvm use 14 &&
-npm install -g npm@8.5.1
+npm install -g npm@9.8.1
 EOF
 
 echo -e "\nInstalled NVM to support installing custom NodeJS and NPM versions."
