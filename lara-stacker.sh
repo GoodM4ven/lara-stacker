@@ -12,6 +12,8 @@ if [ ! -f "./.env" ]; then
   exit
 fi
 
+lara_stacker_dir=$PWD
+
 source ./.env
 
 # Ensure all side scripts are executable
@@ -20,6 +22,7 @@ SCRIPTS=(
   "./scripts/list.sh"
   "./scripts/create.sh"
   "./scripts/delete.sh"
+  "./scripts/update.sh"
   "./scripts/helpers/permit.sh"
 )
 
@@ -35,32 +38,73 @@ done
 
 clear
 
-# Menu options
-options=("1. List Projects" "2. Create Project" "3. Delete Project" "4. Exit" "0. Initial Setup")
-options_count=$(( ${#options[@]} - 1 ))
+# Checking for updates
+if [[ -f "/tmp/updated-lara-stacker.flag" ]]; then
+  rm /tmp/updated-lara-stacker.flag
+fi
 
-echo ""
+echo -e "Checking for updates...\n"
+
+update_available=false
+current_version=$(grep -E "^## v[0-9]+" "./CHANGELOG.md" | head -1 | awk '{print $2}')
+latest_version=$(curl --silent "https://api.github.com/repos/GoodM4ven/lara-stacker/releases/latest" | jq -r .tag_name)
+
+clear
+
+if [[ "$current_version" != "$latest_version" ]]; then
+  echo -e "New version ($latest_version) available to download!"
+  update_available=true
+fi
 
 # Loop until user chooses to exit
 counter=0
 while true; do
   counter=$((counter+1))
-  echo -e "-=|[ Lara-Stacker ]|=-\n"
+
+  echo -e "-=|[ Lara-Stacker [$current_version] ]|=-\n"
+
   echo -e "Supported Stacks:\n"
   echo -e "- TALL (TailwindCSS, AlpineJS, Livewire, Laravel)\n"
+  
   echo -e "Available Operations:\n"
+
+  # Controlling whether to show the updating option or not
+  if [[ -f "/tmp/updated-lara-stacker.flag" ]]; then
+    rm /tmp/updated-lara-stacker.flag
+    update_available=false
+  fi
+
+  if [ "$update_available" == false ]; then
+    options=("1. List Projects" "2. Create Project" "3. Delete Project" "4. Exit")
+  else
+    options=("1. List Projects" "2. Create Project" "3. Delete Project" "4. Exit" "5. Download Updates")
+  fi
+
+  if [[ ! -f "$lara_stacker_dir/done-setup.flag" ]]; then
+    options+=("0. Initial Setup")
+  fi
+
+  options_count=$(( ${#options[@]} - 1 ))
+
+  # Menu options
   for opt in "${options[@]}"; do
     echo "$opt "
   done
+
   echo ""
   if [[ $counter -eq 1 && "$1" ]]; then
     choice="$1"
   else
     read -p "Choose an operation (0-$options_count): " choice
   fi
+
   case $choice in
     0)
-      sudo ./scripts/setup.sh
+      if [[ -f "$lara_stacker_dir/done-setup.flag" ]]; then
+        echo -e "\nInvalid option! Please type one the of digits in the list...\n"
+      else
+        sudo ./scripts/setup.sh
+      fi
       ;;
     1)
       ./scripts/list.sh
@@ -74,6 +118,13 @@ while true; do
     4)
       echo -e "\nExiting Lara-Stacker...\n"
       exit 0
+      ;;
+    5)
+      if [ "$update_available" == false ]; then
+        echo -e "\nInvalid option! Please type one the of digits in the list...\n"
+      else
+        sudo ./scripts/update.sh
+      fi
       ;;
     *)
       echo -e "\nInvalid option! Please type one the of digits in the list...\n"

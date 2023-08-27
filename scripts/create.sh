@@ -7,7 +7,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Confirm if setup script isn't run
-if [ ! -e "$PWD/done-setup" ]; then
+if [ ! -e "$PWD/done-setup.flag" ]; then
   echo ""
   read -p "Setup script isn't run yet. Are you sure you want to continue? (y/n) " confirmation
 
@@ -32,8 +32,10 @@ clear
 # Beginning indicator
 echo -e "-=|[ Lara-Stacker |> CREATE ]|=-\n"
 
+lara_stacker_dir=$PWD
+
 # Get environment variables and defaults
-source $PWD/.env
+source $lara_stacker_dir/.env
 
 # * =================
 # * Collecting Input
@@ -93,11 +95,11 @@ echo -e "Installing the project via Composer..."
 cd $PROJECTS_DIRECTORY/
 composer create-project --prefer-dist laravel/laravel $escaped_project_name -n --quiet
 
-sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
+sudo $lara_stacker_dir/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
 
 # Generate an SSL certificate via mkcert
-sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
-cd /home/$USERNAME/
+sudo -i -u $USER bash <<EOF >/dev/null 2>&1
+cd /home/$USER/
 mkcert $escaped_project_name.test
 mkdir $PROJECTS_DIRECTORY/$escaped_project_name/certs
 mv ./$escaped_project_name.test.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
@@ -170,7 +172,7 @@ fi
 mkdir $PROJECTS_DIRECTORY/$escaped_project_name/.vscode
 cd $PROJECTS_DIRECTORY/$escaped_project_name/.vscode
 
-sudo cp $LARA_STACKER_DIRECTORY/files/.vscode/launch.json ./
+sudo cp $lara_stacker_dir/files/.vscode/launch.json ./
 
 sed -i "s~\[projectsDirectory\]~$PROJECTS_DIRECTORY~g" ./launch.json
 sed -i "s~\[projectName\]~$escaped_project_name~g" ./launch.json
@@ -178,15 +180,15 @@ sed -i "s~\[projectName\]~$escaped_project_name~g" ./launch.json
 echo -e "\nConfigured VSC debug settings for Xdebug support."
 
 # Set up a MinIO storage
-cd /home/$USERNAME/.config/minio/data/
+cd /home/$USER/.config/minio/data/
 minio-client mb --region=us-east-1 $escaped_project_name >/dev/null 2>&1
 
-sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
-cd /home/$USERNAME/
+sudo -i -u $USER bash <<EOF >/dev/null 2>&1
+cd /home/$USER/
 minio-client anonymous set public myminio/$escaped_project_name
 EOF
 
-sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh /home/$USERNAME/.config/minio/data/$escaped_project_name
+sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USER/.config/minio/data/$escaped_project_name
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 sed -i "s/FILESYSTEM_DISK=local/FILESYSTEM_DISK=s3/g" ./.env
@@ -301,16 +303,16 @@ mkdir -p ./resources/css/packages
 
 # TaliwindCSS framework
 if [ "$laravel_stack" = "tall" ]; then
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/css/app.css ./resources/css/
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/css/packages/alpinejs-breakpoints.css ./resources/css/packages/
-  sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/css/filament ./resources/css/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/resources/css/app.css ./resources/css/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/resources/css/packages/alpinejs-breakpoints.css ./resources/css/packages/
+  sudo cp -r $lara_stacker_dir/files/_stubs/tall/resources/css/filament ./resources/css/
 else
-  sudo cp $LARA_STACKER_DIRECTORY/files/resources/css/app.css ./resources/css/
+  sudo cp $lara_stacker_dir/files/resources/css/app.css ./resources/css/
 fi
-sudo cp $LARA_STACKER_DIRECTORY/files/resources/css/packages/tippy.css ./resources/css/packages/
-sudo cp $LARA_STACKER_DIRECTORY/files/postcss.config.js ./
-sudo cp $LARA_STACKER_DIRECTORY/files/tailwind.config.js ./
-sudo cp $LARA_STACKER_DIRECTORY/files/vite.config.js ./
+sudo cp $lara_stacker_dir/files/resources/css/packages/tippy.css ./resources/css/packages/
+sudo cp $lara_stacker_dir/files/postcss.config.js ./
+sudo cp $lara_stacker_dir/files/tailwind.config.js ./
+sudo cp $lara_stacker_dir/files/vite.config.js ./
 
 if [ "$is_multilingual" == true ]; then
   sed -i "s~sans: \['Ubuntu', ...defaultTheme.fontFamily.sans\],~sans: \['Ubuntu', ...defaultTheme.fontFamily.sans\],\n                arabic: \['\"Noto Sans Arabic\"', ...defaultTheme.fontFamily.sans\],~g" ./tailwind.config.js
@@ -338,15 +340,15 @@ echo -e "\nConfigured SEOTools package."
 # Blade Icons package
 mkdir ./resources/svgs
 
-sudo cp $LARA_STACKER_DIRECTORY/files/config/blade-icons.php ./config/
-sudo cp $LARA_STACKER_DIRECTORY/files/resources/svgs/laravel.svg ./resources/svgs/
+sudo cp $lara_stacker_dir/files/config/blade-icons.php ./config/
+sudo cp $lara_stacker_dir/files/resources/svgs/laravel.svg ./resources/svgs/
 
 echo -e "\nConfigured Blade Icons in [resources/svgs] directory."
 
 if [[ "$OPINIONATED" == true && "$is_multilingual" == true ]]; then
   # Add Arabic helper functions file
   mkdir -p ./app/Services/Support
-  sudo cp $LARA_STACKER_DIRECTORY/files/app/Services/Support/functions.php ./app/Services/Support/
+  sudo cp $lara_stacker_dir/files/app/Services/Support/functions.php ./app/Services/Support/
   sed -i '0,/"psr-4": {/s//"files": [\n            "app\/Services\/Support\/functions.php"\n        ],\n        "psr-4": {/' ./composer.json
 
   composer dump-autoload -n --quiet
@@ -359,14 +361,14 @@ if [ "$laravel_stack" = "tall" ]; then
   mkdir ./app/Providers/Filament
 
   if [ "$is_multilingual" == true ]; then
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Providers/MultilingualAdminPanelProvider.php ./app/Providers/Filament/AdminPanelProvider.php
+    sudo cp $lara_stacker_dir/files/_stubs/tall/app/Providers/MultilingualAdminPanelProvider.php ./app/Providers/Filament/AdminPanelProvider.php
   else
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Providers/AdminPanelProvider.php ./app/Providers/Filament/
+    sudo cp $lara_stacker_dir/files/_stubs/tall/app/Providers/AdminPanelProvider.php ./app/Providers/Filament/
   fi
 
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/config/app.php ./config/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/config/app.php ./config/
 else
-  sudo cp $LARA_STACKER_DIRECTORY/files/config/app.php ./config/
+  sudo cp $lara_stacker_dir/files/config/app.php ./config/
 fi
 
 sed -i "s/REDIS_HOST=127.0.0.1/REDIS_CLIENT=predis\nREDIS_HOST=127.0.0.1/g" ./.env
@@ -387,8 +389,8 @@ if [ "$is_multilingual" == true ]; then
   # Laravel Localization package
   php artisan vendor:publish --provider="Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider" --quiet
 
-  sudo cp $LARA_STACKER_DIRECTORY/files/app/Http/Kernel.php ./app/Http/
-  sudo cp $LARA_STACKER_DIRECTORY/files/config/laravellocalization.php ./config/
+  sudo cp $lara_stacker_dir/files/app/Http/Kernel.php ./app/Http/
+  sudo cp $lara_stacker_dir/files/config/laravellocalization.php ./config/
   php artisan lang:add ar --quiet
 
   echo -e "\nConfigured Laravel Localization and enabled AR & EN locales."
@@ -399,7 +401,7 @@ php artisan telescope:install --quiet
 
 php artisan migrate --quiet
 
-sudo cp $LARA_STACKER_DIRECTORY/files/app/Providers/AppServiceProvider.php ./app/Providers/
+sudo cp $lara_stacker_dir/files/app/Providers/AppServiceProvider.php ./app/Providers/
 sed -i "s~\"dont-discover\": \[\]~\"dont-discover\": \[\n                \"laravel/telescope\"\n            \]~g" ./composer.json
 
 echo -e "\nTELESCOPE_ENABLED=true" | tee -a ./.env >/dev/null 2>&1
@@ -441,7 +443,7 @@ php artisan migrate --quiet
 echo -e "\nConfigured Laravel Tags."
 
 # Laravel Permission package
-cp $LARA_STACKER_DIRECTORY/files/app/Models/User.php ./app/Models/
+cp $lara_stacker_dir/files/app/Models/User.php ./app/Models/
 
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --quiet
 
@@ -464,13 +466,13 @@ rm ./resources/js/bootstrap.js
 
 mkdir ./resources/js/core
 
-sudo cp $LARA_STACKER_DIRECTORY/files/resources/js/core/echo.js ./resources/js/core/
+sudo cp $lara_stacker_dir/files/resources/js/core/echo.js ./resources/js/core/
 
 echo -e "\nConfigured Laravel-Wave as Laravel Echo implementation."
 
 # Set up Breeze routes in place
-sudo cp $LARA_STACKER_DIRECTORY/files/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
-sudo cp $LARA_STACKER_DIRECTORY/files/routes/web.php ./routes/
+sudo cp $lara_stacker_dir/files/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
+sudo cp $lara_stacker_dir/files/routes/web.php ./routes/
 
 mv ./resources/views/welcome.blade.php ./resources/views/home.blade.php
 
@@ -482,11 +484,11 @@ echo -e "\nSet up Breeze routes in place."
 
 if [ "$laravel_stack" = "tall" ]; then
   # Alpine.js framework
-  sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/packages ./resources/js/
-  sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/data ./resources/js/
-  sudo cp -r $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/bindings ./resources/js/
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/alpine-livewire.js ./resources/js/core/
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/app.js ./resources/js/
+  sudo cp -r $lara_stacker_dir/files/_stubs/tall/resources/js/packages ./resources/js/
+  sudo cp -r $lara_stacker_dir/files/_stubs/tall/resources/js/data ./resources/js/
+  sudo cp -r $lara_stacker_dir/files/_stubs/tall/resources/js/bindings ./resources/js/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/resources/js/core/alpine-livewire.js ./resources/js/core/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/resources/js/app.js ./resources/js/
 
   echo -e "\nConfigured Livewire and AlpineJS frameworks."
 
@@ -505,26 +507,26 @@ if [ "$laravel_stack" = "tall" ]; then
   mkdir -p ./resources/views/components/home
   mkdir -p ./resources/views/partials
 
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Http/Controllers/LoginRedirect.php ./app/Http/Controllers/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/app/Http/Controllers/LoginRedirect.php ./app/Http/Controllers/
   if [ "$is_multilingual" == true ]; then
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/routes/multilingual-web.php ./routes/web.php
+    sudo cp $lara_stacker_dir/files/_stubs/tall/routes/multilingual-web.php ./routes/web.php
   else
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/routes/web.php ./routes/
+    sudo cp $lara_stacker_dir/files/_stubs/tall/routes/web.php ./routes/
   fi
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/home.blade.php ./resources/views/
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/home/link.blade.php ./resources/views/components/home/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/home.blade.php ./resources/views/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/components/home/link.blade.php ./resources/views/components/home/
 
   if [ "$OPINIONATED" == true ]; then
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/partials/opinionated-fader.blade.php ./resources/views/partials/fader.blade.php
+    sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/partials/opinionated-fader.blade.php ./resources/views/partials/fader.blade.php
   else
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/partials/fader.blade.php ./resources/views/partials/
+    sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/partials/fader.blade.php ./resources/views/partials/
   fi
 
   if [[ "$OPINIONATED" == true && "$is_multilingual" == true ]]; then
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/multilingual-app.blade.php ./resources/views/components/app.blade.php
+    sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/components/multilingual-app.blade.php ./resources/views/components/app.blade.php
   else
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/views/components/app.blade.php ./resources/views/components/
+    sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/components/app.blade.php ./resources/views/components/
   fi
 
   sed -i "s/'layout' => 'components.layouts.app',/'layout' => 'components.app',/g" ./config/livewire.php
@@ -539,8 +541,8 @@ if [ "$laravel_stack" = "tall" ]; then
   echo -e "\nConfigured AlpineJS Breakpoints plugin. (Check out the listeners in [app.blade.php])"
 
   # Livewire Hot-Reload package
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/vite.config.js ./
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/resources/js/core/livewire-hot-reload.js ./resources/js/core/
+  sudo cp $lara_stacker_dir/files/_stubs/tall/vite.config.js ./
+  sudo cp $lara_stacker_dir/files/_stubs/tall/resources/js/core/livewire-hot-reload.js ./resources/js/core/
   echo -e "\nVITE_LIVEWIRE_OPT_IN=true" | tee -a ./.env >/dev/null 2>&1
 
   sed -i "s~<projectName>~$escaped_project_name~g" ./vite.config.js
@@ -553,7 +555,7 @@ if [ "$laravel_stack" = "tall" ]; then
   echo -e "\nConfigured Blurred Image and Blurhash."
 
   # Filament Shield package
-  cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Models/User.php ./app/Models/
+  cp $lara_stacker_dir/files/_stubs/tall/app/Models/User.php ./app/Models/
   php artisan vendor:publish --tag=filament-shield-config --quiet
 
   sed -i "s~'navigation_group' => true,~'navigation_group' => false,~g" ./config/filament-shield.php
@@ -574,8 +576,8 @@ if [ "$laravel_stack" = "tall" ]; then
   echo -e "\nConfigured Filament Overlook plugin."
 
   if [ "$is_multilingual" == true ]; then
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Providers/MultilingualAppServiceProvider.php ./app/Providers/AppServiceProvider.php
-    sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/config/translation-manager.php ./config/
+    sudo cp $lara_stacker_dir/files/_stubs/tall/app/Providers/MultilingualAppServiceProvider.php ./app/Providers/AppServiceProvider.php
+    sudo cp $lara_stacker_dir/files/_stubs/tall/config/translation-manager.php ./config/
 
     php artisan vendor:publish --provider="Spatie\TranslationLoader\TranslationServiceProvider" --tag="migrations" --quiet
 
@@ -611,7 +613,7 @@ if [ "$OPINIONATED" == true ]; then
   fi
 
   # Add a project-specific config file
-  cp $LARA_STACKER_DIRECTORY/files/config/project-name.php ./config/$escaped_project_name.php
+  cp $lara_stacker_dir/files/config/project-name.php ./config/$escaped_project_name.php
 
   echo -e "\nCreated a [config/$escaped_project_name.php] file."
 
@@ -625,13 +627,13 @@ if [ "$OPINIONATED" == true ]; then
   mkdir ./app/Enums
   mkdir -p ./app/Services/Support/Traits
 
-  sudo cp $LARA_STACKER_DIRECTORY/files/app/Services/Support/Traits/Enumerifier.php ./app/Services/Support/Traits/
-  sudo cp $LARA_STACKER_DIRECTORY/files/app/Enums/Example.php ./app/Enums/
+  sudo cp $lara_stacker_dir/files/app/Services/Support/Traits/Enumerifier.php ./app/Services/Support/Traits/
+  sudo cp $lara_stacker_dir/files/app/Enums/Example.php ./app/Enums/
 
   echo -e "\nExtracted an Example enum with an Enumerifier helper trait."
 
   # Add an environment-user seeder
-  sudo cp $LARA_STACKER_DIRECTORY/files/database/seeders/DatabaseSeeder.php ./database/seeders/
+  sudo cp $lara_stacker_dir/files/database/seeders/DatabaseSeeder.php ./database/seeders/
   echo -e "\nENV_USER_NAME=Admin" | tee -a ./.env >/dev/null 2>&1
   echo -e "ENV_USER_EMAIL=admin@laravel.com" | tee -a ./.env >/dev/null 2>&1
   echo -e "ENV_USER_PASSWORD=password" | tee -a ./.env >/dev/null 2>&1
@@ -641,32 +643,32 @@ if [ "$OPINIONATED" == true ]; then
   echo -e "\nAdded an environment-user for quick generation."
 
   # Prettier config
-  sudo cp $LARA_STACKER_DIRECTORY/files/.opinionated/.prettierrc ./.prettierrc
+  sudo cp $lara_stacker_dir/files/.opinionated/.prettierrc ./.prettierrc
 
   echo -e "\nCopied Prettier configuration file."
 
   # Updated .gitignore file
-  sudo cp $LARA_STACKER_DIRECTORY/files/.gitignore ./
+  sudo cp $lara_stacker_dir/files/.gitignore ./
 
   echo -e "\nUpdated .gitignore file."
 
   # Copy the opinionated VSC keybindings
   if [[ $found_vsc == true && $VSC_KEYBINDINGS == true ]]; then
-    sudo cp $LARA_STACKER_DIRECTORY/files/.opinionated/keybindings.json ./.vscode/
+    sudo cp $lara_stacker_dir/files/.opinionated/keybindings.json ./.vscode/
 
     echo -e "\nCopied VSC workspace key-bindings."
   fi
 
   # Create a dedicated VSC workspace in Desktop
   if [[ $found_vsc == true && $VSC_WORKSPACE == true ]]; then
-    cd /home/$USERNAME/Desktop
+    cd /home/$USER/Desktop
 
-    sudo cp $LARA_STACKER_DIRECTORY/files/.opinionated/project.code-workspace ./$escaped_project_name.code-workspace
+    sudo cp $lara_stacker_dir/files/.opinionated/project.code-workspace ./$escaped_project_name.code-workspace
 
     sudo sed -i "s/<projectName>/$escaped_project_name/g" ./$escaped_project_name.code-workspace
     sudo sed -i "s~<projectsDirectory>~$PROJECTS_DIRECTORY~g" ./$escaped_project_name.code-workspace
 
-    sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
+    sudo $lara_stacker_dir/scripts/helpers/permit.sh ./$escaped_project_name.code-workspace
 
     echo -e "\nCreated a dedicated VSC workspace in Desktop."
   fi
@@ -677,7 +679,7 @@ fi
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 
 # Update the permissions all around
-sudo $LARA_STACKER_DIRECTORY/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
+sudo $lara_stacker_dir/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
 
 echo -e "\nUpdated directory and file permissions all around."
 

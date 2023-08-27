@@ -10,7 +10,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
 - Performance boost on my potatop.
 - Running multiple sites at the same time and developing simultaneously, which crazy creative when it comes to simple ideas here and there!
-- Customizations such as SSL and 3rd party tools setup is way easier if you deal with it locally; and doesn't necessarily mean that you'd a have a messy setup.
+- Customizations such as SSL and 3rd party tools setup is way easier if you deal with it locally; and doesn't necessarily mean that you'd have a messy setup.
 - Package development, when having most of the tools installed out of boxes!
 
 ### Tech Stack List
@@ -168,9 +168,9 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
 - Ensure that the environment variables are all showing up in the output before selecting anything.
 
-- Choose to [**setup**](./scripts/setup.sh) the lara stacker first, which will install everything necessary and eventually create a [[done-setup](./done-setup)] empty file in the directory.
+- Choose to [**setup**](./scripts/setup.sh) the lara stacker first, which will install everything necessary and eventually create a [[done-setup.flag](./done-setup.flag)] empty file in the directory.
 
-- Then choose to [**create**](./scripts/create.sh) your first stacked project and provide it its name.
+- Then choose to [**create**](./scripts/create.sh) your first stacked project and continue onwards...
 
 That's it. You'll have your first project accessible in the end (displaying the site's URL too). JUST be PATIENT! `:)`
 
@@ -194,7 +194,7 @@ That's it. You'll have your first project accessible in the end (displaying the 
 - [ ] Open VSC if available (check the commented code in [scripts/create.sh])
 - [ ] Run PHPUnit tests with the keybinding (ctrl+shift+r) if in PHPUnit class, and BetterPest's otherwise
 - [ ] Selective installation process as a self-deleting Composer package (check [.draft/stacking-wip.md])
-- [ ] Laravel Prompts
+    - [ ] Laravel Prompts
 
 
 ## Credits

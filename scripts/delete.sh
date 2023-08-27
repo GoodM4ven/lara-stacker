@@ -7,7 +7,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Confirm if setup script isn't run
-if [ ! -e "$PWD/done-setup" ]; then
+if [ ! -e "$PWD/done-setup.flag" ]; then
   echo ""
   read -p "Setup script isn't run yet. Are you sure you want to continue? (y/n) " confirmation
 
@@ -52,8 +52,8 @@ fi
 
 # Remove the site references from workspace settings
 if [[ $found_vsc == true && $VSC_WORKSPACE ]]; then
-  sudo rm /home/$USERNAME/Desktop/$escaped_project_name.code-workspace >/dev/null 2>&1
-  sudo rm /home/$USERNAME/Code/Workspaces/$escaped_project_name.code-workspace >/dev/null 2>&1
+  sudo rm /home/$USER/Desktop/$escaped_project_name.code-workspace >/dev/null 2>&1
+  sudo rm /home/$USER/Code/Workspaces/$escaped_project_name.code-workspace >/dev/null 2>&1
 
   echo -e "\nRemoved the the VSC workspace."
 fi
@@ -80,8 +80,8 @@ if mysql -u root -p$DB_PASSWORD -e "use $project_db_name" 2> /dev/null; then
 fi
 
 # Delete the MinIO storage
-if [ -d "/home/$USERNAME/.config/minio/data/$escaped_project_name" ]; then
-  rm -rf /home/$USERNAME/.config/minio/data/$escaped_project_name >/dev/null 2>&1
+if [ -d "/home/$USER/.config/minio/data/$escaped_project_name" ]; then
+  rm -rf /home/$USER/.config/minio/data/$escaped_project_name >/dev/null 2>&1
 
   echo -e "\nDeleted '$escaped_project_name' MinIO storage."
 fi
