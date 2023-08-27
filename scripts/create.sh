@@ -98,8 +98,8 @@ composer create-project --prefer-dist laravel/laravel $escaped_project_name -n -
 sudo $lara_stacker_dir/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
 
 # Generate an SSL certificate via mkcert
-sudo -i -u $USER bash <<EOF >/dev/null 2>&1
-cd /home/$USER/
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+cd /home/$USERNAME/
 mkcert $escaped_project_name.test
 mkdir $PROJECTS_DIRECTORY/$escaped_project_name/certs
 mv ./$escaped_project_name.test.pem $PROJECTS_DIRECTORY/$escaped_project_name/certs/
@@ -180,15 +180,15 @@ sed -i "s~\[projectName\]~$escaped_project_name~g" ./launch.json
 echo -e "\nConfigured VSC debug settings for Xdebug support."
 
 # Set up a MinIO storage
-cd /home/$USER/.config/minio/data/
+cd /home/$USERNAME/.config/minio/data/
 minio-client mb --region=us-east-1 $escaped_project_name >/dev/null 2>&1
 
-sudo -i -u $USER bash <<EOF >/dev/null 2>&1
-cd /home/$USER/
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+cd /home/$USERNAME/
 minio-client anonymous set public myminio/$escaped_project_name
 EOF
 
-sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USER/.config/minio/data/$escaped_project_name
+sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USERNAME/.config/minio/data/$escaped_project_name
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 sed -i "s/FILESYSTEM_DISK=local/FILESYSTEM_DISK=s3/g" ./.env
@@ -661,7 +661,7 @@ if [ "$OPINIONATED" == true ]; then
 
   # Create a dedicated VSC workspace in Desktop
   if [[ $found_vsc == true && $VSC_WORKSPACE == true ]]; then
-    cd /home/$USER/Desktop
+    cd /home/$USERNAME/Desktop
 
     sudo cp $lara_stacker_dir/files/.opinionated/project.code-workspace ./$escaped_project_name.code-workspace
 

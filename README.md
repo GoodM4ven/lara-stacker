@@ -188,6 +188,7 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Todos For Development:
 
+- [ ] Find a consistant fix for $USERNAME env-variable
 - [ ] Allow html attribute suggestion without endless blade snippets then enable blade snippet suggestions again
 - [ ] Add laravel Vue stack (VILT) with/without SSR
 - [ ] Add laravel React stack (RILT) with/without SSR

@@ -47,7 +47,7 @@ sudo systemctl restart apache2 >/dev/null 2>&1
 echo -e "Installed Git, Curl, PHP, Apache, Redis and npm packages."
 
 # Grant user write permissions
-sudo usermod -a -G www-data $USER
+sudo usermod -a -G www-data $USERNAME
 
 echo -e "\nAdded the environment's user to [www-data] group."
 
@@ -66,11 +66,11 @@ echo -e "\nInstalled Imagick, GD, Ghostscript and FFMPEG media packages."
 # Xdebug
 sudo apt install php-xdebug -y >/dev/null 2>&1
 
-mkdir -p /home/$USER/.config/xdebug
+mkdir -p /home/$USERNAME/.config/xdebug
 
-sudo sed -i "s~zend_extension=xdebug.so~zend_extension=xdebug.so\n\nxdebug.log=\"/home/$USER/.config/xdebug/xdebug.log\"\nxdebug.log_level=10\nxdebug.mode=develop,debug,coverage\nxdebug.client_port=9003\nxdebug.start_with_request=yes\nxdebug.discover_client_host=true~g" /etc/php/8.1/mods-available/xdebug.ini
+sudo sed -i "s~zend_extension=xdebug.so~zend_extension=xdebug.so\n\nxdebug.log=\"/home/$USERNAME/.config/xdebug/xdebug.log\"\nxdebug.log_level=10\nxdebug.mode=develop,debug,coverage\nxdebug.client_port=9003\nxdebug.start_with_request=yes\nxdebug.discover_client_host=true~g" /etc/php/8.1/mods-available/xdebug.ini
 
-sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USER/.config/xdebug
+sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USERNAME/.config/xdebug
 
 sudo systemctl restart apache2 >/dev/null 2>&1
 
@@ -82,10 +82,10 @@ sudo apt install libgbm-dev libnotify-dev libgconf-2-4 xvfb -y >/dev/null 2>&1
 echo -e "\nInstalled Cypress.io dependency packages."
 
 # NodeJS Upgrades
-sudo -i -u $USER bash <<EOF >/dev/null 2>&1
-cd /home/$USER/Downloads &&
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+cd /home/$USERNAME/Downloads &&
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash &&
-source /home/$USER/.bashrc &&
+source /home/$USERNAME/.bashrc &&
 nvm install 14 &&
 nvm use 14 &&
 npm install -g npm@9.8.1
@@ -96,14 +96,14 @@ echo -e "\nInstalled NVM to support installing custom NodeJS and NPM versions."
 # Composer (globally)
 sudo apt install composer -y >/dev/null 2>&1
 
-echo -e "\nexport PATH=\"\$PATH:/home/$USER/.config/composer/vendor/bin\"" >> /home/$USER/.bashrc >/dev/null 2>&1
+echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >> /home/$USERNAME/.bashrc >/dev/null 2>&1
 
 echo -e "\nInstalled composer globally."
 
 # mkcert
 sudo apt install mkcert libnss3-tools -y >/dev/null 2>&1
 
-sudo -i -u $USER bash <<EOF >/dev/null 2>&1
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
 mkcert -install
 EOF
 
@@ -123,14 +123,14 @@ sudo service apache2 restart
 echo -e "\nInstalled MySQL and set the password to the environment's."
 
 # Mailpit (service)
-mkdir /home/$USER/Downloads/mailpit
-cd /home/$USER/Downloads/mailpit
+mkdir /home/$USERNAME/Downloads/mailpit
+cd /home/$USERNAME/Downloads/mailpit
 
 release_url=$(curl -s https://api.github.com/repos/axllent/mailpit/releases/latest | grep "browser_download_url.*mailpit-linux-amd64.tar.gz" | cut -d : -f 2,3 | tr -d \")
 curl -L -o mailpit-linux-amd64.tar.gz $release_url >/dev/null 2>&1
 
 tar -xzf mailpit-linux-amd64.tar.gz
-sudo chown $USER:$USER mailpit
+sudo chown $USERNAME:$USERNAME mailpit
 sudo chmod +x mailpit
 sudo mv mailpit /usr/local/bin/
 
@@ -142,8 +142,8 @@ Description=Mailpit
 After=network.target
 
 [Service]
-User=$USER
-Group=$USER
+User=$USERNAME
+Group=$USERNAME
 WorkingDirectory=/usr/local/bin
 ExecStart=/usr/local/bin/mailpit
 Restart=always
@@ -159,15 +159,15 @@ sudo systemctl start mailpit.service
 echo -e "\nInstalled Mailpit and set up a service for it."
 
 # MinIO (server, client and service)
-mkdir /home/$USER/Downloads/minio
-cd /home/$USER/Downloads/minio
+mkdir /home/$USERNAME/Downloads/minio
+cd /home/$USERNAME/Downloads/minio
 
 wget https://dl.min.io/server/minio/release/linux-amd64/minio >/dev/null 2>&1
 wget https://dl.min.io/client/mc/release/linux-amd64/mc >/dev/null 2>&1
 
-sudo chown $USER:$USER minio
+sudo chown $USERNAME:$USERNAME minio
 sudo chmod +x minio
-sudo chown $USER:$USER mc
+sudo chown $USERNAME:$USERNAME mc
 sudo chmod +x mc
 
 sudo mv minio /usr/local/bin/
@@ -176,19 +176,19 @@ sudo mv mc /usr/local/bin/minio-client
 cd ..
 sudo rm -rf minio
 
-mkdir -p /home/$USER/.config/minio/data
+mkdir -p /home/$USERNAME/.config/minio/data
 
-sudo chown -R $USER:$USER /home/$USER/.config/minio/data
+sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/.config/minio/data
 
 echo "[Unit]
 Description=MinIO
 After=network.target
 
 [Service]
-User=$USER
-Group=$USER
+User=$USERNAME
+Group=$USERNAME
 WorkingDirectory=/usr/local/bin
-ExecStart=/usr/local/bin/minio server /home/$USER/.config/minio/data
+ExecStart=/usr/local/bin/minio server /home/$USERNAME/.config/minio/data
 Restart=always
 RestartSec=10
 
@@ -199,22 +199,22 @@ sudo systemctl daemon-reload
 sudo systemctl enable minio.service >/dev/null 2>&1
 sudo systemctl start minio.service
 
-sudo -i -u $USER bash <<EOF >/dev/null 2>&1
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
 minio-client alias set myminio/ http://localhost:9000 minioadmin minioadmin >/dev/null 2>&1
 EOF
 
 echo -e "\nInstalled MinIO and set up a service for it."
 
 # Expose
-cd /home/$USER/Downloads
+cd /home/$USERNAME/Downloads
 curl https://github.com/beyondcode/expose/raw/master/builds/expose -L --output expose >/dev/null 2>&1
 
-sudo chown $USER:$USER expose
+sudo chown $USERNAME:$USERNAME expose
 sudo chmod +x expose
 
 sudo mv expose /usr/local/bin/
 
-sudo -i -u $USER bash <<EOF >/dev/null 2>&1
+sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
 expose token $EXPOSE_TOKEN
 EOF
 
@@ -226,16 +226,16 @@ echo -e "\nInstalled Expose and set up its token to be ready to use."
 
 if [ "$OPINIONATED" == true ]; then
   # Link projects directory
-  mkdir /home/$USER/Code >/dev/null 2>&1
+  mkdir /home/$USERNAME/Code >/dev/null 2>&1
 
-  sudo -i -u $USER bash <<EOF >/dev/null 2>&1
-  cd /home/$USER/Code
+  sudo -i -u $USERNAME bash <<EOF >/dev/null 2>&1
+  cd /home/$USERNAME/Code
   ln -s $PROJECTS_DIRECTORY/
   final_folder=$(basename $PROJECTS_DIRECTORY)
   mv $final_folder Laravel
 EOF
 
-  sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USER/Code
+  sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USERNAME/Code
 
   echo -e "\nLinked projects directory into [~/Code/Laravel] directory."
 
@@ -254,7 +254,7 @@ EOF
   echo -e "\nCreated a .packages directory."
 
   # Add helper aliases to .bashrc
-  echo -e "\n# Laravel Aliases\nalias cda='composer dump-autoload'\nalias art='php artisan'\nalias fresh='php artisan migrate:fresh'\nalias mfs='php artisan migrate:fresh --seed'\nalias opt='php artisan optimize:clear'\nalias dev='npm run dev'\n" >> /home/$USER/.bashrc
+  echo -e "\n# Laravel Aliases\nalias cda='composer dump-autoload'\nalias art='php artisan'\nalias fresh='php artisan migrate:fresh'\nalias mfs='php artisan migrate:fresh --seed'\nalias opt='php artisan optimize:clear'\nalias dev='npm run dev'\n" >> /home/$USERNAME/.bashrc
 
   echo -e "\nAdded some helper aliases to [.bashrc]. Check 'art' out!"
 fi

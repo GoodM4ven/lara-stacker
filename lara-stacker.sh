@@ -52,7 +52,7 @@ latest_version=$(curl --silent "https://api.github.com/repos/GoodM4ven/lara-stac
 clear
 
 if [[ "$current_version" != "$latest_version" ]]; then
-  echo -e "New version ($latest_version) available to download!"
+  echo -e "New version ($latest_version) available to download!\n"
   update_available=true
 fi
 
