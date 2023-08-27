@@ -2,6 +2,17 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v1.3.0 - 2023-08-27
+
+- Implemented an updating mechanism
+- Removed USERNAME env variable for $USER instead
+- Removed LARA_STACKER_DIRECTORY env variable for $PWD instead   
+  - Allowing the script to run from any directory   
+  
+- Using the concept of flags for better display   
+  - Renaming done-setup to done-setup.flag   
+  
+
 ## v1.2.6 - 2023-08-27
 
 Hotfix for RedirectLogin controller's namespace
