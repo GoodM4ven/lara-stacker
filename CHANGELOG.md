@@ -2,6 +2,12 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v1.3.2 - 2023-08-27
+
+- Fixed missing namespace for non-multi-lingual sites!
+- Better error responses
+- Touched the TALL home view a bit
+
 ## v1.3.1 - 2023-08-27
 
 Hotfix for the $USER inconsistency
