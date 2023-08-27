@@ -47,6 +47,10 @@ escaped_project_name=${escaped_project_name// /}
 # Check if the project doesn't exist
 if ! [ -d "$PROJECTS_DIRECTORY/$escaped_project_name" ]; then
   echo -e "\nProject $escaped_project_name doesn't exist. Cancelling...\n"
+
+  read -p "Press any key to continue..." whatever
+
+  clear
   exit 1
 fi
 

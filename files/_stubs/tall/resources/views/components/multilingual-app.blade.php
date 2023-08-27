@@ -39,7 +39,7 @@
     >
     @stack('meta')
 
-    {{-- <!-- Favicon -->
+    {{-- <!-- Favicon | https://favicon.io/favicon-converter/ -->
     <link
         rel="apple-touch-icon"
         sizes="180x180"

@@ -50,6 +50,10 @@ escaped_project_name=${escaped_project_name// /}
 # Check if the project directory already exists
 if [ -d "$PROJECTS_DIRECTORY/$escaped_project_name" ]; then
   echo -e "\nProject folder already exists. Cancelling...\n"
+  
+  read -p "Press any key to continue..." whatever
+
+  clear
   exit 1
 fi
 
@@ -353,7 +357,7 @@ if [[ "$OPINIONATED" == true && "$is_multilingual" == true ]]; then
 
   composer dump-autoload -n --quiet
 
-  echo -e "\nCreated a localization helper functions file and registered it in [composer.json]."
+  echo -e "\nCreated a localization helper file and registered it in [composer.json]."
 fi
 
 # Install Redis, predis and the facade alias
