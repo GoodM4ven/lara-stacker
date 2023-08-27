@@ -2,18 +2,28 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v1.2.6 - 2023-08-27
+
+Hotfix for RedirectLogin controller's namespace
+
 ## v1.2.5 - 2023-08-27
 
-- Added Laravel Data package
+- Added Laravel Data package   
+  
 - Livewire v3 went out of Beta stage!   
+     
   - No longer need to set stability "dev"   
   
 - Considered "head-scripts" stack for loading once in Livewire v3   
+     
   - Renamed "scripts" to "body-scripts" instead   
   
-- Added an invokable controller to redirect Filament login route (TALL)
-- Added multi-lingual (localized) routes setup
-- Upgraded NPM version in setup script
+- Added an invokable controller to redirect Filament login route (TALL)   
+  
+- Added multi-lingual (localized) routes setup   
+  
+- Upgraded NPM version in setup script   
+  
 
 ## v1.2.4 - 2023-08-25
 
