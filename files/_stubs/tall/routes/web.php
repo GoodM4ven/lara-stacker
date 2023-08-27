@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Invokables\LoginRedirect;
+use App\Http\Controllers\LoginRedirect;
 use Illuminate\Support\Facades\Route;
 
 /*

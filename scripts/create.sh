@@ -506,6 +506,7 @@ if [ "$laravel_stack" = "tall" ]; then
   mkdir -p ./resources/views/partials
 
   sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Http/Controllers/HomeController.php ./app/Http/Controllers/
+  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Http/Controllers/LoginRedirect.php ./app/Http/Controllers/
   if [ "$is_multilingual" == true ]; then
     sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/routes/multilingual-web.php ./routes/web.php
   else
@@ -564,9 +565,6 @@ if [ "$laravel_stack" = "tall" ]; then
   # Filament Admin package
   php artisan vendor:publish --tag=filament-config --quiet
   php artisan make:filament-theme --quiet >/dev/null 2>&1
-
-  mkdir ./app/Http/Controllers/Invokables
-  sudo cp $LARA_STACKER_DIRECTORY/files/_stubs/tall/app/Http/Controllers/Invokables/LoginRedirect.php ./app/Http/Controllers/Invokables/
 
   sed -i "s/\"@php artisan package:discover --ansi\"/\"@php artisan package:discover --ansi\",\n            \"@php artisan filament:upgrade\"/g" ./composer.json
 
