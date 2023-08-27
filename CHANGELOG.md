@@ -2,20 +2,41 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v1.2.5 - 2023-08-27
+
+- Added Laravel Data package
+- Livewire v3 went out of Beta stage!   
+  - No longer need to set stability "dev"   
+  
+- Considered "head-scripts" stack for loading once in Livewire v3   
+  - Renamed "scripts" to "body-scripts" instead   
+  
+- Added an invokable controller to redirect Filament login route (TALL)
+- Added multi-lingual (localized) routes setup
+- Upgraded NPM version in setup script
+
 ## v1.2.4 - 2023-08-25
 
-- Added SEOTools package
+- Added SEOTools package   
+  
 - Added Alpine Animate plugin   
+     
   - Applied both reverse & remote animations in the home view   
   
 - Refactored app and home tall views   
+     
   - Encapsulated Alpine bindings and data   
   
-- Added Filament Overlook plugin
-- Added Filament Translation Manager plugin for multilingual setup
-- Commented out Laravel Echo and Wave for manual activation when needed
-- Replaced Tailwind's gray with zinc color for TALL stack!
-- Updated the docs
+- Added Filament Overlook plugin   
+  
+- Added Filament Translation Manager plugin for multilingual setup   
+  
+- Commented out Laravel Echo and Wave for manual activation when needed   
+  
+- Replaced Tailwind's gray with zinc color for TALL stack!   
+  
+- Updated the docs   
+  
 
 ## v1.2.3 - 2023-08-24
 
