@@ -40,7 +40,7 @@ Route::group([
         // ? Only for users
         Route::group(['middleware' => 'auth'], function () {
             // // * Logout
-            // Route::get(LaravelLocalization::transRoute('routes.logout'), [AuthController::class, 'logout'])->name('logout');
+            // Route::get(LaravelLocalization::transRoute('routes.logout'), Logout::class)->name('logout');
         });
 
         // // * Home

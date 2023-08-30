@@ -295,7 +295,7 @@ npm install @tailwindcss/container-queries tippy.js laravel-wave >/dev/null 2>&1
 # ! Currently vulnerable!
 # TODO add to the others when stable
 # Cypress
-npm install --force cypress >/dev/null 2>&1
+npm install --force --save-dev cypress >/dev/null 2>&1
 
 # * =======================
 # * Package Configurations
@@ -309,7 +309,6 @@ mkdir -p ./resources/css/packages
 if [ "$laravel_stack" = "tall" ]; then
   sudo cp $lara_stacker_dir/files/_stubs/tall/resources/css/app.css ./resources/css/
   sudo cp $lara_stacker_dir/files/_stubs/tall/resources/css/packages/alpinejs-breakpoints.css ./resources/css/packages/
-  sudo cp -r $lara_stacker_dir/files/_stubs/tall/resources/css/filament ./resources/css/
 else
   sudo cp $lara_stacker_dir/files/resources/css/app.css ./resources/css/
 fi
@@ -322,7 +321,7 @@ if [ "$is_multilingual" == true ]; then
   sed -i "s~sans: \['Ubuntu', ...defaultTheme.fontFamily.sans\],~sans: \['Ubuntu', ...defaultTheme.fontFamily.sans\],\n                arabic: \['\"Noto Sans Arabic\"', ...defaultTheme.fontFamily.sans\],~g" ./tailwind.config.js
 fi
 
-php artisan vendor:publish --provider="TailwindMerge\Laravel\ServiceProvider" --quiet
+php artisan vendor:publish --provider="TailwindMerge\Laravel\TailwindMergeServiceProvider" --quiet
 
 echo -e "\nConfigured TailwindCSS framework and TailwindMerge package."
 
@@ -350,14 +349,14 @@ sudo cp $lara_stacker_dir/files/resources/svgs/laravel.svg ./resources/svgs/
 echo -e "\nConfigured Blade Icons in [resources/svgs] directory."
 
 if [[ "$OPINIONATED" == true && "$is_multilingual" == true ]]; then
-  # Add Arabic helper functions file
+  # Add language helpers functions file
   mkdir -p ./app/Services/Support
-  sudo cp $lara_stacker_dir/files/app/Services/Support/functions.php ./app/Services/Support/
-  sed -i '0,/"psr-4": {/s//"files": [\n            "app\/Services\/Support\/functions.php"\n        ],\n        "psr-4": {/' ./composer.json
+  sudo cp $lara_stacker_dir/files/app/Services/Support/language_helpers.php ./app/Services/Support/
+  sed -i '0,/"psr-4": {/s//"files": [\n            "app\/Services\/Support\/language_helpers.php"\n        ],\n        "psr-4": {/' ./composer.json
 
   composer dump-autoload -n --quiet
 
-  echo -e "\nCreated a localization helper file and registered it in [composer.json]."
+  echo -e "\nCreated a language helpers file and registered it in [composer.json]."
 fi
 
 # Install Redis, predis and the facade alias
@@ -571,6 +570,8 @@ if [ "$laravel_stack" = "tall" ]; then
   # Filament Admin package
   php artisan vendor:publish --tag=filament-config --quiet
   php artisan make:filament-theme --quiet >/dev/null 2>&1
+
+  sudo cp -r $lara_stacker_dir/files/_stubs/tall/resources/css/filament ./resources/css/
 
   sed -i "s/\"@php artisan package:discover --ansi\"/\"@php artisan package:discover --ansi\",\n            \"@php artisan filament:upgrade\"/g" ./composer.json
 
