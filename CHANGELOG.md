@@ -2,6 +2,13 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v1.3.3 - 2023-08-30
+
+- Fixed Filament custom theming
+- Fixed TailwindMerge config reference
+- Renamed functions.php to language_helpers.php
+- Made Cypress an NPM dev-dependency
+
 ## v1.3.2 - 2023-08-27
 
 - Fixed missing namespace for non-multi-lingual sites!
