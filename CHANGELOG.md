@@ -2,6 +2,45 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v2.0.0 - 2023-09-11
+
+- Rewritten everything with better and consistant prompts   
+  - Four-space indentations   
+  - Hiding setup option when already done   
+  - Hiding update option when it's finished   
+  - Added a prompt helper function for code-brevity   
+  - Replaced copied original files with manual replacements   
+  - Refactored VSC env variables into USING_VSC single one   
+  - Renamed "multi-lingual" concept into "localized"   
+  - Ran migrations regularily   
+  
+- Organized validations in place before each script   
+  - Ensured scripts aren't being ran directly   
+  - Validated against environment variables difference   
+  
+- Controlled message logging during the scripts   
+  - Added a LOGGING_LEVEL env variable   
+  - Set up 3 different modes for logging   
+  - Hid warnings, to only show in level 2   
+  - Hid regular output, to only show in level 3   
+  
+- Fixed dangling Apache sites upon deletion
+- Replaced curl with wget for the update checking process
+- Dropped mkcert installation command to be ran manually
+- Fixed Minio's service in setup script
+- Fixed NVM commands in setup script
+- Fixed Code folder permissions for the opinionated setup
+- Fixed the removal of non-existing VSC workspaces
+- Fixed Laravel Telescope migrations pubishing
+- Installing Expose only when its token is provided in .env
+- Considered [auth.json] in git-ignore
+- Added a JS closure in x-init
+- Some opinionated changes   
+  - Updated personal settings   
+  - Added a VSC extension: shellscript   
+  
+- Updated [README.md]
+
 ## v1.3.3 - 2023-08-30
 
 - Fixed Filament custom theming
