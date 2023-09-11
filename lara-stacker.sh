@@ -1,133 +1,184 @@
 #!/bin/bash
 
+clear
+
+# Status indicator
+changelog_dir="./CHANGELOG.md"
+current_version="???"
+if [[ -f $changelog_dir ]]; then
+    current_version=$(grep -E "^## v[0-9]+" $changelog_dir | head -1 | awk '{print $2}')
+fi
+echo -e "-=|[ Lara-Stacker [$current_version] ]|=-\n"
+
+# * ===========
+# * Validation
+# * =========
+
+# Check if prompt script exists before sourcing
+prompt_function_dir="./scripts/functions/prompt.sh"
+if [[ ! -f $prompt_function_dir ]]; then
+    echo -e "Error: Working directory isn't the script's main.\n"
+
+    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
+
+    echo -n "Press any key to exit..."
+    read whatever
+
+    clear
+    exit 1
+fi
+source $prompt_function_dir
+
 # Check if the script is run with sudo
 if [ "$EUID" -ne 0 ]; then
-  echo -e "\nPlease run the script as super-user (sudo).\n"
-  exit
+    prompt "Aborted for missing super-user (sudo) permission." "Run the script using [sudo ./lara-stacker.sh] command." true false
 fi
 
-# Get environment variables
+# Ensure that .env file exists
 if [ ! -f "./.env" ]; then
-  echo -e "\nPlease run the script from the directory where [.env] file is at.\n"
-  exit
+    prompt "Aborted for missing [.env] file." "Copy one using [cp .env.example .env] command then fill its values." true false
 fi
 
-lara_stacker_dir=$PWD
-
-source ./.env
+# Double check the environment variables
+env_example_vars=$(grep -oE '^[A-Z_]+=' .env.example | sort)
+env_vars=$(grep -oE '^[A-Z_]+=' .env | sort)
+diff <(echo "$env_example_vars") <(echo "$env_vars") &> /dev/null
+if [ $? -ne 0 ]; then
+    prompt "Aborted for different environment variables." "Ensure that [.env.example] variables match [.env] ones." true false
+fi
 
 # Ensure all side scripts are executable
 SCRIPTS=(
-  "./scripts/setup.sh"
-  "./scripts/list.sh"
-  "./scripts/create.sh"
-  "./scripts/delete.sh"
-  "./scripts/update.sh"
-  "./scripts/helpers/permit.sh"
+    "./scripts/setup.sh"
+    "./scripts/list.sh"
+    "./scripts/create.sh"
+    "./scripts/delete.sh"
+    "./scripts/update.sh"
+    "./scripts/helpers/permit.sh"
 )
-
 for script in "${SCRIPTS[@]}"; do
-  if [[ -f "$script" ]]; then
-    if [[ ! -x "$script" ]]; then
-      chmod +x "$script"
+    if [[ -f "$script" ]]; then
+        if [[ ! -x "$script" ]]; then
+            chmod +x "$script"
+        fi
+    else
+        prompt "Aborted for missing [$script] file." "Clone the latest [GoodM4ven/lara-stacker] github repository." true false
     fi
-  else
-    echo -e "\nError: $script does not exist"
-  fi
 done
 
-clear
+# * ============
+# * Preparation
+# * ==========
+
+# Get environment variables and defaults
+lara_stacker_dir=$PWD
+source $lara_stacker_dir/.env
+
+# * =====================
+# * Checking For Updates
+# * ===================
 
 # Checking for updates
 if [[ -f "/tmp/updated-lara-stacker.flag" ]]; then
-  rm /tmp/updated-lara-stacker.flag
+    rm /tmp/updated-lara-stacker.flag
 fi
 
-echo -e "Checking for updates...\n"
+echo -en "Checking for updates"
+sleep 1
+echo -en "."
+sleep 1
+echo -en "."
 
 update_available=false
-current_version=$(grep -E "^## v[0-9]+" "./CHANGELOG.md" | head -1 | awk '{print $2}')
-latest_version=$(curl --silent "https://api.github.com/repos/GoodM4ven/lara-stacker/releases/latest" | jq -r .tag_name)
+latest_version=$(wget -qO- "https://api.github.com/repos/GoodM4ven/lara-stacker/releases/latest" | jq -r .tag_name)
+if [[ "$current_version" != "$latest_version" ]]; then
+    update_available=true
+fi
+
+echo -en "."
 
 clear
 
-if [[ "$current_version" != "$latest_version" ]]; then
-  echo -e "New version ($latest_version) available to download!\n"
-  update_available=true
+# * =============
+# * Options Menu
+# * ===========
+
+# Display the update version, if any
+if [ "$update_available" == true ]; then
+    echo -e "New version ($latest_version) available to download!\n"
 fi
 
 # Loop until user chooses to exit
 counter=0
 while true; do
-  counter=$((counter+1))
+    counter=$((counter + 1))
 
-  echo -e "-=|[ Lara-Stacker [$current_version] ]|=-\n"
+    echo -e "-=|[ Lara-Stacker [$current_version] ]|=-\n"
 
-  echo -e "Supported Stacks:\n"
-  echo -e "- TALL (TailwindCSS, AlpineJS, Livewire, Laravel)\n"
-  
-  echo -e "Available Operations:\n"
+    echo -e "Supported Stacks:\n"
+    echo -e "- TALL (TailwindCSS, AlpineJS, Livewire, Laravel)\n"
 
-  # Controlling whether to show the updating option or not
-  if [[ -f "/tmp/updated-lara-stacker.flag" ]]; then
-    rm /tmp/updated-lara-stacker.flag
-    update_available=false
-  fi
+    echo -e "Available Operations:\n"
 
-  if [ "$update_available" == false ]; then
     options=("1. List Projects" "2. Create Project" "3. Delete Project" "4. Exit")
-  else
-    options=("1. List Projects" "2. Create Project" "3. Delete Project" "4. Exit" "5. Download Updates")
-  fi
 
-  if [[ ! -f "$lara_stacker_dir/done-setup.flag" ]]; then
-    options+=("0. Initial Setup")
-  fi
+    # Conditional options
+    if [[ -f "/tmp/updated-lara-stacker.flag" ]]; then
+        rm /tmp/updated-lara-stacker.flag
+        update_available=false
+    fi
+    if [ "$update_available" == true ]; then
+        options+=("5. Download Updates")
+    fi
+    if [[ ! -f "$lara_stacker_dir/done-setup.flag" ]]; then
+        options+=("0. Initial Setup")
+    fi
 
-  options_count=$(( ${#options[@]} - 1 ))
+    options_count=$((${#options[@]} - 1))
 
-  # Menu options
-  for opt in "${options[@]}"; do
-    echo "$opt "
-  done
+    for opt in "${options[@]}"; do
+        echo "$opt "
+    done
 
-  echo ""
-  if [[ $counter -eq 1 && "$1" ]]; then
-    choice="$1"
-  else
-    read -p "Choose an operation (0-$options_count): " choice
-  fi
+    echo ""
+    if [[ $counter -eq 1 && "$1" ]]; then
+        choice="$1"
+    else
+        read -p "Choose an operation (0-$options_count): " choice
+    fi
 
-  case $choice in
+    clear
+
+    case $choice in
     0)
-      if [[ -f "$lara_stacker_dir/done-setup.flag" ]]; then
-        echo -e "\nInvalid option! Please type one the of digits in the list...\n"
-      else
-        sudo ./scripts/setup.sh
-      fi
-      ;;
+        if [[ -f "$lara_stacker_dir/done-setup.flag" ]]; then
+            prompt "-=|[ Lara-Stacker [$current_version] ]|=-" "Invalid option! Please type one the of digits in the list..." false false
+        else
+            sudo RAN_MAIN_SCRIPT="true" ./scripts/setup.sh
+        fi
+        ;;
     1)
-      ./scripts/list.sh
-      ;;
+        RAN_MAIN_SCRIPT="true" ./scripts/list.sh
+        ;;
     2)
-      sudo ./scripts/create.sh
-      ;;
+        sudo RAN_MAIN_SCRIPT="true" ./scripts/create.sh
+        ;;
     3)
-      sudo ./scripts/delete.sh
-      ;;
+        sudo RAN_MAIN_SCRIPT="true" ./scripts/delete.sh
+        ;;
     4)
-      echo -e "\nExiting Lara-Stacker...\n"
-      exit 0
-      ;;
+        echo -e "\nExiting Lara-Stacker...\n"
+        exit 0
+        ;;
     5)
-      if [ "$update_available" == false ]; then
-        echo -e "\nInvalid option! Please type one the of digits in the list...\n"
-      else
-        sudo ./scripts/update.sh
-      fi
-      ;;
+        if [ "$update_available" == false ]; then
+            prompt "-=|[ Lara-Stacker [$current_version] ]|=-" "Invalid option! Please type one the of digits in the list..." false false
+        else
+            sudo RAN_MAIN_SCRIPT="true" ./scripts/update.sh
+        fi
+        ;;
     *)
-      echo -e "\nInvalid option! Please type one the of digits in the list...\n"
-      ;;
-  esac
+        prompt "-=|[ Lara-Stacker [$current_version] ]|=-" "Invalid option! Please type one the of digits in the list..." false false
+        ;;
+    esac
 done

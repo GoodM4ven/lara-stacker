@@ -40,7 +40,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [Mailpit](https://github.com/axllent/mailpit) (http://localhost:8025)
     - [MinIO](https://min.io/) (http://localhost:9000)
   - Active Services
-    - [Expose](https://expose.dev/docs) (Use `expose share https://[site-name].test` to work properly)
+    - [Expose](https://expose.dev/docs) (Installed if `EXPOSE_TOKEN` is provided in [.env] file. And use `expose share https://[site-name].test` to work properly)
 
   </p>
   </details>
@@ -106,11 +106,11 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [pestphp/pest-plugin-laravel](https://pestphp.com/docs/plugins#content-laravel) [Dev]
   - [Option] TALL Stack && PEST
     - [pestphp/pest-plugin-livewire](https://pestphp.com/docs/plugins#content-livewire) [Dev]
-  - [Option] Multilingual
+  - [Option] Localized
     - [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization)
     - [spatie/laravel-translatable](https://spatie.be/docs/laravel-translatable/v6)
     - [laravel-lang/lang](https://laravel-lang.com) [Dev]
-  - [Option] TALL Stack && Multilingual
+  - [Option] TALL Stack && Localized
     - [filament/spatie-laravel-translatable-plugin:"^3.0-stable"](https://filamentphp.com/plugins/filament-spatie-translatable)
     - [kenepa/translation-manager](https://filamentphp.com/plugins/kenepa-translation-manager)
 
@@ -163,22 +163,17 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
 - Run the script with super-user permissions:
   ```bash
-  sudo chmod +x ./lara-stacker.sh && sudo ./lara-stacker.sh
+  chmod +x ./lara-stacker.sh && sudo ./lara-stacker.sh
   ```
 
-- Ensure that the environment variables are all showing up in the output before selecting anything.
-
-- Choose to [**setup**](./scripts/setup.sh) the lara stacker first, which will install everything necessary and eventually create a [[done-setup.flag](./done-setup.flag)] empty file in the directory.
+- Choose to [**setup**](./scripts/setup.sh) the lara stacker first, which will install everything necessary and eventually create a [[done-setup.flag](./done-setup.flag)] file in the directory.
 
 - Then choose to [**create**](./scripts/create.sh) your first stacked project and continue onwards...
 
 That's it. You'll have your first project accessible in the end (displaying the site's URL too). JUST be PATIENT! `:)`
 
-> **Warning**
-> I found the best way to deal with workspace settings or extensions ("recommended", they call them) is to add them to your VSC profile's extensions, but then disable them, and every time you open a new workspace (project), you enable them for the workspace only.
-
 > **Note**
-> You're free to take a look at and apply the VSC [settings](./files/.opinionated/settings.json) I'm using locally, as well as their complete [extension list](./files/.opinionated/extensions.md). (You can also set up both in their own "TALL" VSC profile or something)
+> If you want to debug the process or display all output during the scripts, change the `LOGGING_LEVEL` variable in your [[.env](./.env)] file.
 
 
 ## Before Production
@@ -188,14 +183,15 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Todos For Development:
 
-- [ ] Find a consistant fix for $USERNAME env-variable
 - [ ] Allow html attribute suggestion without endless blade snippets then enable blade snippet suggestions again
+- [ ] Run PHPUnit tests with the keybinding (ctrl+shift+r) if in PHPUnit class, and BetterPest's otherwise
+- [ ] Selective installation process as a self-deleting Composer package
+    - [ ] Laravel Prompts
 - [ ] Add laravel Vue stack (VILT) with/without SSR
 - [ ] Add laravel React stack (RILT) with/without SSR
-- [ ] Open VSC if available (check the commented code in [scripts/create.sh])
-- [ ] Run PHPUnit tests with the keybinding (ctrl+shift+r) if in PHPUnit class, and BetterPest's otherwise
-- [ ] Selective installation process as a self-deleting Composer package (check [.draft/stacking-wip.md])
-    - [ ] Laravel Prompts
+- [ ] Find a consistant fix for $USERNAME env-variable
+- [ ] Automate the mkcert installation command during setup script without password
+- [ ] Open VSC (or [Codium](https://vscodium.com/)) if available
 
 
 ## Credits
@@ -211,6 +207,11 @@ That's it. You'll have your first project accessible in the end (displaying the 
 - [Spatie](https://github.com/spatie)
 - ( [Tech Stack List](#tech-stack-list) )
 - ( [VSC Extensions](./files/.opinionated/extensions.md) )
+  > **Warning**
+  > I found the best way to deal with workspace settings or extensions ("recommended", they call them) is to add them to your VSC profile's extensions, but then disable them, and every time you open a new workspace (project), you enable them for the workspace only.
+
+  > **Note**
+  > You're free to take a look at and apply the VSC [settings](./files/.opinionated/settings.json) I'm using locally, as well as their complete [extension list](./files/.opinionated/extensions.md). (You can also set up both in their own "TALL" VSC profile or something)
 - ( [Contributers](https://github.com/GoodM4ven/lara-stacker/graphs/contributors) )
 
 

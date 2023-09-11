@@ -2,7 +2,6 @@
     // * =========
     // * Original
     // * =======
-    "window.menuBarVisibility": "hidden",
     "window.zoomLevel": 0.8,
     "explorer.autoReveal": false,
     "explorer.confirmDragAndDrop": false,
@@ -70,6 +69,18 @@
     "todo-tree.filtering.excludeGlobs": [
         "**/node_modules",
         "**/vendor"
+    ],
+    // [SVG]
+    "svg.preview.mode": "svg",
+    // [shell-format]
+    "[shellscript]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "shellformat.effectLanguages": [
+        "shellscript",
+        "dockerfile",
+        "dotenv",
+        "gitignore"
     ],
     // * Specification
     "[php]": {
