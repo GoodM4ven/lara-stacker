@@ -7,7 +7,7 @@ on:
 
 jobs:
   process:
-    if: github.actor == 'goodm4ven@proton.me'  # ! Hard-coded
+    if: github.actor == 'GoodM4ven'  # ! Hard-coded username
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
