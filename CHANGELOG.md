@@ -2,17 +2,29 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v2.1.5 - 2023-09-18
+
+v2.1.5
+
+- Combined both CLI flows into one: release then update logs
+
 ## v2.1.0 - 2023-09-18
 
 - Made Tailwind colors available in AlpineJS   
+     
   - Converted darkMode Alpine data into colorsManager   
   - Exposed defaultColors and customColors in JS   
   
-- Conditioned the proxy changes to using Expose only
-- Added a localized fader view where it waits for fonts to be ready
-- Refactored the home view a bit
-- Added a administrator release workflow
-- Some minor fixes
+- Conditioned the proxy changes to using Expose only   
+  
+- Added a localized fader view where it waits for fonts to be ready   
+  
+- Refactored the home view a bit   
+  
+- Added a administrator release workflow   
+  
+- Some minor fixes   
+  
 
 ## v2.0.0 - 2023-09-11
 
