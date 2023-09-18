@@ -1,4 +1,4 @@
-name: Create Release and Auto Merge
+name: Create Release, Auto Merge, and Update Changelog
 
 on:
   push:
@@ -37,3 +37,16 @@ jobs:
         body_path: .github/release_body.md
         draft: false
         prerelease: false
+
+    - name: Update Changelog
+      uses: stefanzweifel/changelog-updater-action@v1
+      with:
+        latest-version: ${{ github.ref_name }}
+        release-notes: ${{ github.event.head_commit.message }}
+
+    - name: Commit updated CHANGELOG
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        branch: master
+        commit_message: Update CHANGELOG
+        file_pattern: CHANGELOG.md
