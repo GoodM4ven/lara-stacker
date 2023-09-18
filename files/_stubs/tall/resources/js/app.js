@@ -8,7 +8,7 @@ import './packages/alpine-hooks';
 import './packages/alpinejs-breakpoints';
 import './packages/tippy';
 
-import './data/dark-mode';
+import './data/colors-manager';
 
 import './bindings/breakpointer';
 

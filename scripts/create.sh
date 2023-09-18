@@ -544,10 +544,12 @@ sed -i "s/REDIS_HOST=127.0.0.1/REDIS_CLIENT=predis\nREDIS_HOST=127.0.0.1/g" ./.e
 
 echo -e "\nConfigured [app] config file for providers and facades." >&3
 
-# Modify the TrustProxies middleware to work with Expose
-sed -i "s/protected \$proxies;/protected \$proxies = '*';/g" ./app/Http/Middleware/TrustProxies.php
+if [ -n "$EXPOSE_TOKEN" ]; then
+    # Modify the TrustProxies middleware to work with Expose
+    sed -i "s/protected \$proxies;/protected \$proxies = '*';/g" ./app/Http/Middleware/TrustProxies.php
 
-echo -e "\nTrusted all proxies for Expose compatibility." >&3
+    echo -e "\nTrusted all proxies for Expose compatibility." >&3
+fi
 
 if [ "$is_localized" == true ]; then
     # Publish lang folder
@@ -782,6 +784,8 @@ use App\\Http\\Controllers\\LoginRedirect;\
 ' ./routes/web.php > temp.txt && mv temp.txt ./routes/web.php
     fi
 
+    sed -i "/App\\Http\\Controllers\\ProfileController;/d" ./routes/web.php
+
     rm -rf ./app/View
     rm -rf ./resources/views/auth
     rm ./resources/views/components/*
@@ -798,7 +802,11 @@ use App\\Http\\Controllers\\LoginRedirect;\
     sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/components/home/link.blade.php ./resources/views/components/home/
 
     if [ "$OPINIONATED" == true ]; then
-        sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/partials/opinionated-fader.blade.php ./resources/views/partials/fader.blade.php
+        if [ "$is_localized" == true ]; then
+            sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/partials/localized-opinionated-fader.blade.php ./resources/views/partials/fader.blade.php
+        else
+            sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/partials/opinionated-fader.blade.php ./resources/views/partials/fader.blade.php
+        fi
     else
         sudo cp $lara_stacker_dir/files/_stubs/tall/resources/views/partials/fader.blade.php ./resources/views/partials/
     fi

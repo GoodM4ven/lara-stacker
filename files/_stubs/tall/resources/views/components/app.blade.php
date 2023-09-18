@@ -98,9 +98,9 @@
 <body
     @class([
         $bodyClasses => $bodyClasses,
-        'h-full w-full bg-white dark:bg-dark-background-1',
+        'h-full w-full bg-white dark:bg-dark-background-1 transition',
     ])
-    x-data="darkMode"
+    x-data="colorsManager"
 >
     @include('partials.fader')
 

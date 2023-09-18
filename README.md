@@ -178,7 +178,7 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Before Production
 
-- Reset [app/Http/Middleware/TrustedProxies.php]'s property to `protected $proxies;`
+- Reset [app/Http/Middleware/TrustedProxies.php]'s property to `protected $proxies;`, if you'd provided an Expose token.
 
 
 ## Todos For Development:

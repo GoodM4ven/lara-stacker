@@ -1,5 +1,10 @@
+import tailwindColors from '../../../tailwind.config';
+import colors from 'tailwindcss/colors';
+
 document.addEventListener('alpine:init', () => {
-    Alpine.data('darkMode', () => ({
+    Alpine.data('colorsManager', () => ({
+        defaultColors: colors,
+        customColors: tailwindColors.theme.extend.colors,
         isDarkMode: false,
 
         toggleDarkMode() {

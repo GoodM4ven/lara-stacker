@@ -10,7 +10,13 @@
     x-transition:leave-end="opacity-0"
     x-init='
         () => {
-            setTimeout(() => shown = false, 100);
+            if ("fonts" in document) {
+                document.fonts.load("1em {{ is_ar() ? "Noto Sans Arabic" : "Ubuntu" }}").then(() => {
+                    shown = false;
+                });
+            } else {
+                setTimeout(() => shown = false, 100);
+            }
 
             let anchors = document.querySelectorAll("a.show-fader");
             anchors.forEach(anchor => {

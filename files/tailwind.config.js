@@ -1,10 +1,11 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-const colors = require('tailwindcss/colors');
+import defaultTheme from 'tailwindcss/defaultTheme';
+import colors from 'tailwindcss/colors';
 
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
 import aspectRatio from '@tailwindcss/aspect-ratio';
 import containerQueries from '@tailwindcss/container-queries';
+import tailwindEasing from '@whiterussianstudio/tailwind-easing';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -51,18 +52,12 @@ export default {
                 },
             },
             transitionProperty: {},
-            animation: {},
             keyframes: {},
+            animation: {},
         },
     },
 
-    plugins: [
-        forms,
-        typography,
-        aspectRatio,
-        containerQueries,
-        require('@whiterussianstudio/tailwind-easing'),
-    ],
+    plugins: [forms, typography, aspectRatio, containerQueries, tailwindEasing],
 
     variants: {
         transitionTimingFunction: ['responsive', 'hover', 'groupHover', 'focus', 'dark'],
