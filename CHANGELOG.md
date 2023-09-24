@@ -2,6 +2,29 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v2.1.6 - 2023-09-24
+
+v2.1.6
+
+- Added AutoAnimate awesome package from FormKit
+- Reworked my opinionated VSC settings   
+  - The snippets not showing in blade templates issue is gone   
+  
+- Restored the separate change-log Github action
+- Added missing migration for translation package during creation
+- Fixed migration indentation for translation package during creation
+- Commented on extensions for VSX unavailability   
+  - Issues were issued on their repositories to remind them all!   
+  
+- Fixed the keybinding replacement when not using opinionated Pest
+- Modified the the translation-manager filament package config   
+  - Disabled the flags display feature   
+  - Hidden quick-translation page from the side-panel   
+  
+- Updated [README.md]   
+  - Added a TODO for considering phpredis instead of predis by default   
+  
+
 ## v2.1.5 - 2023-09-18
 
 v2.1.5
