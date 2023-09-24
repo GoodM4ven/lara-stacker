@@ -6,6 +6,7 @@ import './core/alpine-livewire';
 import './packages/alpine-animate';
 import './packages/alpine-hooks';
 import './packages/alpinejs-breakpoints';
+import './packages/auto-animate';
 import './packages/tippy';
 
 import './data/colors-manager';

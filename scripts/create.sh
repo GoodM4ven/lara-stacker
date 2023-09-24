@@ -335,7 +335,7 @@ fi
 npm install --save-dev tailwindcss postcss postcss-import autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio @whiterussianstudio/tailwind-easing
 
 # Packages...
-npm install @tailwindcss/container-queries tippy.js laravel-wave
+npm install @tailwindcss/container-queries tippy.js laravel-wave @formkit/auto-animate
 
 # ! Currently vulnerable!
 # TODO add to the others when stable
@@ -917,16 +917,21 @@ use Illuminate\\Support\\Facades\\Gate;' ./app/Providers/AppServiceProvider.php
     }
 }' ./config/translation-manager.php > tmp.txt && mv tmp.txt ./config/translation-manager.php
 
+        sed -i "s/'show_flags' => false,/'show_flags' => true,/g" ./config/translation-manager.php
+        sed -i "s/'quick_translate_navigation_registration' => false,/'quick_translate_navigation_registration' => true,/g" ./config/translation-manager.php
+
         php artisan vendor:publish --provider="Spatie\TranslationLoader\TranslationServiceProvider" --tag="migrations" $conditional_quiet
         cd ./database/migrations/
         last_file=$(ls -A1 | tail -n 1)
         sudo sed -i '/$table->bigIncrements('"'"'id'"'"');/,/$table->timestamps();/c\
-                $table->bigIncrements('"'"'id'"'"');\
-                $table->string('"'"'group'"'"')->index();\
-                $table->string('"'"'key'"'"')->index();\
-                $table->json('"'"'text'"'"');\
-                $table->timestamps();' ./$last_file
+            $table->bigIncrements('"'"'id'"'"');\
+            $table->string('"'"'group'"'"')->index();\
+            $table->string('"'"'key'"'"')->index();\
+            $table->json('"'"'text'"'"');\
+            $table->timestamps();' ./$last_file
         cd $PROJECTS_DIRECTORY/$escaped_project_name/
+
+        php artisan migrate $conditional_quiet
 
         echo -e "\nConfigured Filament Translation Manager plugin." >&3
     fi
@@ -1003,6 +1008,10 @@ if [ "$OPINIONATED" == true ]; then
     if [[ $USING_VSC == true && $OPINIONATED == true ]]; then
         # Copy the opinionated VSC keybindings
         sudo cp $lara_stacker_dir/files/.opinionated/keybindings.json ./.vscode/
+
+        if [ $use_pest == false ]; then
+            sudo sed -i 's/better-pest/better-phpunit/g' ./.vscode/keybindings.json
+        fi
 
         echo -e "\nCopied VSC workspace key-bindings." >&3
 

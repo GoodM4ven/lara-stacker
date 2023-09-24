@@ -183,8 +183,8 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Todos For Development:
 
-- [ ] Allow html attribute suggestion without endless blade snippets then enable blade snippet suggestions again
-- [ ] Run PHPUnit tests with the keybinding (ctrl+shift+r) if in PHPUnit class, and BetterPest's otherwise
+- [ ] Consider `phpredis` extension instead of `predis` for both setup and creation scripts
+- [ ] Turn the main skeleton scripter into a NativePHP app
 - [ ] Selective installation process as a self-deleting Composer package
     - [ ] Laravel Prompts
 - [ ] Add laravel Vue stack (VILT) with/without SSR

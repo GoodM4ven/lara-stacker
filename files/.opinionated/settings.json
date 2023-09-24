@@ -2,57 +2,44 @@
     // * =========
     // * Original
     // * =======
+    // * UI
+    "workbench.activityBar.visible": false,
     "window.zoomLevel": 0.8,
-    "explorer.autoReveal": false,
-    "explorer.confirmDragAndDrop": false,
-    "explorer.confirmDelete": false,
-    "editor.unicodeHighlight.ambiguousCharacters": false,
-    "editor.unicodeHighlight.nonBasicASCII": false,
-    "editor.hover.above": false,
-    "editor.wordWrap": "wordWrapColumn",
-    "editor.wordWrapColumn": 130,
-    "editor.formatOnPaste": false,
     "editor.minimap.showSlider": "always",
     "editor.scrollbar.vertical": "hidden",
     "editor.scrollbar.verticalScrollbarSize": 0,
+    "editor.guides.bracketPairs": true,
+    "editor.hover.above": false,
+    // * Font
     "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace",
-    "editor.fontLigatures": true,
     "editor.fontSize": 14,
     "editor.lineHeight": 2,
-    "editor.guides.bracketPairs": true,
-    "workbench.activityBar.visible": false,
-    "workbench.localHistory.maxFileEntries": 500,
-    "workbench.editor.untitled.hint": "hidden",
+    "editor.fontLigatures": true,
+    // * Behavior
     "workbench.startupEditor": "none",
-    "workbench.editor.enablePreview": true,
+    "workbench.editor.untitled.hint": "hidden",
+    "explorer.autoReveal": false,
     "workbench.editor.enablePreviewFromQuickOpen": true,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "workbench.localHistory.maxFileEntries": 500,
     "files.exclude": {
         "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true,
-        "**/Thumbs.db": true
+        "**/storage/framework/**": true
     },
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    // * Format
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 130,
+    // * Built-in Extensions
     "git.autofetch": true,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
-    "diffEditor.ignoreTrimWhitespace": false,
-    "emmet.triggerExpansionOnTab": true,
-    "emmet.showExpandedAbbreviation": "always",
-    "html.suggest.html5": true,
-    "javascript.updateImportsOnFileMove.enabled": "always",
-    "json.validate.enable": false,
     // * ===========
     // * Extensions
     // * =========
-    // [GitLens]
-    "gitlens.codeLens.enabled": false,
-    "gitlens.currentLine.enabled": false,
-    "gitlens.hovers.enabled": false,
-    "gitlens.statusBar.enabled": true,
-    "gitlens.telemetry.enabled": false,
-    // [Material Theme]
+    // [UI - Material Theme]
     "workbench.iconTheme": "material-icon-theme",
     "workbench.colorTheme": "Community Material Theme Darker High Contrast",
     "workbench.colorCustomizations": {
@@ -62,17 +49,20 @@
             "editor.wordHighlightBackground": "#66666699"
         }
     },
-    // [Todo Tree]
+    // [UI - SVG]
+    "svg.preview.mode": "svg",
+    // [Behavior - GitLens]
+    "gitlens.telemetry.enabled": false,
+    "gitlens.codeLens.enabled": false,
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.enabled": false,
+    "gitlens.statusBar.enabled": true,
+    // [Behavior - Todo Tree]
     "todo-tree.tree.showBadges": true,
     "todo-tree.tree.showCountsInTree": true,
     "todo-tree.general.tags": ["BUG", "HACK", "TODO", "[ ]"],
-    "todo-tree.filtering.excludeGlobs": [
-        "**/node_modules",
-        "**/vendor"
-    ],
-    // [SVG]
-    "svg.preview.mode": "svg",
-    // [shell-format]
+    "todo-tree.filtering.excludeGlobs": ["**/node_modules", "**/vendor"],
+    // [INTEL - shell-format]
     "[shellscript]": {
         "editor.defaultFormatter": "foxundermoon.shell-format"
     },
@@ -89,39 +79,20 @@
         // [PHP Intelephense]
         "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
     },
-    // [Laravel Blade formatter]
+    // [Format - Laravel Blade formatter]
     "[blade]": {
-        "editor.defaultFormatter": "shufo.vscode-blade-formatter",
-        "editor.autoClosingBrackets": "always",
-        "editor.suggest.showSnippets": false
+        "editor.defaultFormatter": "shufo.vscode-blade-formatter"
     },
-    "bladeFormatter.format.wrapAttributes": "force-expand-multiline",
-    "bladeFormatter.format.sortHtmlAttributes": "none",
-    "bladeFormatter.format.sortTailwindcssClasses": true,
     "bladeFormatter.format.noMultipleEmptyLines": true,
-    "bladeFormatter.format.enabled": true,
-    "bladeFormatter.format.indentSize": 4,
+    "bladeFormatter.format.wrapAttributes": "force-expand-multiline",
     "bladeFormatter.format.wrapLineLength": 120,
-    "bladeFormatter.format.useTabs": false,
-    "bladeFormatter.format.noPhpSyntaxCheck": false,
-    "bladeFormatter.format.customHtmlAttributesOrder": "",
-    "bladeFormatter.misc.dontShowNewVersionMessage": false,
-    // [Alpine.js IntelliSense]
-    "alpine-intellisense.settings.languageScopes": "blade", // TODO until intellisense is limited to html tags
-    // [Laravel Goto View]
-    "laravelGotoView.showCodeLens": false,
-    // [Laraphense]
-    "Laraphense.disableBladeCompletion": true,
-    // [Prettier - Code formatter]
+    "bladeFormatter.format.sortHtmlAttributes": "code-guide",
+    "bladeFormatter.format.sortTailwindcssClasses": true,
+    "bladeFormatter.misc.dontShowNewVersionMessage": true,
+    // [Format - Prettier - Code formatter]
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "prettier.requireConfig": true,
-    // [Tailwind CSS IntelliSense]
-    "files.associations": {
-        "*.css": "tailwindcss"
-    },
-    "tailwindCSS.includeLanguages": {
-        "blade": "html"
-    },
+    // [INTEL - Tailwind CSS IntelliSense]
     "tailwindCSS.classAttributes": [
         "class",
         "x-transition:enter",
@@ -131,7 +102,9 @@
         "x-transition:leave-start",
         "x-transition:leave-end"
     ],
-    // [PHP Intelephense]
+    // // [INTEL - Alpine.js IntelliSense]
+    // "alpine-intellisense.settings.languageScopes": "blade", // TODO uncomment when intel shows within elements only
+    // [INTEL - PHP Intelephense]
     // ! Disable @builtin php > PHP Language Features
     // ! Enter your Intelephense licence key in your application's [settings.json] (not workspace, not the user)
     "intelephense.telemetry.enabled": false
