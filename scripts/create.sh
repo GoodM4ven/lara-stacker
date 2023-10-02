@@ -835,8 +835,7 @@ use App\\Http\\Controllers\\LoginRedirect;\
 
     sed -i "s~<projectName>~$escaped_project_name~g" ./vite.config.js
 
-    # TODO Uncomment once fixed
-    # echo -e "\nConfigured Livewire Hot-Reload watcher." >&3
+    echo -e "\nConfigured Livewire Hot-Reload watcher." >&3
 
     # Blurred Image package
     php artisan blurred-image:install $conditional_quiet

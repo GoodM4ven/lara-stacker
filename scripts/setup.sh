@@ -82,7 +82,7 @@ esac
 # git, php, apache2, redis and npm
 echo -e "Installing system packages..." >&3
 
-sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server npm -y
+sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server -y
 
 sudo sed -i "s~post_max_size = 8M~post_max_size = 100M~g" /etc/php/8.1/apache2/php.ini
 sudo sed -i "s~upload_max_filesize = 2M~upload_max_filesize = 100M~g" /etc/php/8.1/apache2/php.ini
@@ -132,14 +132,17 @@ sudo apt install libgbm-dev libnotify-dev libgconf-2-4 xvfb -y
 # NodeJS Upgrades
 echo -e "\nInstalling NVM to support installing custom NodeJS and NPM versions..." >&3
 
+# ? Check without: npm install -g npm@9.8.1
 sudo -i -u $USERNAME bash <<EOF
 cd /home/$USERNAME/Downloads &&
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash &&
 source /home/$USERNAME/.nvm/nvm.sh &&
-nvm install 14 &&
-nvm use 14 &&
-npm install -g npm@9.8.1
+nvm install 16 &&
+nvm use 16
 EOF
+
+# Graphite
+npm install -g @withgraphite/graphite-cli@stable
 
 # Composer (globally)
 echo -e "\nInstalling composer globally..." >&3

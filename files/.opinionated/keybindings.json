@@ -356,6 +356,16 @@
         "command": "-scm.acceptInput",
         "when": "scmRepository"
     },
+    {
+        "key": "ctrl+k m",
+        "command": "-workbench.action.editor.changeLanguageMode",
+        "when": "!notebookEditorFocused"
+    },
+    {
+        "key": "ctrl+shift+alt+l",
+        "command": "workbench.action.editor.changeLanguageMode",
+        "when": "!notebookEditorFocused"
+    },
     // * ===========
     // * Extensions
     // * =========
@@ -389,6 +399,14 @@
     {
         "key": "ctrl+shift+meta+c",
         "command": "foldersCompare.compareFoldersAgainstEachOther"
+    },
+    {
+        "key": "alt+5",
+        "command": "-workbench.action.openEditorAtIndex5"
+    },
+    {
+        "key": "alt+5",
+        "command": "workbench.view.extension.foldersCompare"
     },
     // [Polacode]
     {
@@ -596,51 +614,13 @@
         "key": "ctrl+alt+g",
         "command": "namespaceResolver.generateNamespace"
     },
-    // [PHP Resolver]
     {
-        "key": "ctrl+alt+a",
-        "command": "-phpResolver.importAll",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "ctrl+alt+i",
-        "command": "-phpResolver.import",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "ctrl+alt+n",
-        "command": "-phpResolver.highlightNotImported",
+        "key": "ctrl+alt+e",
+        "command": "-namespaceResolver.expand",
         "when": "editorTextFocus"
     },
     {
         "key": "ctrl+alt+e",
-        "command": "-phpResolver.expand",
-        "when": "editorTextFocus"
+        "command": "namespaceResolver.expand"
     },
-    {
-        "key": "ctrl+alt+u",
-        "command": "-phpResolver.highlightNotUsed",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "ctrl+alt+s",
-        "command": "-phpResolver.sort",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "ctrl+alt+g",
-        "command": "-phpResolver.generateNamespace"
-    },
-    {
-        "key": "ctrl+alt+e",
-        "command": "phpResolver.expand"
-    },
-    {
-        "key": "alt+5",
-        "command": "-workbench.action.openEditorAtIndex5"
-    },
-    {
-        "key": "alt+5",
-        "command": "workbench.view.extension.foldersCompare"
-    }
 ]

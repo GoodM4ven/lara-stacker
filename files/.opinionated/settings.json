@@ -24,10 +24,12 @@
     "explorer.confirmDelete": false,
     "diffEditor.ignoreTrimWhitespace": false,
     "workbench.localHistory.maxFileEntries": 500,
-    "files.exclude": {
-        "**/.git": true,
-        "**/storage/framework/**": true
-    },
+    // "files.exclude": {
+    //     "**/.git": true,
+    //     "**/node_modules": true,
+    //     "**/vendor": true,
+    // },
+    "editor.codeLens": false,
     "javascript.updateImportsOnFileMove.enabled": "always",
     // * Format
     "editor.wordWrap": "wordWrapColumn",
@@ -61,7 +63,12 @@
     "todo-tree.tree.showBadges": true,
     "todo-tree.tree.showCountsInTree": true,
     "todo-tree.general.tags": ["BUG", "HACK", "TODO", "[ ]"],
-    "todo-tree.filtering.excludeGlobs": ["**/node_modules", "**/vendor"],
+    "todo-tree.filtering.excludeGlobs": [
+        "**/node_modules",
+        "**/vendor"
+    ],
+    // [Behavior - Compare Folders]
+    "diffEditor.maxComputationTime": 0,
     // [INTEL - shell-format]
     "[shellscript]": {
         "editor.defaultFormatter": "foxundermoon.shell-format"
@@ -81,7 +88,7 @@
     },
     // [Format - Laravel Blade formatter]
     "[blade]": {
-        "editor.defaultFormatter": "shufo.vscode-blade-formatter"
+        "editor.defaultFormatter": "shufo.vscode-blade-formatter",
     },
     "bladeFormatter.format.noMultipleEmptyLines": true,
     "bladeFormatter.format.wrapAttributes": "force-expand-multiline",
@@ -92,7 +99,15 @@
     // [Format - Prettier - Code formatter]
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "prettier.requireConfig": true,
+    // [INTEL - PHP Intelephense]
+    // ! Disable @builtin php > PHP Language Features
+    // ! Enter your Intelephense licence key in your application's [settings.json] (not workspace, not the user)
+    "intelephense.telemetry.enabled": false,
     // [INTEL - Tailwind CSS IntelliSense]
+    "files.associations": {
+        "*.module": "php",
+        "*.css": "tailwindcss"
+    },
     "tailwindCSS.classAttributes": [
         "class",
         "x-transition:enter",
@@ -102,10 +117,12 @@
         "x-transition:leave-start",
         "x-transition:leave-end"
     ],
+    "tailwindCSS.experimental.classRegex": [
+        ["(?:@class|\\$attributes->class)\\(\\[?([^\\]]*)\\]?\\)", "'([^']*)'"],
+        ["(?:@twMerge|\\$attributes->twMerge)\\(\"([^\"]*)\",?[^)]*\\)", "'([^']*)'"],
+        ["twMerge\\(\\[?([^\\]]*)\\]?\\)", "'([^']*)'"],
+        ["TailwindMerge::merge\\(\\[?([^\\]]*)\\]?\\)", "'([^']*)'"]
+    ],
     // // [INTEL - Alpine.js IntelliSense]
     // "alpine-intellisense.settings.languageScopes": "blade", // TODO uncomment when intel shows within elements only
-    // [INTEL - PHP Intelephense]
-    // ! Disable @builtin php > PHP Language Features
-    // ! Enter your Intelephense licence key in your application's [settings.json] (not workspace, not the user)
-    "intelephense.telemetry.enabled": false
 }

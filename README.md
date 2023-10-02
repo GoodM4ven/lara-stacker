@@ -27,7 +27,6 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [php](https://www.php.net/)
     - [apache2](https://httpd.apache.org/)
     - [composer](https://getcomposer.org/)
-    - [npm](https://nodejs.org/en/download/package-manager)
     - [nvm](https://github.com/nvm-sh/nvm)
     - [libnss3-tools](https://packages.ubuntu.com/focal/libnss3-tools)
     - [libgbm-dev](https://packages.debian.org/sid/libgbm-dev)
@@ -126,6 +125,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [tailwindcss](https://tailwindcss.com/) [Dev]
     - [postcss](https://github.com/postcss/postcss) [Dev]
     - [autoprefixer](https://github.com/postcss/autoprefixer) [Dev]
+    - [@formkit/auto-animate](https://github.com/formkit/auto-animate) [Dev]
     - [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin) [Dev]
     - [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms) [Dev]
     - [@tailwindcss/aspect-ratio](https://github.com/tailwindlabs/tailwindcss-aspect-ratio) [Dev]
@@ -141,7 +141,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [@alpinejs/morph](https://alpinejs.dev/plugins/morph)
     - [@ryangjchandler/alpine-hooks](https://github.com/ryangjchandler/alpine-hooks)
     - [@ralphjsmit/alpine-animate](https://github.com/ralphjsmit/alpine-animate)
-    - [@defstudio/vite-livewire-plugin](https://github.com/defstudio/vite-livewire-plugin) [Dev] (Disabled again until a fix!)
+    - [@defstudio/vite-livewire-plugin](https://github.com/defstudio/vite-livewire-plugin) [Dev]
     - [alpinejs-breakpoints](https://github.com/wrsdesign/alpinejs-breakpoints) [Dev]
     - [tailwind-easing](https://github.com/wrsdesign/tailwind-easing) [Dev]
 
@@ -183,6 +183,7 @@ That's it. You'll have your first project accessible in the end (displaying the 
 
 ## Todos For Development:
 
+- [ ] Add an option to install Lunar framework TALL packege
 - [ ] Consider `phpredis` extension instead of `predis` for both setup and creation scripts
 - [ ] Turn the main skeleton scripter into a NativePHP app
 - [ ] Selective installation process as a self-deleting Composer package

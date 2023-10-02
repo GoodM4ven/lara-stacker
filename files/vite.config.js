@@ -2,6 +2,7 @@ import path from "path";
 import { defineConfig } from 'vite';
 import laravel, { refreshPaths } from 'laravel-vite-plugin';
 
+const host = "<projectName>.test";
 const certPath = path.resolve(__dirname, "./certs/<projectName>.test.pem");
 const keyPath = path.resolve(__dirname, "./certs/<projectName>.test-key.pem");
 
@@ -18,10 +19,11 @@ export default defineConfig({
         }),
     ],
     server: {
+        host,
+        hmr: { host },
         https: {
             cert: certPath,
             key: keyPath,
         },
-        host: "<projectName>.test",
     },
 });

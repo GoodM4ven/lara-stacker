@@ -29,6 +29,7 @@
 - [ctf0.laravel-goto-config](https://github.com/ctf0/laravel-goto-config) [Not on VSX yet]
 - [ctf0.laravel-goto-env](https://github.com/ctf0/laravel-goto-env) [Not on VSX yet]
 - [ctf0.laravel-goto-lang](https://github.com/ctf0/laravel-goto-lang) [Not on VSX yet]
+- [ctf0.laravel-goto-path](https://github.com/ctf0/laravel-goto-path) [Not on VSX yet]
 - [ctf0.laravel-goto-view](https://github.com/ctf0/laravel-goto-view) [Not on VSX yet]
 - [naoray.laravel-goto-components](https://github.com/Naoray/laravel-goto-components) [Not on VSX yet]
 - [austenc.livewire-docs](https://github.com/austenc/vscode-livewire-docs) [Not on VSX yet]
@@ -47,7 +48,7 @@
 - [jeff-hykin.polacode-2019](https://github.com/jeff-hykin/polacode) [Not on VSX yet]
 - [csstools.postcss](https://github.com/csstools/postcss-language)
 - [esbenp.prettier-vscode](https://github.com/prettier/prettier-vscode)
-- [sainoba.px-to-rem](https://github.com/sainoba/vscode-px-to-rem) [Not on VSX yet]
+- [sainoba.px-to-rem](https://github.com/sainoba/vscode-px-to-rem)
 - [dbankier.vscode-quick-select](https://github.com/dbankier/vscode-quick-select) [Not on VSX yet]
 - [jock.svg](https://github.com/lishu/vscode-svg2)
 - [albert.TabOut](https://github.com/albertromkes/tabout)
