@@ -2,26 +2,51 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v2.2.0 - 2023-10-02
+
+v2.2.0
+
+- Fixed Livewire Hot-Reload Vite plugin
+- Updated [README.md]   
+  - Added a TODO to install Lunar TALL package as an option   
+  
+- Fixed a consistency global JS variable naming for AutoAnimate
+- Set Graphite to install during setup script
+- Removed NPM to rely solely on NVM
+- Updated Prettier's preferences
+- Updated VSC extensions list
+- Updated VSC keybindings
+- Updated VSC settings
+
 ## v2.1.6 - 2023-09-24
 
 v2.1.6
 
-- Added AutoAnimate awesome package from FormKit
+- Added AutoAnimate awesome package from FormKit   
+  
 - Reworked my opinionated VSC settings   
+     
   - The snippets not showing in blade templates issue is gone   
   
-- Restored the separate change-log Github action
-- Added missing migration for translation package during creation
-- Fixed migration indentation for translation package during creation
+- Restored the separate change-log Github action   
+  
+- Added missing migration for translation package during creation   
+  
+- Fixed migration indentation for translation package during creation   
+  
 - Commented on extensions for VSX unavailability   
+     
   - Issues were issued on their repositories to remind them all!   
   
-- Fixed the keybinding replacement when not using opinionated Pest
+- Fixed the keybinding replacement when not using opinionated Pest   
+  
 - Modified the the translation-manager filament package config   
+     
   - Disabled the flags display feature   
   - Hidden quick-translation page from the side-panel   
   
 - Updated [README.md]   
+     
   - Added a TODO for considering phpredis instead of predis by default   
   
 
