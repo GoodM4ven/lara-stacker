@@ -2,21 +2,39 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v2.2.1 - 2023-10-03
+
+v2.2.1
+
+- Fixed the livewire updating for localized apps
+- Updated opinionated VSC extensions
+- Updated opinionated VSC keybindings
+- Updated opinionated VSC settings
+
 ## v2.2.0 - 2023-10-02
 
 v2.2.0
 
-- Fixed Livewire Hot-Reload Vite plugin
+- Fixed Livewire Hot-Reload Vite plugin   
+  
 - Updated [README.md]   
+     
   - Added a TODO to install Lunar TALL package as an option   
   
-- Fixed a consistency global JS variable naming for AutoAnimate
-- Set Graphite to install during setup script
-- Removed NPM to rely solely on NVM
-- Updated Prettier's preferences
-- Updated VSC extensions list
-- Updated VSC keybindings
-- Updated VSC settings
+- Fixed a consistency global JS variable naming for AutoAnimate   
+  
+- Set Graphite to install during setup script   
+  
+- Removed NPM to rely solely on NVM   
+  
+- Updated Prettier's preferences   
+  
+- Updated VSC extensions list   
+  
+- Updated VSC keybindings   
+  
+- Updated VSC settings   
+  
 
 ## v2.1.6 - 2023-09-24
 
