@@ -743,6 +743,11 @@ BEGIN { RS = ""; ORS = "\n\n" }
     print "        '\''localeSessionRedirect'\'',";
     print "    ],";
     print "], function () {";
+    print "    // ? Localizing livewire requests";
+    print "    Livewire::setUpdateRoute(function ($handle) {";
+    print "        return Route::post('\''/livewire/update'\'', $handle)->name('\''livewire.update'\'');";
+    print "    });";
+    print "";
     print "    // ? Translate routes";
     print "    Route::middleware('\''localize'\'')->group(function () {";
     print "        // ? Only for guests";

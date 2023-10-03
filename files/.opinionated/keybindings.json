@@ -619,8 +619,15 @@
         "command": "-namespaceResolver.expand",
         "when": "editorTextFocus"
     },
+    // [Laraphense]
     {
         "key": "ctrl+alt+e",
-        "command": "namespaceResolver.expand"
+        "command": "-Laraphense.expand",
+        "when": "editorTextFocus"
     },
+    {
+        "key": "ctrl+alt+e",
+        "command": "Laraphense.expand",
+        "when": "editorTextFocus"
+    }
 ]

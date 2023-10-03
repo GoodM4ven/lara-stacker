@@ -26,15 +26,15 @@
 - [onecentlin.laravel-blade](https://github.com/onecentlin/laravel-blade-snippets-vscode)
 - [IHunte.laravel-blade-wrapper](https://github.com/IHunte/Laravel-Blade-Wrapper) [Not on VSX yet]
 - [austenc.laravel-docs](https://github.com/austenc/vscode-laravel-docs) [Not on VSX yet]
+- [amiralizadeh9480.laravel-extra-intellisense](https://github.com/amir9480/vscode-laravel-extra-intellisense)
 - [ctf0.laravel-goto-config](https://github.com/ctf0/laravel-goto-config) [Not on VSX yet]
 - [ctf0.laravel-goto-env](https://github.com/ctf0/laravel-goto-env) [Not on VSX yet]
 - [ctf0.laravel-goto-lang](https://github.com/ctf0/laravel-goto-lang) [Not on VSX yet]
 - [ctf0.laravel-goto-path](https://github.com/ctf0/laravel-goto-path) [Not on VSX yet]
-- [ctf0.laravel-goto-view](https://github.com/ctf0/laravel-goto-view) [Not on VSX yet]
-- [naoray.laravel-goto-components](https://github.com/Naoray/laravel-goto-components) [Not on VSX yet]
+- [naoray.laravel-goto-components](https://github.com/Naoray/laravel-goto-components)
 - [austenc.livewire-docs](https://github.com/austenc/vscode-livewire-docs) [Not on VSX yet]
-- [lennardv.livewire-goto-updated](https://github.com/lennardv2/vscode-livewire-goto) [Not on VSX yet]
-- [cierra.livewire-vscode](https://github.com/cierrateam/vscode-livewire) [Not on VSX yet]
+- [m4tr1ck.livewire-goto-updated-3](https://github.com/m4tr1ck/vscode-livewire-goto) [Not on VSX yet]
+- [bebo925.livewire-switcher](https://github.com/bebo925/livewire-switcher) [Not on VSX yet]
 - [bierner.markdown-checkbox](https://github.com/mjbvz/vscode-markdown-checkboxes) [Not on VSX yet]
 - [bierner.markdown-emoji](https://github.com/mjbvz/vscode-markdown-emoji) [Not on VSX yet]
 - [bierner.markdown-preview-github-styles](https://github.com/mjbvz/vscode-github-markdown-preview-style)
@@ -44,12 +44,13 @@
 - [MehediDracula.php-constructor](https://github.com/MehediDracula/PHP-Constructor) [Not on VSX yet]
 - [xdebug.php-debug](https://github.com/xdebug/vscode-php-debug)
 - [bmewburn.vscode-intelephense-client](https://github.com/bmewburn/vscode-intelephense)
-- [ctf0.php-namespace-resolver](https://github.com/ctf0/php-namespace-resolver)
+- [MehediDracula.php-namespace-resolver](https://github.com/MehediDracula/php-namespace-resolver)
 - [jeff-hykin.polacode-2019](https://github.com/jeff-hykin/polacode) [Not on VSX yet]
 - [csstools.postcss](https://github.com/csstools/postcss-language)
 - [esbenp.prettier-vscode](https://github.com/prettier/prettier-vscode)
 - [sainoba.px-to-rem](https://github.com/sainoba/vscode-px-to-rem)
 - [dbankier.vscode-quick-select](https://github.com/dbankier/vscode-quick-select) [Not on VSX yet]
+- [foxundermoon.shell-format](https://github.com/foxundermoon/vs-shell-format)
 - [jock.svg](https://github.com/lishu/vscode-svg2)
 - [albert.TabOut](https://github.com/albertromkes/tabout)
 - [bradlc.vscode-tailwindcss](https://github.com/tailwindlabs/tailwindcss-intellisense)
