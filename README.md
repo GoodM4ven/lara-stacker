@@ -21,13 +21,14 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
   - Packages
     - [git](https://github.com/git/git)
     - [curl](https://github.com/curl/curl)
+    - [bun](https://bun.sh)
+    - [npm](https://www.npmjs.com/)
     - [ghostscript](https://ghostscript.readthedocs.io)
     - [ffmpeg](https://github.com/FFmpeg/FFmpeg)
     - [mkcert](https://github.com/FiloSottile/mkcert)
     - [php](https://www.php.net/)
     - [apache2](https://httpd.apache.org/)
     - [composer](https://getcomposer.org/)
-    - [nvm](https://github.com/nvm-sh/nvm)
     - [libnss3-tools](https://packages.ubuntu.com/focal/libnss3-tools)
     - [libgbm-dev](https://packages.debian.org/sid/libgbm-dev)
     - [libnotify-dev](https://packages.debian.org/sid/libnotify-dev)
@@ -61,6 +62,9 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
 - <details><summary>Composer</summary>
   <p>
+
+  - Globals
+    - [Graphite](https://graphite.dev/)
 
   - Essentials
     - [league/flysystem-aws-s3-v3](https://flysystem.thephpleague.com/docs/adapter/aws-s3-v3/)
@@ -116,7 +120,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
   </p>
   </details>
 
-- <details><summary>NPM</summary>
+- <details><summary>Bun</summary>
   <p>
 
   - Essentials
@@ -175,10 +179,21 @@ That's it. You'll have your first project accessible in the end (displaying the 
 > **Note**
 > If you want to debug the process or display all output during the scripts, change the `LOGGING_LEVEL` variable in your [[.env](./.env)] file.
 
+### Breeze Scaffolding
+
+There's an option not to remove Breeze views and routes during the creation script, but you still need to link them yourself afterwards:
+
+1. First, make your [app/Providers/RouteServiceProvider.php] point to `'/dashboard';` as the `$HOME` constant.
+2. Add the `welcome` view to your routes and `name` it `home`.
+3. Also add the rest of Breeze routes by doing `require __DIR__ . '/auth.php';` in your route's file [web.php] as well.
+
+> **Note**
+> If you chose to remove them, however, their controllers are still going to be available for reference...
+
 
 ## Before Production
 
-- Reset [app/Http/Middleware/TrustedProxies.php]'s property to `protected $proxies;`, if you'd provided an Expose token.
+- if you'd provided an Expose token, reset [app/Http/Middleware/TrustedProxies.php]'s property to `protected $proxies;`.
 
 
 ## Todos For Development:

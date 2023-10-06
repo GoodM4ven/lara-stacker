@@ -79,10 +79,10 @@ esac
 # * Installing System Packages
 # * =========================
 
-# git, php, apache2, redis and npm
+# Installing system packages...
 echo -e "Installing system packages..." >&3
 
-sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server -y
+sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server npm -y
 
 sudo sed -i "s~post_max_size = 8M~post_max_size = 100M~g" /etc/php/8.1/apache2/php.ini
 sudo sed -i "s~upload_max_filesize = 2M~upload_max_filesize = 100M~g" /etc/php/8.1/apache2/php.ini
@@ -129,20 +129,25 @@ echo -e "\nInstalling Cypress.io dependency packages..." >&3
 
 sudo apt install libgbm-dev libnotify-dev libgconf-2-4 xvfb -y
 
-# NodeJS Upgrades
-echo -e "\nInstalling NVM to support installing custom NodeJS and NPM versions..." >&3
+# Bun
+echo -e "\nInstalling Bun front-end package manager..." >&3
 
-# ? Check without: npm install -g npm@9.8.1
 sudo -i -u $USERNAME bash <<EOF
-cd /home/$USERNAME/Downloads &&
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash &&
-source /home/$USERNAME/.nvm/nvm.sh &&
-nvm install 16 &&
-nvm use 16
+curl -fsSL https://bun.sh/install | bash
 EOF
 
+export BUN="/home/$USERNAME/.bun/bin/bun"
+
 # Graphite
-npm install -g @withgraphite/graphite-cli@stable
+sudo -i -u $USERNAME bash <<EOF
+if $cancel_suppression; then
+    $BUN add -g @withgraphite/graphite-cli@stable 2>&1
+else
+    $BUN add -g @withgraphite/graphite-cli@stable 2>&1 >/dev/null
+fi
+EOF
+
+echo -e "\nInstalled Graphite version control CLI..." >&3
 
 # Composer (globally)
 echo -e "\nInstalling composer globally..." >&3
@@ -293,7 +298,7 @@ EOF
     echo -e "\nLinked projects directory into [~/Code/Laravel] directory." >&3
 
     # Install Firacode font (if VSC installed)
-    if [[ $USING_VSC == true && $OPINIONATED == true ]]; then
+    if [[ $USING_VSC == true ]]; then
         sudo apt install fonts-firacode -y
 
         echo -e "\nInstalled Firacode font for VSC." >&3
@@ -307,7 +312,7 @@ EOF
     echo -e "\nCreated a [$PROJECTS_DIRECTORY/.packages] directory." >&3
 
     # Add helper aliases to .bashrc
-    echo -e "\n# Laravel Aliases\nalias cda='composer dump-autoload'\nalias art='php artisan'\nalias fresh='php artisan migrate:fresh'\nalias mfs='php artisan migrate:fresh --seed'\nalias opt='php artisan optimize:clear'\nalias dev='npm run dev'\n" >> /home/$USERNAME/.bashrc
+    echo -e "\n# Laravel Aliases\nalias cda='composer dump-autoload'\nalias art='php artisan'\nalias fresh='php artisan migrate:fresh'\nalias mfs='php artisan migrate:fresh --seed'\nalias opt='php artisan optimize:clear'\nalias dev='bun run dev'\n" >> /home/$USERNAME/.bashrc
 
     echo -e "\nAdded some helper aliases to [.bashrc] file. Check 'art' out!" >&3
 fi
@@ -316,7 +321,7 @@ fi
 # * The End
 # * ======
 
-touch $origin_dir/done-setup.flag
+touch $lara_stacker_dir/done-setup.flag
 
 echo -e "\nSetup done successfully. The following are required:\n" >&3
 

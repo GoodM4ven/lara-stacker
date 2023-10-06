@@ -4,8 +4,8 @@ import laravel from 'laravel-vite-plugin';
 import livewire from '@defstudio/vite-livewire-plugin';
 
 const host = "<projectName>.test";
-const certPath = path.resolve(__dirname, "./certs/<projectName>.test.pem");
-const keyPath = path.resolve(__dirname, "./certs/<projectName>.test-key.pem");
+const certPath = path.resolve(__dirname, `./certs/${host}.pem`);
+const keyPath = path.resolve(__dirname, `./certs/${host}-key.pem`);
 
 export default defineConfig({
     plugins: [
@@ -15,11 +15,7 @@ export default defineConfig({
                 'resources/css/filament/admin/theme.css',
                 'resources/js/app.js',
             ],
-            refresh: false,
-        }),
-        livewire({
-            refresh: ['resources/css/app.css'],
-            watch: [
+            refresh: [
                 "app/Filament/**/*.php",
                 "app/Forms/**/*.php",
                 "app/Infolists/**/*.php",
@@ -32,6 +28,7 @@ export default defineConfig({
                 "routes/**",
             ],
         }),
+        livewire(),
     ],
     server: {
         host,

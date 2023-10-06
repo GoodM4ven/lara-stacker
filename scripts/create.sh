@@ -93,26 +93,28 @@ if [ -d "$PROJECTS_DIRECTORY/$escaped_project_name" ]; then
     prompt "\nProject folder already exists!" "Project creation cancelled."
 fi
 
+# TODO Add more stacks
 # Get the stack choice
-while true; do
-    echo -ne "Enter the Laravel stack (tall, tvil, tvil-ssr, tril, tril-ssr, api): " >&3
-    read laravel_stack
+# while true; do
+#     echo -ne "Enter the Laravel stack (tall, tvil, tvil-ssr, tril, tril-ssr, api): " >&3
+#     read laravel_stack
 
-    case "$laravel_stack" in
-    tall)
-        break
-        ;;
-    tvil|tvil-ssr|tril|tril-ssr|api)
-        echo "The stack script is not ready yet..." >&3
-        ;;
-    *)
-        echo "Unknown stack!" >&3
-        ;;
-    esac
-done
+#     case "$laravel_stack" in
+#     tall)
+#         break
+#         ;;
+#     tvil|tvil-ssr|tril|tril-ssr|api)
+#         echo "The stack script is not ready yet..." >&3
+#         ;;
+#     *)
+#         echo "Unknown stack!" >&3
+#         ;;
+#     esac
+# done
+laravel_stack="tall"
 
 # Get whether the project is localized or not
-echo -ne "Is the project localized? (y/n) " >&3
+echo -ne "\nIs the project localized? (y/n) " >&3
 read is_localized
 if [ "$is_localized" = "n" ] || [ "$is_localized" = "N" ] || [ "$is_localized" = "no" ] || [ "$is_localized" = "NO" ]; then
     is_localized=false
@@ -121,12 +123,21 @@ else
 fi
 
 # Get the pest choice
-echo -ne "Do you want to use Laravel Pest over PHPUnit for testing? (y/n) " >&3
+echo -ne "Do you prefer to use Laravel Pest over PHPUnit for testing? (y/n) " >&3
 read use_pest
 if [ "$use_pest" = "n" ] || [ "$use_pest" = "N" ] || [ "$use_pest" = "no" ] || [ "$use_pest" = "NO" ]; then
     use_pest=false
 else
     use_pest=true
+fi
+
+# Get a choice whether to remove Breeze views
+echo -ne "Should most of Breeze stuff be removed? (y/n) " >&3
+read remove_breeze
+if [ "$remove_breeze" = "n" ] || [ "$remove_breeze" = "N" ] || [ "$remove_breeze" = "no" ] || [ "$remove_breeze" = "NO" ]; then
+    remove_breeze=false
+else
+    remove_breeze=true
 fi
 
 # * =================
@@ -262,16 +273,17 @@ composer require --dev laravel/breeze laravel/telescope --with-all-dependencies 
 if [ "$laravel_stack" = "tall" ]; then
     stack="blade"
 fi
-if [ "$laravel_stack" = "tvil" ] || [ "$laravel_stack" = "tvil-ssr" ]; then
-    stack="vue"
-fi
-if [ "$laravel_stack" = "tril" ] || [ "$laravel_stack" = "tril-ssr" ]; then
-    stack="react"
-fi
+# TODO Handle when there are stacks
+# if [ "$laravel_stack" = "tvil" ] || [ "$laravel_stack" = "tvil-ssr" ]; then
+#     stack="vue"
+# fi
+# if [ "$laravel_stack" = "tril" ] || [ "$laravel_stack" = "tril-ssr" ]; then
+#     stack="react"
+# fi
 ssr=""
-if [ "$laravel_stack" = "tvil-ssr" ] || [ "$laravel_stack" = "tril-ssr" ]; then
-    ssr="--ssr"
-fi
+# if [ "$laravel_stack" = "tvil-ssr" ] || [ "$laravel_stack" = "tril-ssr" ]; then
+#     ssr="--ssr"
+# fi
 pest=""
 if [ "$use_pest" == true ]; then
     pest="--pest"
@@ -313,40 +325,71 @@ if [ "$is_localized" == true ]; then
 fi
 
 # * ==========================
-# * NPM Packages Installation
+# * Bun Packages Installation
 # * ========================
 
-echo -e "\nInstalling NPM packages..." >&3
+echo -e "\nInstalling Bun packages..." >&3
+
+export BUN="/home/$USERNAME/.bun/bin/bun"
 
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 
+if $cancel_suppression; then
+    $BUN install 2>&1
+else
+    $BUN install 2>&1 >/dev/null
+fi
+
 if [ "$laravel_stack" = "tall" ]; then
     # TALL packages...
-    npm install @alpinejs/mask @alpinejs/intersect @alpinejs/focus @alpinejs/collapse @alpinejs/morph @ryangjchandler/alpine-hooks @ralphjsmit/alpine-animate
+    if $cancel_suppression; then
+        $BUN add @alpinejs/mask @alpinejs/intersect @alpinejs/focus @alpinejs/collapse @alpinejs/morph @ryangjchandler/alpine-hooks @ralphjsmit/alpine-animate 2>&1
+    else
+        $BUN add @alpinejs/mask @alpinejs/intersect @alpinejs/focus @alpinejs/collapse @alpinejs/morph @ryangjchandler/alpine-hooks @ralphjsmit/alpine-animate 2>&1 >/dev/null
+    fi
 
     # Uninstall axios
-    npm uninstall axios
+    if $cancel_suppression; then
+        $BUN remove axios 2>&1
+    else
+        $BUN remove axios 2>&1 >/dev/null
+    fi
 
     # TALL Dev Packages...
-    npm install --save-dev @defstudio/vite-livewire-plugin alpinejs-breakpoints
+    if $cancel_suppression; then
+        $BUN add --dev @defstudio/vite-livewire-plugin alpinejs-breakpoints 2>&1
+    else
+        $BUN add --dev @defstudio/vite-livewire-plugin alpinejs-breakpoints 2>&1 >/dev/null
+    fi
 fi
 
 # Dev Packages...
-npm install --save-dev tailwindcss postcss postcss-import autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio @whiterussianstudio/tailwind-easing
+if $cancel_suppression; then
+    $BUN add --dev tailwindcss postcss postcss-import autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio @whiterussianstudio/tailwind-easing 2>&1
+else
+    $BUN add --dev tailwindcss postcss postcss-import autoprefixer @tailwindcss/typography @tailwindcss/forms @tailwindcss/aspect-ratio @whiterussianstudio/tailwind-easing 2>&1 >/dev/null
+fi
 
 # Packages...
-npm install @tailwindcss/container-queries tippy.js laravel-wave @formkit/auto-animate
+if $cancel_suppression; then
+    $BUN add @tailwindcss/container-queries tippy.js laravel-wave @formkit/auto-animate 2>&1
+else
+    $BUN add @tailwindcss/container-queries tippy.js laravel-wave @formkit/auto-animate 2>&1 >/dev/null
+fi
+
+# Enforce permissions
+sudo $lara_stacker_dir/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
 
 # ! Currently vulnerable!
 # TODO add to the others when stable
 # Cypress
-sudo $lara_stacker_dir/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
 
 sudo -i -u $USERNAME bash <<EOF
+cd $PROJECTS_DIRECTORY/$escaped_project_name
 if $cancel_suppression; then
-    mkcert npm install --force --save-dev cypress 2>&1
+    $BUN add --force --dev cypress 2>&1
 else
-    mkcert npm install --force --save-dev cypress 2>&1 >/dev/null
+    $BUN add --force --dev cypress 2>&1 >/dev/null
 fi
 EOF
 
@@ -643,8 +686,7 @@ echo -e "\nConfigured Laravel Permission." >&3
 php artisan vendor:publish --provider="Spatie\LaravelSettings\LaravelSettingsServiceProvider" --tag="migrations" $conditional_quiet
 php artisan migrate $conditional_quiet
 
-# TODO change tag to 'config' when PR is approved
-php artisan vendor:publish --provider="Spatie\LaravelSettings\LaravelSettingsServiceProvider" --tag="settings" $conditional_quiet
+php artisan vendor:publish --provider="Spatie\LaravelSettings\LaravelSettingsServiceProvider" --tag="config" $conditional_quiet
 
 echo -e "\nConfigured Laravel Settings." >&3
 
@@ -680,7 +722,9 @@ BEGIN { RS = ""; ORS = "\n\n" }
 { print }' ./routes/web.php > temp.txt && mv temp.txt ./routes/web.php
 fi
 
-mv ./resources/views/welcome.blade.php ./resources/views/home.blade.php
+if [ "$remove_breeze" == true ]; then
+    mv ./resources/views/welcome.blade.php ./resources/views/home.blade.php
+fi
 
 echo -e "\nSet up Breeze routes in place." >&3
 
@@ -727,7 +771,7 @@ BEGIN { RS = ""; ORS = "\n\n" }
     sed -i 's|//|return redirect()->back();|' ./app/Http/Controllers/LoginRedirect.php
 
     if [ "$is_localized" == true ]; then
-        sed -i 's|use Illuminate\\Support\\Facades\\Route;|use App\\Http\\Controllers\\HomeController;\nuse App\\Http\\Controllers\\LoginRedirect;\nuse Illuminate\\Support\\Facades\\Route;\nuse Mcamara\\LaravelLocalization\\Facades\\LaravelLocalization;|' ./routes/web.php
+        sed -i 's|use Illuminate\\Support\\Facades\\Route;|use App\\Http\\Controllers\\HomeController;\nuse App\\Http\\Controllers\\LoginRedirect;\nuse Illuminate\\Support\\Facades\\Route;\nuse Livewire\\Livewire;\nuse Mcamara\\LaravelLocalization\\Facades\\LaravelLocalization;|' ./routes/web.php
         awk '
 /Route::get\('\''\/'\'', function \(\) {/ && !done {
     print "Route::get('\''/'\'', [HomeController::class, '\''home'\''])->name('\''home'\'');";
@@ -789,16 +833,18 @@ use App\\Http\\Controllers\\LoginRedirect;\
 ' ./routes/web.php > temp.txt && mv temp.txt ./routes/web.php
     fi
 
-    sed -i "/App\\Http\\Controllers\\ProfileController;/d" ./routes/web.php
+    sed -i "/App\\\\Http\\\\Controllers\\\\ProfileController;/d" ./routes/web.php
 
-    rm -rf ./app/View
-    rm -rf ./resources/views/auth
-    rm ./resources/views/components/*
-    rm -rf ./resources/views/layouts
-    rm -rf ./resources/views/profile
-    rm ./resources/views/dashboard.blade.php
-    rm ./resources/views/home.blade.php
-    rm ./routes/auth.php
+    if [ "$remove_breeze" == true ]; then
+        rm -rf ./app/View
+        rm -rf ./resources/views/auth
+        rm ./resources/views/components/*
+        rm -rf ./resources/views/layouts
+        rm -rf ./resources/views/profile
+        rm ./resources/views/dashboard.blade.php
+        rm ./resources/views/home.blade.php
+        rm ./routes/auth.php
+    fi
 
     mkdir -p ./resources/views/components/home
     mkdir -p ./resources/views/partials
@@ -824,6 +870,8 @@ use App\\Http\\Controllers\\LoginRedirect;\
 
     sed -i "s/'layout' => 'components.layouts.app',/'layout' => 'components.app',/g" ./config/livewire.php
     sed -i "s/'disk' => null,/'disk' => 's3',/g" ./config/livewire.php
+
+    sed -i "s|const HOME = '/dashboard';|const HOME = '/';|g" ./app/Providers/RouteServiceProvider.php
 
     echo -e "\nConfigured Livewire framework." >&3
 
@@ -1010,14 +1058,15 @@ if [ "$OPINIONATED" == true ]; then
     echo -e "\nUpdated .gitignore file." >&3
 
     if [[ $USING_VSC == true && $OPINIONATED == true ]]; then
-        # Copy the opinionated VSC keybindings
-        sudo cp $lara_stacker_dir/files/.opinionated/keybindings.json ./.vscode/
+        # TODO consider adding shortcuts and settings to the workspace maybe
+        # # Copy the opinionated VSC keybindings
+        # sudo cp $lara_stacker_dir/files/.opinionated/keybindings.json ./.vscode/
 
-        if [ $use_pest == false ]; then
-            sudo sed -i 's/better-pest/better-phpunit/g' ./.vscode/keybindings.json
-        fi
+        # if [ $use_pest == false ]; then
+        #     sudo sed -i 's/better-pest/better-phpunit/g' ./.vscode/keybindings.json
+        # fi
 
-        echo -e "\nCopied VSC workspace key-bindings." >&3
+        # echo -e "\nCopied VSC workspace key-bindings." >&3
 
         # Create a dedicated VSC workspace in Desktop
         cd /home/$USERNAME/Desktop
@@ -1044,10 +1093,19 @@ sudo $lara_stacker_dir/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_pr
 
 echo -e "\nUpdated directory and file permissions all around." >&3
 
-# Build the front-end assets
+# Updated Composer packages
 composer update -n $conditional_quiet
-npm update
-npm run build
+
+echo -e "\nEnsured Composer packages are up-to-date." >&3
+
+# Update and build the front-end assets
+if $cancel_suppression; then
+    $BUN update 2>&1
+    $BUN run build 2>&1
+else
+    $BUN update 2>&1 >/dev/null
+    $BUN run build 2>&1 >/dev/null
+fi
 
 echo -e "\nFront-end assets compiled successfully and everything is up-to-date." >&3
 
