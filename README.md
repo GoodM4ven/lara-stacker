@@ -63,9 +63,6 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 - <details><summary>Composer</summary>
   <p>
 
-  - Globals
-    - [Graphite](https://graphite.dev/)
-
   - Essentials
     - [league/flysystem-aws-s3-v3](https://flysystem.thephpleague.com/docs/adapter/aws-s3-v3/)
     - [laracasts/cypress](https://github.com/laracasts/cypress) [Dev]
@@ -122,6 +119,9 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
 - <details><summary>Bun</summary>
   <p>
+
+  - Globals
+    - [Graphite](https://graphite.dev/)
 
   - Essentials
     - [cypress](https://www.cypress.io/)
