@@ -2,6 +2,27 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v2.3.0 - 2023-10-06
+
+v2.3.0
+
+- Considered Bun instead of npm   
+  - Still restored npm until everyone moves on   
+  - NVM dropped down   
+  - Muting bun progress is possible and done too   
+  
+- Fixed Livewire hot-reload in vite config file
+- Fixed Livewire redirection route for localized apps
+- Fixed cypress front-end installation
+- Added a remove-breeze option during creation
+- Hard-coded 'tall' stack for now since it's the only available
+- Added links to non-vsx extensions for quick access
+- Fixed the done-setup flag during setup script
+- Implemented my PR to laravel-settings spatie package
+- Updated [README.md]   
+  - Written about using Breeze views and routes   
+  
+
 ## v2.2.1 - 2023-10-03
 
 v2.2.1
