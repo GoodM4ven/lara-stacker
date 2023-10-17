@@ -2,24 +2,51 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v2.4.0 - 2023-10-17
+
+v2.4.0
+
+- Fixed setup script supressed feedback (logging level 2)
+- Dropped Cypress.io in favor of Laravel Dusk   
+  - Added Laravel Dusk to be installed during creation      
+    - Added Google Chrome to be installed during setup      
+    - Added a localization testing helper for Dusk      
+    - Added a global Pest testing helper      
+       
+  
+- Updated Vite's Livewire hot-reload settings yet again
+- Fix Xdebug log permissions
+- Fixed Laraphense extension settings
+- Updated [README.md]
+
 ## v2.3.0 - 2023-10-06
 
 v2.3.0
 
 - Considered Bun instead of npm   
+     
   - Still restored npm until everyone moves on   
   - NVM dropped down   
   - Muting bun progress is possible and done too   
   
-- Fixed Livewire hot-reload in vite config file
-- Fixed Livewire redirection route for localized apps
-- Fixed cypress front-end installation
-- Added a remove-breeze option during creation
-- Hard-coded 'tall' stack for now since it's the only available
-- Added links to non-vsx extensions for quick access
-- Fixed the done-setup flag during setup script
-- Implemented my PR to laravel-settings spatie package
+- Fixed Livewire hot-reload in vite config file   
+  
+- Fixed Livewire redirection route for localized apps   
+  
+- Fixed cypress front-end installation   
+  
+- Added a remove-breeze option during creation   
+  
+- Hard-coded 'tall' stack for now since it's the only available   
+  
+- Added links to non-vsx extensions for quick access   
+  
+- Fixed the done-setup flag during setup script   
+  
+- Implemented my PR to laravel-settings spatie package   
+  
 - Updated [README.md]   
+     
   - Written about using Breeze views and routes   
   
 
