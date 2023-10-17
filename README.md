@@ -40,7 +40,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [Mailpit](https://github.com/axllent/mailpit) (http://localhost:8025)
     - [MinIO](https://min.io/) (http://localhost:9000)
   - Active Services
-    - [Expose](https://expose.dev/docs) (Installed if `EXPOSE_TOKEN` is provided in [.env] file. And use `expose share https://[site-name].test` to work properly)
+    - [Expose](https://expose.dev/docs) (Installed if `EXPOSE_TOKEN` is provided in [.env] file. Use `expose share https://[site-name].test` to work properly)
 
   </p>
   </details>
@@ -65,13 +65,10 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
   - Essentials
     - [league/flysystem-aws-s3-v3](https://flysystem.thephpleague.com/docs/adapter/aws-s3-v3/)
-    - [laracasts/cypress](https://github.com/laracasts/cypress) [Dev]
-      - Use `npx cypress open` to run the tester
-      - Checkout this [episode](https://laracasts.com/series/jeffreys-larabits/episodes/22) for more details
     - [predis/predis](https://github.com/predis/predis)
     - [artesaos/seotools](https://github.com/artesaos/seotools)
     - [spatie/laravel-data](https://github.com/spatie/laravel-data)
-    - [laravel/scout](https://laravel.com/docs/10.x/scout)
+    - [laravel/scout](https://laravel.com/docs/scout)
     - [qruto/laravel-wave](https://github.com/qruto/laravel-wave)
     - ["spatie/laravel-medialibrary:^10.0.0"](https://spatie.be/docs/laravel-medialibrary/v10)
     - [spatie/eloquent-sortable](https://github.com/spatie/eloquent-sortable)
@@ -82,8 +79,9 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [blade-ui-kit/blade-icons](https://github.com/blade-ui-kit/blade-icons)
     - [blade-ui-kit/blade-heroicons](https://github.com/blade-ui-kit/blade-heroicons)
     - [gehrisandro/tailwind-merge-laravel](https://github.com/gehrisandro/tailwind-merge-laravel)
-    - [laravel/breeze](https://laravel.com/docs/10.x/starter-kits#laravel-breeze) [Dev]
-    - [laravel/telescope](https://laravel.com/docs/10.x/telescope) (https://project-name.test/telescope) [Dev]
+    - [laravel/dusk](https://laravel.com/docs/dusk) [Dev]
+    - [laravel/breeze](https://laravel.com/docs/starter-kits#laravel-breeze) [Dev]
+    - [laravel/telescope](https://laravel.com/docs/telescope) (https://project-name.test/telescope) [Dev]
   - [Option] TALL Stack
     - [livewire/livewire](https://livewire.laravel.com/)
     - [filament/filament:"^3.0-stable"](https://filamentphp.com/docs/3.x/panels/installation) (https://project-name.test/admin)
@@ -124,7 +122,6 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [Graphite](https://graphite.dev/)
 
   - Essentials
-    - [cypress](https://www.cypress.io/)
     - [laravel-wave](https://github.com/qruto/laravel-wave)
     - [tailwindcss](https://tailwindcss.com/) [Dev]
     - [postcss](https://github.com/postcss/postcss) [Dev]
@@ -219,7 +216,6 @@ There's an option not to remove Breeze views and routes during the creation scri
   - [Laravel](https://laravel.com)
   - [FilamentPHP](https://filamentphp.com)
 - [Pest](https://pestphp.com)
-- [Cypress](https://cypress.io)
 - [Spatie](https://github.com/spatie)
 - ( [Tech Stack List](#tech-stack-list) )
 - ( [VSC Extensions](./files/.opinionated/extensions.md) )

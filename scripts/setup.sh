@@ -56,6 +56,7 @@ lara_stacker_dir=$PWD
 source $lara_stacker_dir/.env
 
 # Setting the echoing level
+conditional_quiet="--quiet"
 cancel_suppression=false
 case $LOGGING_LEVEL in
 # Notifications Only
@@ -71,6 +72,7 @@ case $LOGGING_LEVEL in
 # Everything
 *)
     exec 3>&1
+    conditional_quiet=""
     cancel_suppression=true
     ;;
 esac
@@ -82,11 +84,17 @@ esac
 # Installing system packages...
 echo -e "Installing system packages..." >&3
 
-sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server npm -y
+if $cancel_suppression; then
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server npm -y 2>&1
+else
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server npm -y 2>&1 >/dev/null
+fi
 
 sudo sed -i "s~post_max_size = 8M~post_max_size = 100M~g" /etc/php/8.1/apache2/php.ini
 sudo sed -i "s~upload_max_filesize = 2M~upload_max_filesize = 100M~g" /etc/php/8.1/apache2/php.ini
 sudo sed -i "s~variables_order = \"GPCS\"~variables_order = \"EGPCS\"~g" /etc/php/8.1/apache2/php.ini
+sudo sed -i'' -e 's/zend\.exception_ignore_args\s*=\s*On/zend.exception_ignore_args = Off/' /etc/php/8.1/apache2/php.ini
+sudo sed -i'' -e 's/zend\.exception_ignore_args\s*=\s*On/zend.exception_ignore_args = Off/' /etc/php/8.1/cli/php.ini
 
 sudo systemctl start apache2
 sudo a2enmod rewrite
@@ -109,14 +117,26 @@ echo -e "\nSet up permissions in the projects directly permanently." >&3
 # media packages
 echo -e "\nInstalling media packages..." >&3
 
-sudo apt install php-imagick php-gd ghostscript ffmpeg -y
+if $cancel_suppression; then
+    sudo apt install php-imagick php-gd ghostscript ffmpeg -y 2>&1
+else
+    sudo apt install php-imagick php-gd ghostscript ffmpeg -y 2>&1 >/dev/null
+fi
 
 # Xdebug
 echo -e "\nInstalling PHP Xdebug..." >&3
 
-sudo apt install php-xdebug -y
+if $cancel_suppression; then
+    sudo apt install php-xdebug -y 2>&1
+else
+    sudo apt install php-xdebug -y 2>&1 >/dev/null
+fi
 
 mkdir -p /home/$USERNAME/.config/xdebug
+touch /home/$USERNAME/.config/xdebug/xdebug.log
+
+sudo chown www-data:www-data /home/$USERNAME/.config/xdebug/xdebug.log
+sudo chmod 664 /home/$USERNAME/.config/xdebug/xdebug.log
 
 sudo sed -i "s~zend_extension=xdebug.so~zend_extension=xdebug.so\n\nxdebug.log=\"/home/$USERNAME/.config/xdebug/xdebug.log\"\nxdebug.log_level=10\nxdebug.mode=develop,debug,coverage\nxdebug.client_port=9003\nxdebug.start_with_request=yes\nxdebug.discover_client_host=true~g" /etc/php/8.1/mods-available/xdebug.ini
 
@@ -124,16 +144,26 @@ sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USERNAME/.config/xdebug
 
 sudo systemctl restart apache2
 
-# Cypress.io
-echo -e "\nInstalling Cypress.io dependency packages..." >&3
-
-sudo apt install libgbm-dev libnotify-dev libgconf-2-4 xvfb -y
+# Google Chrome (for Laravel Dusk)
+cd /home/$USERNAME/Downloads/
+if $cancel_suppression; then
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 2>&1
+    sudo apt install -y ./google-chrome-stable_current_amd64.deb 2>&1
+else
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 2>&1 >/dev/null
+    sudo apt install -y ./google-chrome-stable_current_amd64.deb 2>&1 >/dev/null
+fi
+rm google-chrome-stable_current_amd64.deb
 
 # Bun
 echo -e "\nInstalling Bun front-end package manager..." >&3
 
 sudo -i -u $USERNAME bash <<EOF
-curl -fsSL https://bun.sh/install | bash
+if $cancel_suppression; then
+    curl -fsSL https://bun.sh/install | bash 2>&1
+else
+    curl -fsSL https://bun.sh/install | bash 2>&1 >/dev/null
+fi
 EOF
 
 export BUN="/home/$USERNAME/.bun/bin/bun"
@@ -152,27 +182,49 @@ echo -e "\nInstalled Graphite version control CLI..." >&3
 # Composer (globally)
 echo -e "\nInstalling composer globally..." >&3
 
-sudo apt install composer -y
+if $cancel_suppression; then
+    sudo apt install composer -y 2>&1
+else
+    sudo apt install composer -y 2>&1 >/dev/null
+fi
 
 echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >> /home/$USERNAME/.bashrc
 
 # mkcert
 echo -e "\nInstalling mkcert for SSL generation..." >&3
 
-sudo apt install mkcert libnss3-tools -y
+if $cancel_suppression; then
+    sudo apt install mkcert libnss3-tools -y 2>&1
+else
+    sudo apt install mkcert libnss3-tools -y 2>&1 >/dev/null
+fi
 
 # MySQL
 echo -e "\nInstalling MySQL and setting the password to the env-file's..." >&3
 
-sudo apt install mysql-server -y
+if $cancel_suppression; then
+    sudo apt install mysql-server -y 2>&1
+else
+    sudo apt install mysql-server -y 2>&1 >/dev/null
+fi
 
 sudo systemctl start mysql
 
 sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$DB_PASSWORD';"
 
-sudo apt install php-mysql -y
+if $cancel_suppression; then
+    sudo apt install php-mysql -y 2>&1
+else
+    sudo apt install php-mysql -y 2>&1 >/dev/null
+fi
 
 sudo service apache2 restart
+
+# Pest Database
+export MYSQL_PWD=password
+mysql -u root -e "CREATE DATABASE pest;"
+
+echo -e "\nCreated a \"Pest\" MySQL database for testing." >&3
 
 # Mailpit (service)
 echo -e "\nInstalling Mailpit and setting up a service for it..." >&3
@@ -181,7 +233,11 @@ mkdir /home/$USERNAME/Downloads/mailpit
 cd /home/$USERNAME/Downloads/mailpit
 
 release_url=$(curl -s https://api.github.com/repos/axllent/mailpit/releases/latest | grep "browser_download_url.*mailpit-linux-amd64.tar.gz" | cut -d : -f 2,3 | tr -d \")
-curl -L -o mailpit-linux-amd64.tar.gz $release_url
+if $cancel_suppression; then
+    curl -L -o mailpit-linux-amd64.tar.gz $release_url 2>&1
+else
+    curl -L -o mailpit-linux-amd64.tar.gz $release_url 2>&1 >/dev/null
+fi
 
 tar -xzf mailpit-linux-amd64.tar.gz
 sudo chown $USERNAME:$USERNAME mailpit
@@ -207,7 +263,11 @@ RestartSec=10
 WantedBy=multi-user.target" | sudo tee /etc/systemd/system/mailpit.service > /dev/null
 
 sudo systemctl daemon-reload
-sudo systemctl enable mailpit.service
+if $cancel_suppression; then
+    sudo systemctl enable mailpit.service 2>&1
+else
+    sudo systemctl enable mailpit.service 2>&1 >/dev/null
+fi
 sudo systemctl start mailpit.service
 
 # MinIO (server, client, and service)
@@ -216,8 +276,13 @@ echo -e "\nInstalling MinIO and setting up a service for it..." >&3
 mkdir /home/$USERNAME/Downloads/minio
 cd /home/$USERNAME/Downloads/minio
 
-wget https://dl.min.io/server/minio/release/linux-amd64/minio
-wget https://dl.min.io/client/mc/release/linux-amd64/mc
+if $cancel_suppression; then
+    wget https://dl.min.io/server/minio/release/linux-amd64/minio 2>&1
+    wget https://dl.min.io/client/mc/release/linux-amd64/mc 2>&1
+else
+    wget https://dl.min.io/server/minio/release/linux-amd64/minio 2>&1 >/dev/null
+    wget https://dl.min.io/client/mc/release/linux-amd64/mc 2>&1 >/dev/null
+fi
 
 sudo chown $USERNAME:$USERNAME minio
 sudo chmod +x minio
@@ -251,7 +316,11 @@ RestartSec=10
 WantedBy=multi-user.target" | sudo tee /etc/systemd/system/minio.service > /dev/null
 
 sudo systemctl daemon-reload
-sudo systemctl enable minio.service
+if $cancel_suppression; then
+    sudo systemctl enable minio.service 2>&1
+else
+    sudo systemctl enable minio.service 2>&1 >/dev/null
+fi
 sudo systemctl start minio.service
 
 sleep 5
@@ -265,7 +334,11 @@ if [ -n "$EXPOSE_TOKEN" ]; then
     echo -e "\nInstalling Expose and setting up its token to be ready to use..." >&3
 
     cd /home/$USERNAME/Downloads
-    curl https://github.com/beyondcode/expose/raw/master/builds/expose -L --output expose
+    if $cancel_suppression; then
+        curl https://github.com/beyondcode/expose/raw/master/builds/expose -L --output expose 2>&1
+    else
+        curl https://github.com/beyondcode/expose/raw/master/builds/expose -L --output expose 2>&1 >/dev/null
+    fi
 
     sudo chown $USERNAME:$USERNAME expose
     sudo chmod +x expose
@@ -299,7 +372,11 @@ EOF
 
     # Install Firacode font (if VSC installed)
     if [[ $USING_VSC == true ]]; then
-        sudo apt install fonts-firacode -y
+        if $cancel_suppression; then
+            sudo apt install fonts-firacode -y 2>&1
+        else
+            sudo apt install fonts-firacode -y 2>&1 >/dev/null
+        fi
 
         echo -e "\nInstalled Firacode font for VSC." >&3
     fi
@@ -322,6 +399,7 @@ fi
 # * ======
 
 touch $lara_stacker_dir/done-setup.flag
+sudo $lara_stacker_dir/scripts/helpers/permit.sh $lara_stacker_dir/done-setup.flag
 
 echo -e "\nSetup done successfully. The following are required:\n" >&3
 

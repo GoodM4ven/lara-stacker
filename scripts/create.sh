@@ -268,7 +268,7 @@ echo -e "\nInstalling Composer packages..." >&3
 cd $PROJECTS_DIRECTORY/$escaped_project_name
 
 # Breeze package
-composer require --dev laravel/breeze laravel/telescope --with-all-dependencies -n $conditional_quiet
+composer require --dev laravel/breeze --with-all-dependencies -n $conditional_quiet
 
 if [ "$laravel_stack" = "tall" ]; then
     stack="blade"
@@ -305,7 +305,7 @@ if [ "$is_localized" == true ]; then
 fi
 
 # Dev Packages
-composer require laracasts/cypress --dev -n $conditional_quiet
+composer require laravel/dusk laravel/telescope --dev -n $conditional_quiet
 
 # Non-dev Packages...
 composer require --with-all-dependencies -n league/flysystem-aws-s3-v3:"^3.0" predis/predis laravel/scout spatie/laravel-medialibrary spatie/laravel-data spatie/eloquent-sortable spatie/laravel-sluggable spatie/laravel-tags spatie/laravel-settings blade-ui-kit/blade-icons spatie/laravel-permission qruto/laravel-wave gehrisandro/tailwind-merge-laravel artesaos/seotools $conditional_quiet
@@ -380,19 +380,6 @@ fi
 # Enforce permissions
 sudo $lara_stacker_dir/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/$escaped_project_name
 
-# ! Currently vulnerable!
-# TODO add to the others when stable
-# Cypress
-
-sudo -i -u $USERNAME bash <<EOF
-cd $PROJECTS_DIRECTORY/$escaped_project_name
-if $cancel_suppression; then
-    $BUN add --force --dev cypress 2>&1
-else
-    $BUN add --force --dev cypress 2>&1 >/dev/null
-fi
-EOF
-
 # * =======================
 # * Package Configurations
 # * =====================
@@ -403,6 +390,29 @@ cd $PROJECTS_DIRECTORY/$escaped_project_name
 php artisan migrate $conditional_quiet
 
 echo -e "\nRan the migrations initially." >&3
+
+# Laravel Dusk
+php artisan dusk:install $conditional_quiet
+
+echo -e "\nInstalled Laravel Dusk and its standalone ChromeDriver." >&3
+
+if [ "$use_pest" == true ]; then
+    sed -i'' -e '/use Tests\\TestCase;/a\
+use Tests\\DuskTestCase;' ./tests/Pest.php
+    sed -i'' -e '/uses(TestCase::class, RefreshDatabase::class)->in('\''Feature'\'');/a\
+uses(DuskTestCase::class, RefreshDatabase::class)->in('\''Browser'\'');' ./tests/Pest.php
+    sed -i '/function something()/,/}/c\function booleanHead(array $booleanArray): bool\n{\n    return filter_var(head($booleanArray), FILTER_VALIDATE_BOOLEAN);\n}' ./tests/Pest.php
+
+    if [ "$is_localized" == true ]; then
+        sed -i '/use Illuminate\\Foundation\\Testing\\TestCase as BaseTestCase;/a\use Mcamara\\LaravelLocalization\\LaravelLocalization;' ./tests/TestCase.php
+        sed -i '/use CreatesApplication;/a\
+    \n    protected function setUp(): void\n    {\n        parent::setUp();\n\n        $this->withoutVite();\n    }\n\n    protected function tearDown(): void\n    {\n        putenv(LaravelLocalization::ENV_ROUTE_KEY);\n\n        parent::tearDown();\n    }\n\n    protected function identifyLocalizedRoutesForLocale(string $locale)\n    {\n        self::tearDown();\n\n        putenv(LaravelLocalization::ENV_ROUTE_KEY . \"=\" . $locale);\n\n        self::setUp();\n    }' ./tests/TestCase.php
+    fi
+
+    rm ./tests/Browser/Pages/HomePage.php
+
+    echo -e "\nIntegrated Laravel Dusk with Pest and added a helper method!" >&3
+fi
 
 # TaliwindCSS framework
 mkdir -p ./resources/css/packages
@@ -425,11 +435,6 @@ fi
 php artisan vendor:publish --provider="TailwindMerge\Laravel\TailwindMergeServiceProvider" $conditional_quiet
 
 echo -e "\nConfigured TailwindCSS framework and TailwindMerge package." >&3
-
-# Cypress framework
-php artisan cypress:boilerplate $conditional_quiet
-
-echo -e "\nConfigured front-end testing with Cypress." >&3
 
 # Laravel Data package
 php artisan vendor:publish --provider="Spatie\LaravelData\LaravelDataServiceProvider" --tag="data-config" $conditional_quiet

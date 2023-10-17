@@ -29,6 +29,7 @@ export default {
                 'dark-background-1': colors.gray['800'],
                 'dark-background-2': colors.gray['900'],
                 primary: {
+                    50: '#e8f7fb',
                     100: '#cdf0f6',
                     200: '#9be2ee',
                     300: '#6ad3e5',
@@ -38,8 +39,10 @@ export default {
                     700: '#046d7f',
                     800: '#024955',
                     900: '#01242a',
+                    950: '#001519',
                 },
                 'dark-primary': {
+                    50: '#fee7e7',
                     100: '#fcdada',
                     200: '#f9b4b4',
                     300: '#f58f8f',
@@ -49,6 +52,7 @@ export default {
                     700: '#8f2929',
                     800: '#601b1b',
                     900: '#300e0e',
+                    950: '#1a0707',
                 },
             },
             transitionProperty: {},

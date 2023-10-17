@@ -12,6 +12,7 @@
 - [m1guelpf.better-pest](https://github.com/m1guelpf/better-pest) [Not on VSX yet | [Market Link](https://marketplace.visualstudio.com/items?itemName=m1guelpf.better-pest)]
 - [calebporzio.better-phpunit](https://github.com/calebporzio/better-phpunit) [Not on VSX yet | [Market Link](https://marketplace.visualstudio.com/items?itemName=calebporzio.better-phpunit)]
 - [wmaurer.change-case](https://github.com/wmaurer/vscode-change-case)
+- [naumovs.color-highlight](https://github.com/enyancc/vscode-ext-color-highlight)
 - [Equinusocio.vsc-community-material-theme](https://github.com/material-theme/vsc-community-material-theme) (Darker High Contrast)
 - [moshfeu.compare-folders](https://github.com/moshfeu/vscode-compare-folders)
 - [cshum.convert-newline-list-to-array](https://github.com/colinshum/vsc-newline-to-array) [Not on VSX yet | [Market Link](https://marketplace.visualstudio.com/items?itemName=cshum.convert-newline-list-to-array)]
@@ -55,7 +56,7 @@
 - [albert.TabOut](https://github.com/albertromkes/tabout)
 - [bradlc.vscode-tailwindcss](https://github.com/tailwindlabs/tailwindcss-intellisense)
 - [austenc.tailwind-docs](https://github.com/austenc/vscode-tailwind-docs) [Not on VSX yet | [Market Link](https://marketplace.visualstudio.com/items?itemName=austenc.tailwind-docs)]
-- [bourhaouta.tailwindshades](https://github.com/bourhaouta/vscode-tailwindshades) [Not on VSX yet | [Market Link](https://marketplace.visualstudio.com/items?itemName=bourhaouta.tailwindshades)]
+- [GoodM4ven.vsc-tailwind-shades-generator](https://github.com/GoodM4ven/vsc-tailwind-shades-generator)
 - [jkjustjoshing.vscode-text-pastry](https://github.com/jkjustjoshing/vscode-text-pastry) [Not on VSX yet | [Market Link](https://marketplace.visualstudio.com/items?itemName=jkjustjoshing.vscode-text-pastry)]
 - [Gruntfuggly.todo-tree](https://github.com/Gruntfuggly/todo-tree)
 - [hideoo.trailing](https://github.com/HiDeoo/trailing)

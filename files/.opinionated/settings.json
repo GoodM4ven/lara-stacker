@@ -124,17 +124,17 @@
         ["TailwindMerge::merge\\(\\[?([^\\]]*)\\]?\\)", "'([^']*)'"]
     ],
     // [INTEL - Laraphense]
-    "Laraphense.disableAssetCompletion": true,
-    "Laraphense.disableBladeCompletion": true,
-    "Laraphense.disableEloquentCompletion": true,
-    "Laraphense.disableConfigCompletion": true,
-    "Laraphense.disableEnvCompletion": true,
-    "Laraphense.disableMiddlewareCompletion": true,
-    "Laraphense.disableRouteCompletion": true,
-    "Laraphense.disableTranslationCompletion": true,
-    "Laraphense.disableValidationCompletion": true,
-    "Laraphense.disableViewCompletion": true,
-    "Laraphense.expandLeadingNamespaceSeparator": false,
+    "laraphense.disableAssetCompletion": true,
+    "laraphense.disableBladeCompletion": true,
+    "laraphense.disableEloquentCompletion": true,
+    "laraphense.disableConfigCompletion": true,
+    "laraphense.disableEnvCompletion": true,
+    "laraphense.disableMiddlewareCompletion": true,
+    "laraphense.disableRouteCompletion": true,
+    "laraphense.disableTranslationCompletion": true,
+    "laraphense.disableValidationCompletion": true,
+    "laraphense.disableViewCompletion": true,
+    "laraphense.expandLeadingNamespaceSeparator": false,
     // // [INTEL - Alpine.js IntelliSense]
     // "alpine-intellisense.settings.languageScopes": "blade", // TODO uncomment when intel shows within elements only
 }
