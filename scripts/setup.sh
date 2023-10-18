@@ -85,9 +85,9 @@ esac
 echo -e "Installing system packages..." >&3
 
 if $cancel_suppression; then
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server npm -y 2>&1
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 redis-server npm -y 2>&1
 else
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip redis-server npm -y 2>&1 >/dev/null
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 redis-server npm -y 2>&1 >/dev/null
 fi
 
 sudo sed -i "s~post_max_size = 8M~post_max_size = 100M~g" /etc/php/8.1/apache2/php.ini

@@ -52,6 +52,7 @@ SCRIPTS=(
     "./scripts/setup.sh"
     "./scripts/list.sh"
     "./scripts/create.sh"
+    "./scripts/create_raw.sh"
     "./scripts/delete.sh"
     "./scripts/update.sh"
     "./scripts/helpers/permit.sh"
@@ -120,7 +121,7 @@ while true; do
 
     echo -e "Available Operations:\n"
 
-    options=("1. List Projects" "2. Create Project" "3. Delete Project" "4. Exit")
+    options=("1. List Projects" "2. Create Project" "3. Create Raw Project" "4. Delete Project" "5. Exit")
 
     # Conditional options
     if [[ -f "/tmp/updated-lara-stacker.flag" ]]; then
@@ -128,7 +129,7 @@ while true; do
         update_available=false
     fi
     if [ "$update_available" == true ]; then
-        options+=("5. Download Updates")
+        options+=("6. Download Updates")
     fi
     if [[ ! -f "$lara_stacker_dir/done-setup.flag" ]]; then
         options+=("0. Initial Setup")
@@ -164,13 +165,16 @@ while true; do
         sudo RAN_MAIN_SCRIPT="true" ./scripts/create.sh
         ;;
     3)
-        sudo RAN_MAIN_SCRIPT="true" ./scripts/delete.sh
+        sudo RAN_MAIN_SCRIPT="true" ./scripts/create_raw.sh
         ;;
     4)
+        sudo RAN_MAIN_SCRIPT="true" ./scripts/delete.sh
+        ;;
+    5)
         echo -e "\nExiting Lara-Stacker...\n"
         exit 0
         ;;
-    5)
+    6)
         if [ "$update_available" == false ]; then
             prompt "-=|[ Lara-Stacker [$current_version] ]|=-" "Invalid option! Please type one the of digits in the list..." false false
         else

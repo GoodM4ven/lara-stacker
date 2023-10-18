@@ -372,9 +372,9 @@ fi
 
 # Packages...
 if $cancel_suppression; then
-    $BUN add @tailwindcss/container-queries tippy.js laravel-wave @formkit/auto-animate 2>&1
+    $BUN add @tailwindcss/container-queries tippy.js laravel-wave @formkit/auto-animate motion 2>&1
 else
-    $BUN add @tailwindcss/container-queries tippy.js laravel-wave @formkit/auto-animate 2>&1 >/dev/null
+    $BUN add @tailwindcss/container-queries tippy.js laravel-wave @formkit/auto-animate motion 2>&1 >/dev/null
 fi
 
 # Enforce permissions

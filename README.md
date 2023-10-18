@@ -29,6 +29,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [php](https://www.php.net/)
     - [apache2](https://httpd.apache.org/)
     - [composer](https://getcomposer.org/)
+    - [sqlite3](https://www.sqlite.org/index.html)
     - [libnss3-tools](https://packages.ubuntu.com/focal/libnss3-tools)
     - [libgbm-dev](https://packages.debian.org/sid/libgbm-dev)
     - [libnotify-dev](https://packages.debian.org/sid/libnotify-dev)
@@ -122,16 +123,17 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
     - [Graphite](https://graphite.dev/)
 
   - Essentials
+    - [tippy.js](https://atomiks.github.io/tippyjs/)
     - [laravel-wave](https://github.com/qruto/laravel-wave)
+    - [@formkit/auto-animate](https://github.com/formkit/auto-animate)
+    - [motion](https://github.com/motiondivision/motionone)
+    - [@tailwindcss/container-queries](https://github.com/tailwindlabs/tailwindcss-container-queries)
     - [tailwindcss](https://tailwindcss.com/) [Dev]
     - [postcss](https://github.com/postcss/postcss) [Dev]
     - [autoprefixer](https://github.com/postcss/autoprefixer) [Dev]
-    - [@formkit/auto-animate](https://github.com/formkit/auto-animate) [Dev]
     - [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin) [Dev]
     - [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms) [Dev]
     - [@tailwindcss/aspect-ratio](https://github.com/tailwindlabs/tailwindcss-aspect-ratio) [Dev]
-    - [@tailwindcss/container-queries](https://github.com/tailwindlabs/tailwindcss-container-queries) [Dev]
-    - [tippy.js](https://atomiks.github.io/tippyjs/) [Dev]
   - [Option] TALL Stack
     - [alpinejs](https://alpinejs.dev/) (Already included in Livewire now!)
     - [@alpinejs/mask](https://alpinejs.dev/plugins/mask)

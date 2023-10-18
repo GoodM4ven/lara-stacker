@@ -78,11 +78,15 @@
     >
     <link
         href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
-        rel="stylesheet"
+        rel="preload"
+        as="style"
+        onload="this.onload=null; this.rel='stylesheet';"
     >
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
+        rel="preload"
+        as="style"
+        onload="this.onload=null; this.rel='stylesheet';"
     >
     @stack('fonts')
 
