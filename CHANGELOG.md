@@ -2,22 +2,38 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v2.5.0 - 2023-10-18
+
+v2.5.0
+
+- Added the ability to raw-create projects without a single modification
+- Added SQlite installation during setup script
+- Updated [./README.md]
+- Added motion to be installed to front-end packages
+- Fixed fonts preloading issue
+
 ## v2.4.0 - 2023-10-17
 
 v2.4.0
 
-- Fixed setup script supressed feedback (logging level 2)
+- Fixed setup script supressed feedback (logging level 2)   
+  
 - Dropped Cypress.io in favor of Laravel Dusk   
+     
   - Added Laravel Dusk to be installed during creation      
     - Added Google Chrome to be installed during setup      
     - Added a localization testing helper for Dusk      
     - Added a global Pest testing helper      
        
   
-- Updated Vite's Livewire hot-reload settings yet again
-- Fix Xdebug log permissions
-- Fixed Laraphense extension settings
-- Updated [README.md]
+- Updated Vite's Livewire hot-reload settings yet again   
+  
+- Fix Xdebug log permissions   
+  
+- Fixed Laraphense extension settings   
+  
+- Updated [README.md]   
+  
 
 ## v2.3.0 - 2023-10-06
 
