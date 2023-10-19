@@ -2,6 +2,15 @@
 
 All notable changes to `lara-stacker` will be documented in this file.
 
+## v2.6.0 - 2023-10-19
+
+v2.6.0
+
+- MySQL databases management scripts
+- Better option menus navigation
+- Modified prompt script helper function
+- Updated [./README.md]
+
 ## v2.5.0 - 2023-10-18
 
 v2.5.0
