@@ -3,7 +3,7 @@
 clear
 
 # Status indicator
-echo -e "-=|[ Lara-Stacker |> DELETE ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> Stacked Projects |> DELETE ]|=-\n"
 
 # * ===========
 # * Validation

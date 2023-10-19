@@ -171,7 +171,7 @@ This way, I don't have to worry about the things I've mentioned, plus I gain the
 
 - Choose to [**setup**](./scripts/setup.sh) the lara stacker first, which will install everything necessary and eventually create a [[done-setup.flag](./done-setup.flag)] file in the directory.
 
-- Then choose to [**create**](./scripts/create.sh) your first stacked project and continue onwards...
+- Then choose to either create a [**stacked**](./scripts/create.sh) laravel application or just a [**raw**](./scripts/create_raw.sh) one and continue onwards...
 
 That's it. You'll have your first project accessible in the end (displaying the site's URL too). JUST be PATIENT! `:)`
 

@@ -3,7 +3,7 @@
 clear
 
 # Status indicator
-echo -e "-=|[ Lara-Stacker |> Stacked Projects |> LIST ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> Database Management |> LIST ]|=-\n"
 
 # * ===========
 # * Validation
@@ -41,29 +41,15 @@ source $lara_stacker_dir/.env
 # * The Listing
 # * ==========
 
-# Count the number of directories and list their names
-count=0
-for dir in $(ls -d $PROJECTS_DIRECTORY/*/ 2>/dev/null)
-do
-    if [ ! -d "$dir" ]
-    then
-        continue
-    fi
-    (( count++ ))
-    echo "$dir"
-done
-
-if [ $count -gt 0 ]; then
-    echo ""
-fi
+# Get MySQL databases
+export MYSQL_PWD=$DB_PASSWORD
+mysql -u root -e "SHOW DATABASES;"
 
 # * ========
 # * The End
 # * ======
 
-# Display the total count of directories found
-echo -e "Total projects: $count\n"
-
+echo -e ""
 read -p "Press any key to continue..." whatever
 
 clear

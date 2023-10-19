@@ -4,6 +4,7 @@ prompt() {
     local second_sentence="${2:-}"
     local should_exit="${3:-true}"
     local muted_mode="${4:-true}"
+    local without_warning="${5:-false}"
 
     local mute=""
     if [ "$muted_mode" == "true" ]; then
@@ -15,7 +16,11 @@ prompt() {
     if [ "$should_exit" == "false" ]; then
         error_or_warning="Warning: "
     fi
-    eval echo -e \"$error_or_warning $first_sentence\\n\" $mute
+    if [ "$without_warning" == true ]; then
+        eval echo -e \"$first_sentence\\n\" $mute
+    else
+        eval echo -e \"$error_or_warning $first_sentence\\n\" $mute
+    fi
 
     # Display a tip if available
     if [[ -n $second_sentence ]]; then

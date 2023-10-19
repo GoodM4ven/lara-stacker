@@ -3,7 +3,7 @@
 clear
 
 # Status indicator
-echo -e "-=|[ Lara-Stacker |> CREATE ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> Stacked Projects |> CREATE ]|=-\n"
 
 # * ===========
 # * Validation
