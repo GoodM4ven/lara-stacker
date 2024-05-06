@@ -1,6 +1,0 @@
-@import './packages/tippy.css';
-@import './packages/alpinejs-breakpoints.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

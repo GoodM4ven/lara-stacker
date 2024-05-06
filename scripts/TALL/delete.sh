@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> CREATE RAW ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> DELETE ]|=-\n"
 
 # * ===========
 # * Validation
@@ -39,7 +39,8 @@ sourceIfAvailable() {
 }
 
 # * Source the necessary functions
-sourceIfAvailable "xdebugUp"
+sourceIfAvailable "apacheDown"
+sourceIfAvailable "mysqlDown"
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
@@ -71,30 +72,27 @@ fi
 # ? Get environment variables and defaults
 lara_stacker_dir=$PWD
 source $lara_stacker_dir/.env
+projects_directory=/var/www/html
 
 # ? Set the echoing level
-conditional_quiet="--quiet"
-cancel_suppression=false
 case $LOGGING_LEVEL in
 # Notifications Only
 1)
     exec 3>&1
-    exec > /dev/null 2>&1
+    exec >/dev/null 2>&1
     ;;
 # Notifications + Errors + Warnings
 2)
     exec 3>&1
-    exec > /dev/null
+    exec >/dev/null
     ;;
 # Everything
 *)
     exec 3>&1
-    conditional_quiet=""
-    cancel_suppression=true
     ;;
 esac
 
-# ? Check for VSC
+# ? Check for VSCodium or VSC existence
 USING_VSC=false
 if command -v codium >/dev/null 2>&1 || command -v code >/dev/null 2>&1; then
     USING_VSC=true
@@ -104,64 +102,57 @@ fi
 # * Input
 # * ====
 
-# ? Get the project path from the user
-echo -ne "Enter the full project path (e.g., /home/$USERNAME/Code/my_laravel_app): " >&3
-read full_directory
+# ? Get the project name from the user
+echo -n "Enter the project name: " >&3
+read project_name
 
-full_directory="${full_directory%/}"
-project_path=$(dirname "$full_directory")
-project_name=$(basename "$full_directory")
+escaped_project_name=$(echo "$project_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
+escaped_project_name=${escaped_project_name// /}
 
-# ? Cancel if the project path directory doesn't exists
-if [ ! -d "$project_path" ]; then
-    prompt "The project containing path doesn't exist!" "Raw project creation cancelled."
-fi
-
-# ? Cancel if the project directory already exists
-if [ -d "$project_path/$project_name" ]; then
-    prompt "Project folder already exist within the previously given path!" "Raw project creation cancelled."
+# ? Check if the project doesn't exist
+if ! [ -d "$projects_directory/$escaped_project_name" ]; then
+    prompt "Project \"$escaped_project_name\" doesn't exist."
 fi
 
 # * ========
 # * Process
 # * ======
 
-# ? ===============================================================
-# ? Create the Laravel raw project in the provided path and folder
-# ? =============================================================
+cd $projects_directory
 
-echo -e "\nInstalling the project via Composer..." >&3
+# ? Remove the project workspace if exists
+if [[ $USING_VSC == true && $OPINIONATED == true ]]; then
+    if [ -f /home/$USERNAME/Desktop/$escaped_project_name.code-workspace ]; then
+        sudo rm /home/$USERNAME/Desktop/$escaped_project_name.code-workspace
 
-cd $project_path/
-composer create-project laravel/laravel $project_name -n $conditional_quiet
+        echo -e "\nRemoved the VSC workspace." >&3
+    fi
+fi
 
-# ? Enforce permissions
-sudo $lara_stacker_dir/scripts/helpers/permit.sh $project_path/$project_name
+# ? Delete the Apache site
+apacheDown $escaped_project_name
 
-# ? =================================================
-# ? Update the project name in environment variables
-# ? ===============================================
+# ? Drop its MySQL database if it exists
+mysqlDown $escaped_project_name $DB_PASSWORD
 
-cd $project_path/$project_name
+# ? Delete the MinIO storage
+if [ -d "/home/$USERNAME/.config/minio/data/$escaped_project_name" ]; then
+    rm -rf /home/$USERNAME/.config/minio/data/$escaped_project_name
 
-sed -i "s/APP_NAME=Laravel/APP_NAME=\"$project_name\"/g" ./.env
+    echo -e "\nDeleted '$escaped_project_name' MinIO storage." >&3
+fi
 
-echo -e "\nCreated and named the raw Laravel application." >&3
+# ? Delete project files
+sudo rm -rf $projects_directory/$escaped_project_name
 
-# ? Set up launch.json for debugging (Xdebug), if VSC is used
-xdebugUp $USING_VSC $project_name $lara_stacker_dir $project_path
+echo -e "\nDeleted project files." >&3
 
 # * ========
 # * The End
 # * ======
 
-# ? Enforce permissions
-sudo $lara_stacker_dir/scripts/helpers/permit.sh $project_path/$project_name
-
-echo -e "\nUpdated directory and file permissions all around." >&3
-
 # * Display a success message
-echo -e "\nLaravel project created successfully! Run [art serve] from within its directory to start.\n" >&3
+echo -e "\nProject $project_name deleted successfully!\n" >&3
 
 # * Prompt to continue
 echo -n "Press any key to continue..." >&3

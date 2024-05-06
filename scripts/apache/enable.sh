@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> CREATE RAW ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> Apache Site Management |> ENABLE ]|=-\n"
 
 # * ===========
 # * Validation
@@ -39,7 +39,7 @@ sourceIfAvailable() {
 }
 
 # * Source the necessary functions
-sourceIfAvailable "xdebugUp"
+sourceIfAvailable "apacheUp"
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
@@ -94,77 +94,31 @@ case $LOGGING_LEVEL in
     ;;
 esac
 
-# ? Check for VSC
-USING_VSC=false
-if command -v codium >/dev/null 2>&1 || command -v code >/dev/null 2>&1; then
-    USING_VSC=true
-fi
-
-# * ======
-# * Input
-# * ====
-
-# ? Get the project path from the user
-echo -ne "Enter the full project path (e.g., /home/$USERNAME/Code/my_laravel_app): " >&3
-read full_directory
-
-full_directory="${full_directory%/}"
-project_path=$(dirname "$full_directory")
-project_name=$(basename "$full_directory")
-
-# ? Cancel if the project path directory doesn't exists
-if [ ! -d "$project_path" ]; then
-    prompt "The project containing path doesn't exist!" "Raw project creation cancelled."
-fi
-
-# ? Cancel if the project directory already exists
-if [ -d "$project_path/$project_name" ]; then
-    prompt "Project folder already exist within the previously given path!" "Raw project creation cancelled."
-fi
-
 # * ========
 # * Process
 # * ======
 
-# ? ===============================================================
-# ? Create the Laravel raw project in the provided path and folder
-# ? =============================================================
+# ? Get the site name
+echo -ne "Enter the site name: " >&3
+read site_name
 
-echo -e "\nInstalling the project via Composer..." >&3
+# ? Escape and format the name
+escaped_name=$(echo "$site_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
+escaped_name=${escaped_name// /}
 
-cd $project_path/
-composer create-project laravel/laravel $project_name -n $conditional_quiet
-
-# ? Enforce permissions
-sudo $lara_stacker_dir/scripts/helpers/permit.sh $project_path/$project_name
-
-# ? =================================================
-# ? Update the project name in environment variables
-# ? ===============================================
-
-cd $project_path/$project_name
-
-sed -i "s/APP_NAME=Laravel/APP_NAME=\"$project_name\"/g" ./.env
-
-echo -e "\nCreated and named the raw Laravel application." >&3
-
-# ? Set up launch.json for debugging (Xdebug), if VSC is used
-xdebugUp $USING_VSC $project_name $lara_stacker_dir $project_path
+# ? Host the Apache site if it doesn't exist
+if [[ ! -f "/etc/apache2/sites-available/$escaped_name.conf" ]]; then
+    apacheUp $escaped_name $USERNAME $cancel_suppression $lara_stacker_dir
+else
+    echo -e "\nThe site with the given name '$escaped_name' already exists." >&3
+fi
 
 # * ========
 # * The End
 # * ======
 
-# ? Enforce permissions
-sudo $lara_stacker_dir/scripts/helpers/permit.sh $project_path/$project_name
-
-echo -e "\nUpdated directory and file permissions all around." >&3
-
-# * Display a success message
-echo -e "\nLaravel project created successfully! Run [art serve] from within its directory to start.\n" >&3
-
 # * Prompt to continue
-echo -n "Press any key to continue..." >&3
+echo -ne "\nPress any key to continue..." >&3
 read whatever
 
 clear >&3
