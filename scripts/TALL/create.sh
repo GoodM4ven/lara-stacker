@@ -9,42 +9,17 @@ echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> CREATE ]|=-\n"
 # * Validation
 # * =========
 
-# ? Check if prompt function exists and source it
-function_path="./scripts/functions/prompt.sh"
-if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
-
-    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
-
-    echo -n "Press any key to exit..."
-    read whatever
-
-    clear
-    exit 1
-fi
-source $function_path
-
-# ? A function to check for a function existence in order to source it
-sourceIfAvailable() {
-    local functionNameCamel=$1
-    local functionNameSnake=$(echo $1 | sed -r 's/([a-z])([A-Z])/\1_\L\2/g')
-    local functionPath="./scripts/functions/${functionNameSnake}.sh"
-
-    if [[ ! -f $functionPath ]]; then
-        prompt "Working directory isn't the script's main; as \"${functionNameCamel^}\" function is missing." \
-               "Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands."
-    else
-        source $functionPath
+# ? Source the helper function scripts first
+functions=(
+    "./scripts/functions/helpers/prompt.sh"
+    "./scripts/functions/helpers/sourcer.sh"
+)
+for script in "${functions[@]}"; do
+    if [[ ! -f "$script" ]] || ! chmod +x "$script" || ! source "$script"; then
+        echo -e "Error: The essential script '$script' was not found. Exiting..."
+        exit 1
     fi
-}
-
-# * Source the necessary functions
-sourceIfAvailable "apacheUp"
-sourceIfAvailable "viteUp"
-sourceIfAvailable "mysqlUp"
-sourceIfAvailable "minioUp"
-sourceIfAvailable "workspaceUp"
-sourceIfAvailable "xdebugUp"
+done
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
@@ -52,21 +27,9 @@ if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
 fi
 
 # ? Confirm if setup script isn't run already
+sourcer "helpers.continueOrAbort"
 if [ ! -e "$PWD/done-setup.flag" ]; then
-    echo -n "Setup script isn't run yet. Are you sure you want to continue? (y/n) "
-    read confirmation
-
-    case "$confirmation" in
-    n|N|no|No|NO|nope|Nope|NOPE)
-        echo -e "\nAborting...\n"
-
-        echo -n "Press any key to continue..."
-        read whatever
-
-        clear
-        exit 1
-        ;;
-    esac
+    continueOrAbort "Setup script isn't run yet." "Aborting..."
 fi
 
 # * ============
@@ -76,7 +39,6 @@ fi
 # ? Get environment variables and defaults
 lara_stacker_dir=$PWD
 source $lara_stacker_dir/.env
-projects_directory=/var/www/html
 
 # ? Set the echoing level
 conditional_quiet="--quiet"
@@ -85,12 +47,12 @@ case $LOGGING_LEVEL in
 # Notifications Only
 1)
     exec 3>&1
-    exec > /dev/null 2>&1
+    exec >/dev/null 2>&1
     ;;
 # Notifications + Errors + Warnings
 2)
     exec 3>&1
-    exec > /dev/null
+    exec >/dev/null
     ;;
 # Everything
 *)
@@ -100,7 +62,7 @@ case $LOGGING_LEVEL in
     ;;
 esac
 
-# ? Check for VSCodium or VSC existence
+# ? Check if VSCodium or VSC is installed
 USING_VSC=false
 if command -v codium >/dev/null 2>&1 || command -v code >/dev/null 2>&1; then
     USING_VSC=true
@@ -109,6 +71,8 @@ fi
 # * ======
 # * Input
 # * ====
+
+projects_directory=/var/www/html
 
 # ? Get the project name from the user
 echo -ne "Enter the project name: " >&3
@@ -126,6 +90,14 @@ fi
 # * Initialization
 # * =============
 
+# ? Source the procedural function scripts now
+sourcer "apacheUp"
+sourcer "viteUp"
+sourcer "mysqlUp"
+sourcer "minioUp"
+sourcer "workspaceUp"
+sourcer "xdebugUp"
+
 # ? =====================================================
 # ? Create the Laravel project in the projects directory
 # ? ===================================================
@@ -133,24 +105,25 @@ fi
 echo -e "\nInstalling the project via Composer..." >&3
 
 cd $projects_directory/
+
 composer create-project laravel/laravel $escaped_project_name -n $conditional_quiet
 
 sudo $lara_stacker_dir/scripts/helpers/permit.sh $projects_directory/$escaped_project_name
 
 # ? Create the Apache site
-apacheUp $escaped_project_name $USERNAME $cancel_suppression $lara_stacker_dir
+apacheUp $escaped_project_name $cancel_suppression
 
 # ? Link the site to Vite's configuration
-viteUp $projects_directory $escaped_project_name $lara_stacker_dir
+viteUp $escaped_project_name
 
 # ? Generate a MySQL database if doesn't exit
-mysqlUp $escaped_project_name $projects_directory $DB_PASSWORD
+mysqlUp $escaped_project_name
 
 # ? Set up launch.json for debugging (Xdebug), if VSC is used
-xdebugUp $USING_VSC $escaped_project_name $lara_stacker_dir $projects_directory
+xdebugUp $USING_VSC $escaped_project_name
 
 # ? Set up a MinIO storage
-minioUp $escaped_project_name $USERNAME $lara_stacker_dir
+minioUp $escaped_project_name
 
 # * ==============
 # * Configuration
@@ -175,7 +148,7 @@ if [ "$OPINIONATED" == true ]; then
 
     if [ "$USING_VSC" == true ]; then
         # ? Create a dedicated VSC workspace in Desktop
-        workspaceUp $escaped_project_name $USERNAME $lara_stacker_dir
+        workspaceUp $escaped_project_name
     fi
 fi
 

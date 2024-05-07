@@ -9,20 +9,17 @@ echo -e "-=|[ Lara-Stacker |> MySQL Database Management |> LIST ]|=-\n"
 # * Validation
 # * =========
 
-# ? Check if prompt function exists and source it
-function_path="./scripts/functions/prompt.sh"
-if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
-
-    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
-
-    echo -n "Press any key to exit..."
-    read whatever
-
-    clear
-    exit 1
-fi
-source $function_path
+# ? Source the helper function scripts first
+functions=(
+    "./scripts/functions/helpers/prompt.sh"
+    "./scripts/functions/helpers/sourcer.sh"
+)
+for script in "${functions[@]}"; do
+    if [[ ! -f "$script" ]] || ! chmod +x "$script" || ! source "$script"; then
+        echo -e "Error: The essential script '$script' was not found. Exiting..."
+        exit 1
+    fi
+done
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
@@ -30,21 +27,9 @@ if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
 fi
 
 # ? Confirm if setup script isn't run already
+sourcer "helpers.continueOrAbort"
 if [ ! -e "$PWD/done-setup.flag" ]; then
-    echo -n "Setup script isn't run yet. Are you sure you want to continue? (y/n) "
-    read confirmation
-
-    case "$confirmation" in
-    n|N|no|No|NO|nope|Nope|NOPE)
-        echo -e "\nAborting...\n"
-
-        echo -n "Press any key to continue..."
-        read whatever
-
-        clear
-        exit 1
-        ;;
-    esac
+    continueOrAbort "Setup script isn't run yet." "Aborting..."
 fi
 
 # * ============
@@ -59,7 +44,7 @@ source $lara_stacker_dir/.env
 # * Process
 # * ======
 
-# ? Get MySQL databases
+# ? Display MySQL databases
 export MYSQL_PWD=$DB_PASSWORD
 mysql -u root -e "SHOW DATABASES;"
 

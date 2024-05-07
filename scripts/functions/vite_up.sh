@@ -1,12 +1,11 @@
 viteUp() {
     # ? Take in the arguments
-    local projects_directory="$1"
-    local escaped_project_name="$2"
-    local lara_stacker_dir="$3"
+    local escaped_project_name="$1"
 
-    vite_config_file="vite.config.js"
+    local projects_directory="/var/www/html"
+    local vite_config_file="vite.config.js"
 
-    cd /$projects_directory/$escaped_project_name
+    cd $projects_directory/$escaped_project_name
 
     # ? Link the project's url to Vite configuration file
     pattern="const host = \"${escaped_project_name}.test\";"

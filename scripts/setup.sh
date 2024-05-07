@@ -9,42 +9,21 @@ echo -e "-=|[ Lara-Stacker |> SETUP ]|=-\n"
 # * Validation
 # * =========
 
-# ? Check if prompt function exists and source it
-function_path="./scripts/functions/prompt.sh"
-if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
-
-    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
-
-    echo -n "Press any key to exit..."
-    read whatever
-
-    clear
-    exit 1
-fi
-source $function_path
+# ? Source the helper function scripts first
+functions=(
+    "./scripts/functions/helpers/prompt.sh"
+    "./scripts/functions/helpers/sourcer.sh"
+)
+for script in "${functions[@]}"; do
+    if [[ ! -f "$script" ]] || ! chmod +x "$script" || ! source "$script"; then
+        echo -e "Error: The essential script '$script' was not found. Exiting..."
+        exit 1
+    fi
+done
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
     prompt "Aborted for direct execution flow." "Please use the main [lara-stacker.sh] script."
-fi
-
-# ? Confirm if setup script isn't run already
-if [ -e "$PWD/done-setup.flag" ]; then
-    echo -n "Setup script is already run! Are you sure you want to continue? (y/n) "
-    read confirmation
-
-    case "$confirmation" in
-    n|N|no|No|NO|nope|Nope|NOPE)
-        echo -e "\nAborting...\n"
-
-        echo -n "Press any key to continue..."
-        read whatever
-
-        clear
-        exit 1
-        ;;
-    esac
 fi
 
 # * ============
@@ -54,7 +33,6 @@ fi
 # ? Get environment variables and defaults
 lara_stacker_dir=$PWD
 source $lara_stacker_dir/.env
-projects_directory=/var/www/html
 
 # ? Set the echoing level
 conditional_quiet="--quiet"
@@ -63,12 +41,12 @@ case $LOGGING_LEVEL in
 # Notifications Only
 1)
     exec 3>&1
-    exec > /dev/null 2>&1
+    exec >/dev/null 2>&1
     ;;
 # Notifications + Errors + Warnings
 2)
     exec 3>&1
-    exec > /dev/null
+    exec >/dev/null
     ;;
 # Everything
 *)
@@ -78,36 +56,37 @@ case $LOGGING_LEVEL in
     ;;
 esac
 
-# ? Check for VSC
+# ? Check if VSCodium or VSC is installed
 USING_VSC=false
 if command -v codium >/dev/null 2>&1 || command -v code >/dev/null 2>&1; then
     USING_VSC=true
 fi
 
-# * ===========================
-# * Installing System Packages
-# * =========================
+# * =====================
+# * Preparing The System
+# * ===================
 
-# ? Instal system packages
 echo -e "Installing system packages..." >&3
 
 if $cancel_suppression; then
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 redis-server npm -y 2>&1
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 memcached -y 2>&1
 else
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 redis-server npm -y 2>&1 >/dev/null
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 memcached -y 2>&1 >/dev/null
 fi
 
-# Dynamically get the PHP version
+# ? Dynamically get the PHP version
 PHP_VERSION=$(php -v | head -n 1 | cut -d ' ' -f 2 | cut -d '.' -f 1,2)
 PHP_INI_APACHE="/etc/php/${PHP_VERSION}/apache2/php.ini"
 PHP_INI_CLI="/etc/php/${PHP_VERSION}/cli/php.ini"
 
+# ? Update PHP server variables
 sudo sed -i "s~post_max_size = 8M~post_max_size = 100M~g" "$PHP_INI_APACHE"
 sudo sed -i "s~upload_max_filesize = 2M~upload_max_filesize = 100M~g" "$PHP_INI_APACHE"
 sudo sed -i "s~variables_order = \"GPCS\"~variables_order = \"EGPCS\"~g" "$PHP_INI_APACHE"
 sudo sed -i'' -e 's/zend\.exception_ignore_args\s*=\s*On/zend.exception_ignore_args = Off/' "$PHP_INI_APACHE"
 sudo sed -i'' -e 's/zend\.exception_ignore_args\s*=\s*On/zend.exception_ignore_args = Off/' "$PHP_INI_CLI"
 
+# ? Restart services
 sudo systemctl start apache2
 sudo a2enmod rewrite
 sudo systemctl restart apache2
@@ -119,6 +98,8 @@ sudo usermod -a -G www-data $USERNAME
 
 echo -e "\nAdded the environment's user to [www-data] group." >&3
 
+projects_directory=/var/www/html
+
 # ? Setup permissions permanently
 sudo setfacl -Rdm g:www-data:rwx $projects_directory
 sudo chown -R :www-data $projects_directory
@@ -126,7 +107,7 @@ sudo chmod -R g+rwx $projects_directory
 
 echo -e "\nSet up permissions in the projects directly permanently." >&3
 
-# ? Instatl media packages
+# ? Install media packages
 echo -e "\nInstalling media packages..." >&3
 
 if $cancel_suppression; then
@@ -157,7 +138,7 @@ sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USERNAME/.config/xdebug
 sudo systemctl restart apache2
 
 # ? Install Google Chrome (for Laravel Dusk)
-if ! command -v google-chrome-stable &> /dev/null; then
+if ! command -v google-chrome-stable &>/dev/null; then
     cd /home/$USERNAME/Downloads/
     if $cancel_suppression; then
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 2>&1
@@ -169,11 +150,13 @@ if ! command -v google-chrome-stable &> /dev/null; then
     rm google-chrome-stable_current_amd64.deb
 fi
 
-# ? Install Bun
-if ! command -v bun &> /dev/null; then
-    echo -e "\nInstalling Bun front-end package manager..." >&3
+if $OPINIONATED; then
 
-    sudo -i -u $USERNAME bash <<EOF
+    # ? Install Bun
+    if ! command -v bun &>/dev/null; then
+        echo -e "\nInstalling Bun front-end package manager..." >&3
+
+        sudo -i -u $USERNAME bash <<EOF
 if $cancel_suppression; then
     curl -fsSL https://bun.sh/install | bash 2>&1
 else
@@ -181,7 +164,8 @@ else
 fi
 EOF
 
-    export BUN="/home/$USERNAME/.bun/bin/bun"
+        export BUN="/home/$USERNAME/.bun/bin/bun"
+    fi
 
     # ? Install Graphite
     sudo -i -u $USERNAME bash <<EOF
@@ -193,6 +177,12 @@ fi
 EOF
 
     echo -e "\nInstalled Graphite version control CLI." >&3
+else
+    if $cancel_suppression; then
+        sudo apt install npm -y 2>&1
+    else
+        sudo apt install npm -y 2>&1 >/dev/null
+    fi
 fi
 
 # ? Install Composer (globally)
@@ -204,7 +194,7 @@ else
     sudo apt install composer -y 2>&1 >/dev/null
 fi
 
-echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >> /home/$USERNAME/.bashrc
+echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >>/home/$USERNAME/.bashrc
 
 # ? Install mkcert
 echo -e "\nInstalling mkcert for SSL generation..." >&3
@@ -276,7 +266,7 @@ Restart=always
 RestartSec=10
 
 [Install]
-WantedBy=multi-user.target" | sudo tee /etc/systemd/system/mailpit.service > /dev/null
+WantedBy=multi-user.target" | sudo tee /etc/systemd/system/mailpit.service >/dev/null
 
 sudo systemctl daemon-reload
 if $cancel_suppression; then
@@ -329,7 +319,7 @@ Restart=always
 RestartSec=10
 
 [Install]
-WantedBy=multi-user.target" | sudo tee /etc/systemd/system/minio.service > /dev/null
+WantedBy=multi-user.target" | sudo tee /etc/systemd/system/minio.service >/dev/null
 
 sudo systemctl daemon-reload
 if $cancel_suppression; then
@@ -405,7 +395,7 @@ EOF
     echo -e "\nCreated a [$projects_directory/.packages] directory." >&3
 
     # ? Add helper aliases to .bashrc
-    echo -e "\n# Laravel Aliases\nalias cda='composer dump-autoload'\nalias art='php artisan'\nalias fresh='php artisan migrate:fresh'\nalias mfs='php artisan migrate:fresh --seed'\nalias opt='php artisan optimize:clear'\nalias dev='bun run dev'\n" >> /home/$USERNAME/.bashrc
+    echo -e "\n# Laravel Aliases\nalias cda='composer dump-autoload'\nalias art='php artisan'\nalias wipe='php artisan db:wipe'\nalias fresh='php artisan migrate:fresh'\nalias mfs='php artisan migrate:fresh --seed'\nalias opt='php artisan optimize:clear'\nalias dev='bun run dev'\n" >>/home/$USERNAME/.bashrc
 
     echo -e "\nAdded some helper aliases to [.bashrc] file. Check 'art' out!" >&3
 fi

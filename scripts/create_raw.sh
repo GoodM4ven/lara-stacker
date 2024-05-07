@@ -9,37 +9,21 @@ echo -e "-=|[ Lara-Stacker |> CREATE RAW ]|=-\n"
 # * Validation
 # * =========
 
-# ? Check if prompt function exists and source it
-function_path="./scripts/functions/prompt.sh"
-if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
+# * ===========
+# * Validation
+# * =========
 
-    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
-
-    echo -n "Press any key to exit..."
-    read whatever
-
-    clear
-    exit 1
-fi
-source $function_path
-
-# ? A function to check for a function existence in order to source it
-sourceIfAvailable() {
-    local functionNameCamel=$1
-    local functionNameSnake=$(echo $1 | sed -r 's/([a-z])([A-Z])/\1_\L\2/g')
-    local functionPath="./scripts/functions/${functionNameSnake}.sh"
-
-    if [[ ! -f $functionPath ]]; then
-        prompt "Working directory isn't the script's main; as \"${functionNameCamel^}\" function is missing." \
-               "Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands."
-    else
-        source $functionPath
+# ? Source the helper function scripts first
+functions=(
+    "./scripts/functions/helpers/prompt.sh"
+    "./scripts/functions/helpers/sourcer.sh"
+)
+for script in "${functions[@]}"; do
+    if [[ ! -f "$script" ]] || ! chmod +x "$script" || ! source "$script"; then
+        echo -e "Error: The essential script '$script' was not found. Exiting..."
+        exit 1
     fi
-}
-
-# * Source the necessary functions
-sourceIfAvailable "xdebugUp"
+done
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
@@ -47,21 +31,9 @@ if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
 fi
 
 # ? Confirm if setup script isn't run already
+sourcer "helpers.continueOrAbort"
 if [ ! -e "$PWD/done-setup.flag" ]; then
-    echo -n "Setup script isn't run yet. Are you sure you want to continue? (y/n) "
-    read confirmation
-
-    case "$confirmation" in
-    n|N|no|No|NO|nope|Nope|NOPE)
-        echo -e "\nAborting...\n"
-
-        echo -n "Press any key to continue..."
-        read whatever
-
-        clear
-        exit 1
-        ;;
-    esac
+    continueOrAbort "Setup script isn't run yet." "Aborting..."
 fi
 
 # * ============
@@ -79,12 +51,12 @@ case $LOGGING_LEVEL in
 # Notifications Only
 1)
     exec 3>&1
-    exec > /dev/null 2>&1
+    exec >/dev/null 2>&1
     ;;
 # Notifications + Errors + Warnings
 2)
     exec 3>&1
-    exec > /dev/null
+    exec >/dev/null
     ;;
 # Everything
 *)
@@ -94,7 +66,7 @@ case $LOGGING_LEVEL in
     ;;
 esac
 
-# ? Check for VSC
+# ? Check if VSCodium or VSC is installed
 USING_VSC=false
 if command -v codium >/dev/null 2>&1 || command -v code >/dev/null 2>&1; then
     USING_VSC=true
@@ -133,6 +105,7 @@ fi
 echo -e "\nInstalling the project via Composer..." >&3
 
 cd $project_path/
+
 composer create-project laravel/laravel $project_name -n $conditional_quiet
 
 # ? Enforce permissions
@@ -148,20 +121,17 @@ sed -i "s/APP_NAME=Laravel/APP_NAME=\"$project_name\"/g" ./.env
 
 echo -e "\nCreated and named the raw Laravel application." >&3
 
-# ? Set up launch.json for debugging (Xdebug), if VSC is used
-xdebugUp $USING_VSC $project_name $lara_stacker_dir $project_path
-
-# * ========
-# * The End
-# * ======
-
 # ? Enforce permissions
 sudo $lara_stacker_dir/scripts/helpers/permit.sh $project_path/$project_name
 
 echo -e "\nUpdated directory and file permissions all around." >&3
 
+# * ========
+# * The End
+# * ======
+
 # * Display a success message
-echo -e "\nLaravel project created successfully! Run [art serve] from within its directory to start.\n" >&3
+echo -e "\nLaravel project created successfully! Run [php artisan serve] from within its directory.\n" >&3
 
 # * Prompt to continue
 echo -n "Press any key to continue..." >&3
