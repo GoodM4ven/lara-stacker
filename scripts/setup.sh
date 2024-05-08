@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> SETUP ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> SETUP ]|=-"
 
 # * ===========
 # * Validation
@@ -66,12 +66,12 @@ fi
 # * Preparing The System
 # * ===================
 
-echo -e "Installing system packages..." >&3
+echo -e "\nInstalling system packages..." >&3
 
 if $cancel_suppression; then
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 memcached -y 2>&1
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 -y 2>&1
 else
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 memcached -y 2>&1 >/dev/null
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 -y 2>&1 >/dev/null
 fi
 
 # ? Dynamically get the PHP version
@@ -134,6 +134,17 @@ sudo chmod 664 /home/$USERNAME/.config/xdebug/xdebug.log
 sudo sed -i "s~zend_extension=xdebug.so~zend_extension=xdebug.so\n\nxdebug.log=\"/home/$USERNAME/.config/xdebug/xdebug.log\"\nxdebug.log_level=10\nxdebug.mode=develop,debug,coverage\nxdebug.client_port=9003\nxdebug.start_with_request=yes\nxdebug.discover_client_host=true~g" "/etc/php/$PHP_VERSION/mods-available/xdebug.ini"
 
 sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USERNAME/.config/xdebug
+
+sudo systemctl restart apache2
+
+# ? Install Memcached
+echo -e "\nInstalling Memcached..." >&3
+
+if $cancel_suppression; then
+    sudo apt install memcached php-memcached -y 2>&1
+else
+    sudo apt install memcached php-memcached -y 2>&1 >/dev/null
+fi
 
 sudo systemctl restart apache2
 
@@ -206,7 +217,7 @@ else
 fi
 
 # ? Install MySQL
-echo -e "\nInstalling MySQL and setting the password to the env-file's..." >&3
+echo -e "\nInstalling MySQL and setting its root password..." >&3
 
 if $cancel_suppression; then
     sudo apt install mysql-server -y 2>&1
@@ -230,7 +241,7 @@ sudo service apache2 restart
 export MYSQL_PWD=$DB_PASSWORD
 mysql -u root -e "CREATE DATABASE pest;"
 
-echo -e "\nCreated a \"Pest\" MySQL database for testing." >&3
+echo -e "\nCreated a \"pest\" MySQL database for testing." >&3
 
 # ? Install Mailpit (service)
 echo -e "\nInstalling Mailpit and setting up a service for it..." >&3

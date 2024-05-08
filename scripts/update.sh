@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> UPDATE ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> UPDATE ]|=-"
 
 # * ===========
 # * Validation

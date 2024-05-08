@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> DELETE ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> DELETE ]|=-"
 
 # * ===========
 # * Validation
@@ -73,11 +73,11 @@ fi
 # * ====
 
 # ? Source the procedural function scripts now
-sourcer "apacheDown"
-sourcer "mysqlDown"
+sourcer "apacheDown" $cancel_suppression
+sourcer "mysqlDown" $cancel_suppression
 
 # ? Get the project name from the user
-echo -n "Enter the project name: " >&3
+echo -ne "\nEnter the project name: " >&3
 read project_name
 
 escaped_project_name=$(echo "$project_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
@@ -87,7 +87,7 @@ projects_directory=/var/www/html
 
 # ? Check if the project doesn't exist
 if ! [ -d "$projects_directory/$escaped_project_name" ]; then
-    prompt "Project \"$escaped_project_name\" doesn't exist."
+    prompt "Project \"$escaped_project_name\" doesn't exist." "" $cancel_suppression
 fi
 
 # * ========
@@ -106,7 +106,7 @@ if [[ $USING_VSC == true && $OPINIONATED == true ]]; then
 fi
 
 # ? Delete the Apache site
-apacheDown $escaped_project_name
+apacheDown $escaped_project_name $cancel_suppression
 
 # ? Drop its MySQL database if it exists
 mysqlDown $escaped_project_name

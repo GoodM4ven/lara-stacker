@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> Apache Site Management |> DISABLE ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> Apache Site Management |> DISABLE ]|=-"
 
 # * ===========
 # * Validation
@@ -67,14 +67,14 @@ esac
 # * ======
 
 # ? Source the procedural function scripts now
-sourcer "apacheDown"
+sourcer "apacheDown" $cancel_suppression
 
 # ? Get the site name
-echo -ne "Enter the site name: " >&3
+echo -ne "\nEnter the site name: " >&3
 read site_name
 
 # ? Take the Apache site down if it exists
-apacheDown $site_name
+apacheDown $site_name $cancel_suppression
 
 # * ========
 # * The End

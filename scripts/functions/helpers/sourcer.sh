@@ -1,6 +1,7 @@
 sourcer() {
     # ? Take in the arguments
     local functionNameCamel=$1
+    local cancel_suppression="${2:-false}"
 
     local baseDir="./scripts/functions"
     local subDir=""
@@ -25,7 +26,7 @@ sourcer() {
 
     # ? Abort if the target script is not found
     if [[ ! -f $functionPath ]]; then
-        prompt "The \"${functionNameCamel^}\" function could not be found."
+        prompt "The \"${functionNameCamel^}\" function could not be found." $cancel_suppression
     fi
 
     source $functionPath

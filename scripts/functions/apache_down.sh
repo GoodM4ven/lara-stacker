@@ -1,10 +1,22 @@
 apacheDown() {
     # ? Take in the arguments
     local site_name="$1"
+    local cancel_suppression="${2:-false}"
+
+    local projects_directory=/var/www/html
 
     # ? Escape the site name for proper apache siting!
     local escaped_project_name=$(echo "$site_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
     escaped_project_name=${escaped_project_name// /}
+
+    # ? Abort if the project files don't exist
+    if [[ ! -d "$projects_directory/$escaped_project_name" ]]; then
+        prompt "The expected '$projects_directory/$escaped_project_name' directory was not found." \
+            "Make sure you have a TALL project first." \
+            $cancel_suppression \
+            true \
+            false
+    fi
 
     # ? =============================================
     # ? Remove site's url from the system hosts file
@@ -21,8 +33,8 @@ apacheDown() {
     fi
 
     # ? Delete the site's cert files if they exist
-    if [ -d "/var/www/html/$escaped_project_name/certs" ]; then
-        sudo rm -rf /var/www/html/$escaped_project_name/certs
+    if [ -d "$projects_directory/$escaped_project_name/certs" ]; then
+        sudo rm -rf $projects_directory/$escaped_project_name/certs
 
         echo -e "\nDeleted the site's SSL certificates." >&3
     fi

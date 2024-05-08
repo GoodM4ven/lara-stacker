@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> MySQL Database Management |> CREATE ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> MySQL Database Management |> CREATE ]|=-"
 
 # * ===========
 # * Validation
@@ -67,10 +67,10 @@ esac
 # * ======
 
 # ? Source the procedural function scripts now
-sourcer "mysqlUp"
+sourcer "mysqlUp" $cancel_suppression
 
 # ? Get the DB name
-echo -ne "Enter the database name: " >&3
+echo -ne "\nEnter the database name: " >&3
 read db_name
 
 # ? Create the DB if it doesn't exist

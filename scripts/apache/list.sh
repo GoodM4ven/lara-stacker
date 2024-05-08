@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> Apache Site Management |> LIST ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> Apache Site Management |> LIST ]|=-"
 
 # * ===========
 # * Validation
@@ -35,6 +35,8 @@ fi
 # * ========
 # * Process
 # * ======
+
+echo ""
 
 # ? ========================================================================
 # ? List the sites - omitting the default - and display their Apache status
