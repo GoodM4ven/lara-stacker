@@ -9,20 +9,17 @@ echo -e "-=|[ Lara-Stacker |> Apache Site Management |> LIST ]|=-\n"
 # * Validation
 # * =========
 
-# ? Check if prompt function exists and source it
-function_path="./scripts/functions/prompt.sh"
-if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
-
-    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
-
-    echo -n "Press any key to exit..."
-    read whatever
-
-    clear
-    exit 1
-fi
-source $function_path
+# ? Source the helper function scripts first
+functions=(
+    "./scripts/functions/helpers/prompt.sh"
+    "./scripts/functions/helpers/sourcer.sh"
+)
+for script in "${functions[@]}"; do
+    if [[ ! -f "$script" ]] || ! chmod +x "$script" || ! source "$script"; then
+        echo -e "Error: The essential script '$script' was not found. Exiting..."
+        exit 1
+    fi
+done
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
@@ -30,21 +27,9 @@ if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
 fi
 
 # ? Confirm if setup script isn't run already
+sourcer "helpers.continueOrAbort"
 if [ ! -e "$PWD/done-setup.flag" ]; then
-    echo -n "Setup script isn't run yet. Are you sure you want to continue? (y/n) "
-    read confirmation
-
-    case "$confirmation" in
-    n|N|no|No|NO|nope|Nope|NOPE)
-        echo -e "\nAborting...\n"
-
-        echo -n "Press any key to continue..."
-        read whatever
-
-        clear
-        exit 1
-        ;;
-    esac
+    continueOrAbort "Setup script isn't run yet." "Aborting..."
 fi
 
 # * ========
@@ -67,7 +52,7 @@ for site in $(find /etc/apache2/sites-available/ -maxdepth 1 -name "*.conf" ! -n
         status="inactive"
     fi
     echo "https://$(echo $site | sed 's/_/-/g').test - $status"
-    SITE_COUNT=$((SITE_COUNT+1))
+    SITE_COUNT=$((SITE_COUNT + 1))
 done
 
 for dir in /var/www/html/*; do
@@ -77,7 +62,7 @@ for dir in /var/www/html/*; do
         url_name=$(echo $dir_name | sed 's/_/-/g')
         if [ ! -f "/etc/apache2/sites-available/$dir_name.conf" ]; then
             echo "https://$url_name.test - inactive"
-            SITE_COUNT=$((SITE_COUNT+1))
+            SITE_COUNT=$((SITE_COUNT + 1))
         fi
     fi
 done

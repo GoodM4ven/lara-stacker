@@ -9,20 +9,17 @@ echo -e "-=|[ Lara-Stacker |> MySQL Database Management |> CREATE ]|=-\n"
 # * Validation
 # * =========
 
-# ? Check if prompt function exists and source it
-function_path="./scripts/functions/prompt.sh"
-if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
-
-    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
-
-    echo -n "Press any key to exit..."
-    read whatever
-
-    clear
-    exit 1
-fi
-source $function_path
+# ? Source the helper function scripts first
+functions=(
+    "./scripts/functions/helpers/prompt.sh"
+    "./scripts/functions/helpers/sourcer.sh"
+)
+for script in "${functions[@]}"; do
+    if [[ ! -f "$script" ]] || ! chmod +x "$script" || ! source "$script"; then
+        echo -e "Error: The essential script '$script' was not found. Exiting..."
+        exit 1
+    fi
+done
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
@@ -30,21 +27,9 @@ if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
 fi
 
 # ? Confirm if setup script isn't run already
+sourcer "helpers.continueOrAbort"
 if [ ! -e "$PWD/done-setup.flag" ]; then
-    echo -n "Setup script isn't run yet. Are you sure you want to continue? (y/n) "
-    read confirmation
-
-    case "$confirmation" in
-    n|N|no|No|NO|nope|Nope|NOPE)
-        echo -e "\nAborting...\n"
-
-        echo -n "Press any key to continue..."
-        read whatever
-
-        clear
-        exit 1
-        ;;
-    esac
+    continueOrAbort "Setup script isn't run yet." "Aborting..."
 fi
 
 # * ============
@@ -62,12 +47,12 @@ case $LOGGING_LEVEL in
 # Notifications Only
 1)
     exec 3>&1
-    exec > /dev/null 2>&1
+    exec >/dev/null 2>&1
     ;;
 # Notifications + Errors + Warnings
 2)
     exec 3>&1
-    exec > /dev/null
+    exec >/dev/null
     ;;
 # Everything
 *)
@@ -81,23 +66,15 @@ esac
 # * Process
 # * ======
 
+# ? Source the procedural function scripts now
+sourcer "mysqlUp"
+
 # ? Get the DB name
 echo -ne "Enter the database name: " >&3
 read db_name
 
-# ? Escape and format the name
-db_name=$(echo "$db_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
-db_name=${db_name// /}
-db_name=$(echo "$db_name" | sed 's/\([[:lower:]]\)\([[:upper:]]\)/\1_\2/g' | sed 's/\([[:upper:]]\)\([[:upper:]][[:lower:]]\)/\1_\2/g' | tr '-' '_' | tr '[:upper:]' '[:lower:]' | sed 's/__/_/g' | sed 's/^_//')
-
 # ? Create the DB if it doesn't exist
-export MYSQL_PWD=$DB_PASSWORD
-if mysql -u root -e "SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='$db_name'" | grep "$db_name" > /dev/null; then
-    echo -e "\nMySQL database '$db_name' already exists!" >&3
-else
-    mysql -u root -e "CREATE DATABASE $db_name;"
-    echo -e "\nCreated '$db_name' MySQL database." >&3
-fi
+mysqlUp $db_name false
 
 # * ========
 # * The End

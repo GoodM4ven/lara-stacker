@@ -1,16 +1,13 @@
 minioUp() {
     # ? Take in the arguments
     local escaped_project_name="$1"
-    local USERNAME="$2"
-    local lara_stacker_dir="$3"
 
-    projects_directory=/var/www/html
+    local projects_directory=/var/www/html
 
     # ? Create the bucket via MinIO
-    cd /home/$USERNAME/.config/minio/data/
-    minio-client mb --region=us-east-1 $escaped_project_name
+    cd /home/$USERNAME/.config/minio/data/ && minio-client mb --region=us-east-1 $escaped_project_name
 
-    # ? Update its privacy setting to public 
+    # ? Update its privacy setting to public
     sudo -i -u $USERNAME bash <<EOF
 cd /home/$USERNAME/
 minio-client anonymous set public myminio/$escaped_project_name

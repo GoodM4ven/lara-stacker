@@ -9,38 +9,17 @@ echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> DELETE ]|=-\n"
 # * Validation
 # * =========
 
-# ? Check if prompt function exists and source it
-function_path="./scripts/functions/prompt.sh"
-if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
-
-    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
-
-    echo -n "Press any key to exit..."
-    read whatever
-
-    clear
-    exit 1
-fi
-source $function_path
-
-# ? A function to check for a function existence in order to source it
-sourceIfAvailable() {
-    local functionNameCamel=$1
-    local functionNameSnake=$(echo $1 | sed -r 's/([a-z])([A-Z])/\1_\L\2/g')
-    local functionPath="./scripts/functions/${functionNameSnake}.sh"
-
-    if [[ ! -f $functionPath ]]; then
-        prompt "Working directory isn't the script's main; as \"${functionNameCamel^}\" function is missing." \
-               "Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands."
-    else
-        source $functionPath
+# ? Source the helper function scripts first
+functions=(
+    "./scripts/functions/helpers/prompt.sh"
+    "./scripts/functions/helpers/sourcer.sh"
+)
+for script in "${functions[@]}"; do
+    if [[ ! -f "$script" ]] || ! chmod +x "$script" || ! source "$script"; then
+        echo -e "Error: The essential script '$script' was not found. Exiting..."
+        exit 1
     fi
-}
-
-# * Source the necessary functions
-sourceIfAvailable "apacheDown"
-sourceIfAvailable "mysqlDown"
+done
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
@@ -48,21 +27,9 @@ if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
 fi
 
 # ? Confirm if setup script isn't run already
+sourcer "helpers.continueOrAbort"
 if [ ! -e "$PWD/done-setup.flag" ]; then
-    echo -n "Setup script isn't run yet. Are you sure you want to continue? (y/n) "
-    read confirmation
-
-    case "$confirmation" in
-    n|N|no|No|NO|nope|Nope|NOPE)
-        echo -e "\nAborting...\n"
-
-        echo -n "Press any key to continue..."
-        read whatever
-
-        clear
-        exit 1
-        ;;
-    esac
+    continueOrAbort "Setup script isn't run yet." "Aborting..."
 fi
 
 # * ============
@@ -72,9 +39,10 @@ fi
 # ? Get environment variables and defaults
 lara_stacker_dir=$PWD
 source $lara_stacker_dir/.env
-projects_directory=/var/www/html
 
 # ? Set the echoing level
+conditional_quiet="--quiet"
+cancel_suppression=false
 case $LOGGING_LEVEL in
 # Notifications Only
 1)
@@ -89,10 +57,12 @@ case $LOGGING_LEVEL in
 # Everything
 *)
     exec 3>&1
+    conditional_quiet=""
+    cancel_suppression=true
     ;;
 esac
 
-# ? Check for VSCodium or VSC existence
+# ? Check if VSCodium or VSC is installed
 USING_VSC=false
 if command -v codium >/dev/null 2>&1 || command -v code >/dev/null 2>&1; then
     USING_VSC=true
@@ -102,12 +72,18 @@ fi
 # * Input
 # * ====
 
+# ? Source the procedural function scripts now
+sourcer "apacheDown"
+sourcer "mysqlDown"
+
 # ? Get the project name from the user
 echo -n "Enter the project name: " >&3
 read project_name
 
 escaped_project_name=$(echo "$project_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
 escaped_project_name=${escaped_project_name// /}
+
+projects_directory=/var/www/html
 
 # ? Check if the project doesn't exist
 if ! [ -d "$projects_directory/$escaped_project_name" ]; then
@@ -133,7 +109,7 @@ fi
 apacheDown $escaped_project_name
 
 # ? Drop its MySQL database if it exists
-mysqlDown $escaped_project_name $DB_PASSWORD
+mysqlDown $escaped_project_name
 
 # ? Delete the MinIO storage
 if [ -d "/home/$USERNAME/.config/minio/data/$escaped_project_name" ]; then

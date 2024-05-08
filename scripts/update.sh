@@ -2,27 +2,24 @@
 
 clear
 
-# ? Display a status indicator
+# * Display a status indicator
 echo -e "-=|[ Lara-Stacker |> UPDATE ]|=-\n"
 
 # * ===========
 # * Validation
 # * =========
 
-# ? Check if prompt function exists and source it
-function_path="./scripts/functions/prompt.sh"
-if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
-
-    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
-
-    echo -n "Press any key to exit..."
-    read whatever
-
-    clear
-    exit 1
-fi
-source $function_path
+# ? Source the helper function scripts first
+functions=(
+    "./scripts/functions/helpers/prompt.sh"
+    "./scripts/functions/helpers/sourcer.sh"
+)
+for script in "${functions[@]}"; do
+    if [[ ! -f "$script" ]] || ! chmod +x "$script" || ! source "$script"; then
+        echo -e "Error: The essential script '$script' was not found. Exiting..."
+        exit 1
+    fi
+done
 
 # ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
@@ -37,57 +34,40 @@ fi
 lara_stacker_dir=$PWD
 source $lara_stacker_dir/.env
 
-# ? Setting the echoing level
+# ? Set the echoing level
+conditional_quiet="--quiet"
+cancel_suppression=false
 case $LOGGING_LEVEL in
-    # Notifications Only
-    1)
-        exec 3>&1
-        exec > /dev/null 2>&1
-        ;;
-    # Notifications + Errors + Warnings
-    2)
-        exec 3>&1
-        exec > /dev/null
-        ;;
-    # Everything
-    *)
-        exec 3>&1
-        ;;
+# Notifications Only
+1)
+    exec 3>&1
+    exec >/dev/null 2>&1
+    ;;
+# Notifications + Errors + Warnings
+2)
+    exec 3>&1
+    exec >/dev/null
+    ;;
+# Everything
+*)
+    exec 3>&1
+    conditional_quiet=""
+    cancel_suppression=true
+    ;;
 esac
 
 # * ========
 # * Process
 # * ======
 
-cd "$lara_stacker_dir"
+# ? Update via Git
+git pull origin main
 
-# ? Check if the .git directory exists (or clone it anew)
-if [ -d ".git" ]; then
-    echo "Fetching the latest updates from GitHub..." >&3
+# ? Ensure proper system ownership over files
+sudo $lara_stacker_dir/scripts/helpers/permit.sh $lara_stacker_dir
 
-    git pull origin master || {
-        echo -e "Error updating from GitHub. Please check your internet connection or repository URL." >&3
-        exit 1
-    }
-else
-    echo -e "Fresh installation from GitHub..." >&3
-
-    mv $lara_stacker_dir $lara_stacker_dir-backup-$(date +"%Y%m%d%H%M%S")
-
-    repo_url="https://github.com/GoodM4ven/lara-stacker.git"
-
-    git clone $repo_url $lara_stacker_dir || {
-        echo -e "\nError cloning from GitHub. Please check your internet connection or repository URL." >&3
-        exit 1
-    }
-
-    sudo $lara_stacker_dir/scripts/helpers/permit.sh $lara_stacker_dir
-
-    cd $lara_stacker_dir
-fi
-
-# ? Make the script executable again
-chmod +x ./lara-stacker.sh
+# ? Ensure that the same script is executable again
+chmod +x $lara_stacker_dir/lara-stacker.sh
 
 # ? Add a flag to hide the updating option
 touch /tmp/updated-lara-stacker.flag
@@ -96,10 +76,10 @@ touch /tmp/updated-lara-stacker.flag
 # * The End
 # * ======
 
-# ? Display a successful message
+# * Display a successful message
 echo -e "\nUpdated lara-stacker successfully.\n" >&3
 
-# ? Prompt to continue
+# * Prompt to continue
 echo -n "Press any key to continue..." >&3
 read whatever
 

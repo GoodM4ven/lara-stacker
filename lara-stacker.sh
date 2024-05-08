@@ -2,20 +2,37 @@
 
 clear
 
-# ? Display a status indicator
-changelog_dir="./CHANGELOG.md"
+# * ===========================
+# * Display a status indicator
+# * =========================
+
 current_version="???"
-if [[ -f $changelog_dir ]]; then
-    current_version=$(grep -E "^## v[0-9]+" $changelog_dir | head -1 | awk '{print $2}')
+is_updateable=false
+script_dir="$(pwd)"
+
+if command -v git &> /dev/null && [ -d ".git" ]; then
+    is_updateable=true
+    
+    # ? Add the current script directory to the Git safe list
+    git config --global --add safe.directory "$script_dir"
 fi
-echo -e "-=|[ LARA-STACKER [$current_version] ]|=-\n"
+
+if [[ "$is_updateable" == true ]]; then
+    # ? Fetch the latest commit message that starts with a version tag
+    current_version=$(git log --pretty=format:'%s' | grep -o '\[v[0-9]*\.[0-9]*\.[0-9]*\]' | head -1 | tr -d '[]')
+fi
+
+echo -e "-=|[ LARA-STACKER $current_version ]|=-\n"
 
 # * ===========
 # * Validation
 # * =========
 
-# ? Check if prompt script exists before sourcing
-prompt_function_dir="./scripts/functions/prompt.sh"
+# ? ================================================
+# ? Source prompt script or abort if it isn't found
+# ? ==============================================
+
+prompt_function_dir="./scripts/functions/helpers/prompt.sh"
 if [[ ! -f $prompt_function_dir ]]; then
     echo -e "Error: Working directory isn't the script's main.\n"
 
@@ -27,52 +44,49 @@ if [[ ! -f $prompt_function_dir ]]; then
     clear
     exit 1
 fi
+
+chmod +x $prompt_function_dir
 source $prompt_function_dir
 
-# ? Check if the script is run with sudo
+# ? Abort if the script isn't run with sudo
 if [ "$EUID" -ne 0 ]; then
     prompt "Aborted for missing super-user (sudo) permission." "Run the script using [sudo ./lara-stacker.sh] command."
 fi
 
-# ? Ensure that .env file exists
+# ? Ensure that the environment file exists
 if [ ! -f "./.env" ]; then
     prompt "Aborted for missing [.env] file." "Copy one using [cp .env.example .env] command then fill its values."
 fi
 
-# ? Double check the environment variables
+# ? =================================================
+# ? Ensure that there is no placeholders in the file
+# ? ===============================================
+
+placeholders=("<your-username>" "<your-password>")
+
+while IFS= read -r line; do
+    for placeholder in "${placeholders[@]}"; do
+        if [[ "$line" == *"$placeholder"* ]]; then
+            prompt "Aborted because [.env] file contains a placeholder." "Please replace placeholders with values."
+        fi
+    done
+done < "./.env"
+
+# ? ===================================================
+# ? Double check for environment variables consistency
+# ? =================================================
+
 env_example_vars=$(grep -oE '^[A-Z_]+=' .env.example | sort)
 env_vars=$(grep -oE '^[A-Z_]+=' .env | sort)
+
 diff <(echo "$env_example_vars") <(echo "$env_vars") &>/dev/null
+
 if [ $? -ne 0 ]; then
     prompt "Aborted for different environment variables." "Ensure that [.env.example] variables match [.env] ones."
 fi
 
 # ? Ensure all side scripts are executable
-SCRIPTS=(
-    "./scripts/update.sh"
-    "./scripts/setup.sh"
-    "./scripts/create_raw.sh"
-    "./scripts/TALL/list.sh"
-    "./scripts/TALL/create.sh"
-    "./scripts/TALL/import.sh"
-    "./scripts/TALL/delete.sh"
-    "./scripts/mysql/list.sh"
-    "./scripts/mysql/create.sh"
-    "./scripts/mysql/delete.sh"
-    "./scripts/apache/list.sh"
-    "./scripts/apache/enable.sh"
-    "./scripts/apache/disable.sh"
-    "./scripts/helpers/permit.sh"
-)
-for script in "${SCRIPTS[@]}"; do
-    if [[ -f "$script" ]]; then
-        if [[ ! -x "$script" ]]; then
-            chmod +x "$script"
-        fi
-    else
-        prompt "Aborted for missing [$script] file." "Clone the latest [GoodM4ven/lara-stacker] github repository."
-    fi
-done
+find ./scripts -type f -not -path "*/functions/*" ! -perm -111 -exec chmod +x {} +
 
 # * ============
 # * Preparation
@@ -86,7 +100,10 @@ source $lara_stacker_dir/.env
 # * Process
 # * ======
 
+# ? =====================
 # ? Checking for updates
+# ? ===================
+
 if [[ -f "/tmp/updated-lara-stacker.flag" ]]; then
     rm /tmp/updated-lara-stacker.flag
 fi
@@ -98,9 +115,19 @@ sleep 1
 echo -en "."
 
 update_available=false
-latest_version=$(wget -qO- "https://api.github.com/repos/GoodM4ven/lara-stacker/releases/latest" | jq -r .tag_name)
-if [[ "$current_version" != "$latest_version" ]]; then
-    update_available=true
+latest_version=""
+
+# ? Check for updates if it's possible
+if [[ "$is_updateable" == true ]]; then
+    git fetch origin
+
+    LOCAL=$(git rev-parse @)
+    REMOTE=$(git rev-parse "origin/main")
+
+    if [ "$LOCAL" != "$REMOTE" ]; then
+        update_available=true
+        latest_version=$(git ls-remote --tags origin | grep -o 'v[0-9]*\.[0-9]*\.[0-9]*$' | sort -V | tail -1)
+    fi
 fi
 
 echo -en "."
@@ -117,7 +144,7 @@ counter=0
 while true; do
     counter=$((counter + 1))
 
-    echo -e "-=|[ LARA-STACKER [$current_version] ]|=-\n"
+    echo -e "-=|[ LARA-STACKER $current_version ]|=-\n"
 
     echo -e "Available Operations:\n"
 
