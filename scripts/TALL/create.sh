@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> CREATE ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> CREATE ]|=-"
 
 # * ===========
 # * Validation
@@ -75,7 +75,7 @@ fi
 projects_directory=/var/www/html
 
 # ? Get the project name from the user
-echo -ne "Enter the project name: " >&3
+echo -ne "\nEnter the project name: " >&3
 read project_name
 
 escaped_project_name=$(echo "$project_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
@@ -83,7 +83,7 @@ escaped_project_name=${escaped_project_name// /}
 
 # ? Abort if the project directory already exists
 if [ -d "$projects_directory/$escaped_project_name" ]; then
-    prompt "Project folder already exists!" "Project creation cancelled."
+    prompt "Project folder already exists!" "Project creation cancelled." $cancel_suppression
 fi
 
 # * ===============
@@ -91,12 +91,14 @@ fi
 # * =============
 
 # ? Source the procedural function scripts now
-sourcer "apacheUp"
-sourcer "viteUp"
-sourcer "mysqlUp"
-sourcer "minioUp"
-sourcer "workspaceUp"
-sourcer "xdebugUp"
+sourcer "apacheUp" $cancel_suppression
+sourcer "viteUp" $cancel_suppression
+sourcer "mysqlUp" $cancel_suppression
+sourcer "memcachedUp" $cancel_suppression
+sourcer "mailpitUp" $cancel_suppression
+sourcer "minioUp" $cancel_suppression
+sourcer "workspaceUp" $cancel_suppression
+sourcer "xdebugUp" $cancel_suppression
 
 # ? =====================================================
 # ? Create the Laravel project in the projects directory
@@ -119,6 +121,12 @@ viteUp $escaped_project_name
 # ? Generate a MySQL database if doesn't exit
 mysqlUp $escaped_project_name
 
+# ? Configure Memcached to replace Redis
+memcachedUp $escaped_project_name
+
+# ? Configure Mailpit to replace log mailer driver
+mailpitUp $escaped_project_name
+
 # ? Set up launch.json for debugging (Xdebug), if VSC is used
 xdebugUp $USING_VSC $escaped_project_name
 
@@ -133,20 +141,20 @@ cd $projects_directory/$escaped_project_name
 
 # TODO Install vpremiss/tall-stacker package manager via Composer when it's ready -_-"
 
-if [ -n "$EXPOSE_TOKEN" ]; then
+if [[ -n "$EXPOSE_TOKEN" ]]; then
     # ? Modify the TrustProxies middleware to work with Expose
     sed -i -E ':a;N;$!ba;s/(->withMiddleware\(function \(Middleware \$middleware\) \{\n\s*)\/\/(\n\s*\})/\1\$middleware->trustProxies(at: \x27*\x27); \2/g' ./bootstrap/app.php
 
     echo -e "\nTrusted all proxies for Expose compatibility." >&3
 fi
 
-if [ "$OPINIONATED" == true ]; then
+if [[ "$OPINIONATED" == true ]]; then
     # ? Apply Prettier config
     sudo cp $lara_stacker_dir/files/.opinionated/.prettierrc ./.prettierrc
 
     echo -e "\nCopied an opinionated Prettier config file to the project." >&3
 
-    if [ "$USING_VSC" == true ]; then
+    if [[ "$USING_VSC" == true ]]; then
         # ? Create a dedicated VSC workspace in Desktop
         workspaceUp $escaped_project_name
     fi

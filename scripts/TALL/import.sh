@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> IMPORT ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> IMPORT ]|=-"
 
 # * ===========
 # * Validation
@@ -73,7 +73,7 @@ fi
 # * ====
 
 # ? Get the project path from the user
-echo -ne "Enter the full project path (e.g., /home/$USERNAME/Code/some_laravel_app): " >&3
+echo -ne "\nEnter the full project path (e.g., /home/$USERNAME/Code/some_laravel_app): " >&3
 read full_directory
 
 full_directory="${full_directory%/}"
@@ -82,7 +82,7 @@ project_name=$(basename "$full_directory")
 
 # ? Cancel if the project path doesn't exists
 if [ ! -d "$project_path/$project_name" ]; then
-    prompt "The project path doesn't exist!" "Project importing cancelled."
+    prompt "The project path doesn't exist!" "Project importing cancelled." $cancel_suppression
 fi
 
 escaped_project_name=$(echo "$project_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
@@ -92,7 +92,7 @@ projects_directory=/var/www/html
 
 # ? Cancel if the project already exists
 if [ -d "$projects_directory/$escaped_project_name" ]; then
-    prompt "A project with the same name already exists!" "Project importing cancelled."
+    prompt "A project with the same name already exists!" "Project importing cancelled." $cancel_suppression
 fi
 
 # * ===============
@@ -100,12 +100,14 @@ fi
 # * =============
 
 # ? Source the procedural function scripts now
-sourcer "apacheUp"
-sourcer "viteUp"
-sourcer "mysqlUp"
-sourcer "minioUp"
-sourcer "workspaceUp"
-sourcer "xdebugUp"
+sourcer "apacheUp" $cancel_suppression
+sourcer "viteUp" $cancel_suppression
+sourcer "mysqlUp" $cancel_suppression
+sourcer "memcachedUp" $cancel_suppression
+sourcer "mailpitUp" $cancel_suppression
+sourcer "minioUp" $cancel_suppression
+sourcer "workspaceUp" $cancel_suppression
+sourcer "xdebugUp" $cancel_suppression
 
 # ? ============================================
 # ? Make a copy of the project in the directory
@@ -118,13 +120,19 @@ sudo $lara_stacker_dir/scripts/helpers/permit.sh $projects_directory/$escaped_pr
 echo -e "\nThe project folder has been copied to "$projects_directory" directory." >&3
 
 # ? Create the Apache site
-apacheUp $escaped_project_name $cancel_suppression true true
+apacheUp $escaped_project_name $cancel_suppression true
 
 # ? Link the site to Vite's configuration
 viteUp $escaped_project_name
 
 # ? Generate a MySQL database if doesn't exit
 mysqlUp $escaped_project_name
+
+# ? Configure Memcached to replace Redis
+memcachedUp $escaped_project_name
+
+# ? Configure Mailpit to replace log mailer driver
+mailpitUp $escaped_project_name
 
 # ? Set up launch.json for debugging (Xdebug), if VSC is used
 xdebugUp $USING_VSC $escaped_project_name
@@ -140,22 +148,22 @@ cd $projects_directory/$escaped_project_name
 
 # TODO Install TALL-STACKER package manager via Composer
 
-if [ -n "$EXPOSE_TOKEN" ]; then
+if [[ -n "$EXPOSE_TOKEN" ]]; then
     # ? Modify the TrustProxies middleware to work with Expose
-    sed -i "s/protected \$proxies;/protected \$proxies = '*';/g" ./app/Http/Middleware/TrustProxies.php
+    sed -i -E ':a;N;$!ba;s/(->withMiddleware\(function \(Middleware \$middleware\) \{\n\s*)\/\/(\n\s*\})/\1\$middleware->trustProxies(at: \x27*\x27); \2/g' ./bootstrap/app.php
 
     echo -e "\nTrusted all proxies for Expose compatibility." >&3
 fi
 
-if [ "$OPINIONATED" == true ]; then
-    if [ ! -f "./.prettierrc" ]; then
+if [[ "$OPINIONATED" == true ]]; then
+    if [[ ! -f "./.prettierrc" ]]; then
         # ? Apply Prettier config
         sudo cp $lara_stacker_dir/files/.opinionated/.prettierrc ./.prettierrc
 
         echo -e "\nCopied an opinionated Prettier config file to the project." >&3
     fi
 
-    if [ "$USING_VSC" == true]; then
+    if [[ "$USING_VSC" == true ]]; then
         # ? Create a dedicated VSC workspace in Desktop
         workspaceUp $escaped_project_name
     fi

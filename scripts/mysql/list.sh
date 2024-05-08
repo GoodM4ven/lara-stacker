@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> MySQL Database Management |> LIST ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> MySQL Database Management |> LIST ]|=-"
 
 # * ===========
 # * Validation
@@ -43,6 +43,8 @@ source $lara_stacker_dir/.env
 # * ========
 # * Process
 # * ======
+
+echo
 
 # ? Display MySQL databases
 export MYSQL_PWD=$DB_PASSWORD

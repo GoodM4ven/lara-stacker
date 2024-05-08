@@ -22,7 +22,7 @@ if [[ "$is_updateable" == true ]]; then
     current_version=$(git log --pretty=format:'%s' | grep -o '\[v[0-9]*\.[0-9]*\.[0-9]*\]' | head -1 | tr -d '[]')
 fi
 
-echo -e "-=|[ LARA-STACKER $current_version ]|=-\n"
+echo -e "-=|[ LARA-STACKER $current_version ]|=-"
 
 # * ===========
 # * Validation
@@ -34,9 +34,9 @@ echo -e "-=|[ LARA-STACKER $current_version ]|=-\n"
 
 prompt_function_dir="./scripts/functions/helpers/prompt.sh"
 if [[ ! -f $prompt_function_dir ]]; then
-    echo -e "Error: Working directory isn't the script's main.\n"
+    echo -e "\nError: Working directory isn't the script's main.\n"
 
-    echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
+    echo -e "Tip: Maybe [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] instead.\n"
 
     echo -n "Press any key to exit..."
     read whatever
@@ -65,9 +65,12 @@ fi
 placeholders=("<your-username>" "<your-password>")
 
 while IFS= read -r line; do
+    # ? Skip comments and empty lines
+    [[ "$line" =~ ^#.*$ || "$line" == "" ]] && continue
+
     for placeholder in "${placeholders[@]}"; do
         if [[ "$line" == *"$placeholder"* ]]; then
-            prompt "Aborted because [.env] file contains a placeholder." "Please replace placeholders with values."
+            prompt "Aborted because [.env] file contains a placeholder: '$placeholder'." "Please replace placeholders with values."
         fi
     done
 done < "./.env"
@@ -108,7 +111,7 @@ if [[ -f "/tmp/updated-lara-stacker.flag" ]]; then
     rm /tmp/updated-lara-stacker.flag
 fi
 
-echo -en "Checking for updates"
+echo -en "\nChecking for updates"
 sleep 1
 echo -en "."
 sleep 1

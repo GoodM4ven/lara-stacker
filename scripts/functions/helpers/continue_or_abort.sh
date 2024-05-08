@@ -1,21 +1,28 @@
 continueOrAbort() {
+    # ? Take in the arguments
     local message="$1"
     local aborting_message="$2"
-    local return_instead="${3:-false}"
+    local cancel_suppression="${3:-true}"
+    local return_instead="${4:-false}"
 
-    echo -n "$message Are you sure you want to continue? (y/n) "
-    read confirmation
+    local mute=""
+    if [ "$cancel_suppression" == "false" ]; then
+        mute=">&3"
+    fi
+
+    eval echo -ne \"\\n$message Are you sure you want to continue? \(y/n\) \" $mute
+    read -r confirmation </dev/tty
 
     case "$confirmation" in
     n | N | no | No | NO | nope | Nope | NOPE)
-        echo -e "\n$aborting_message\n"
+        eval echo -ne \"\\n$aborting_message\\n\" $mute
 
-        echo -n "Press any key to continue..."
-        read whatever
+        eval echo -ne \"\\nPress any key to continue...\" $mute
+        read -r whatever </dev/tty
 
-        clear
+        eval clear $mute
 
-        if [[ "$return_instead" ]]; then
+        if [[ "$return_instead" == true ]]; then
             return 1
         else
             exit 1

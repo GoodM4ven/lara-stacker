@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> LIST ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> LIST ]|=-"
 
 # * ===========
 # * Validation
@@ -37,6 +37,8 @@ source $lara_stacker_dir/.env
 # * ========
 # * Process
 # * ======
+
+echo
 
 # ? ===========================================
 # ? Count and list directories and their names

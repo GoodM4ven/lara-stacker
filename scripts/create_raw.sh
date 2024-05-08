@@ -3,11 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> CREATE RAW ]|=-\n"
-
-# * ===========
-# * Validation
-# * =========
+echo -e "-=|[ Lara-Stacker |> CREATE RAW ]|=-"
 
 # * ===========
 # * Validation
@@ -77,7 +73,7 @@ fi
 # * ====
 
 # ? Get the project path from the user
-echo -ne "Enter the full project path (e.g., /home/$USERNAME/Code/my_laravel_app): " >&3
+echo -ne "\nEnter the full project path (e.g., /home/$USERNAME/Code/my_laravel_app): " >&3
 read full_directory
 
 full_directory="${full_directory%/}"
@@ -86,12 +82,16 @@ project_name=$(basename "$full_directory")
 
 # ? Cancel if the project path directory doesn't exists
 if [ ! -d "$project_path" ]; then
-    prompt "The project containing path doesn't exist!" "Raw project creation cancelled."
+    prompt "The project containing path doesn't exist!" \
+        "Raw project creation cancelled." \
+        $cancel_suppression
 fi
 
 # ? Cancel if the project directory already exists
 if [ -d "$project_path/$project_name" ]; then
-    prompt "Project folder already exist within the previously given path!" "Raw project creation cancelled."
+    prompt "Project folder already exist within the previously given path!" \
+        "Raw project creation cancelled." \
+        $cancel_suppression
 fi
 
 # * ========
@@ -131,7 +131,7 @@ echo -e "\nUpdated directory and file permissions all around." >&3
 # * ======
 
 # * Display a success message
-echo -e "\nLaravel project created successfully! Run [php artisan serve] from within its directory.\n" >&3
+echo -e "\nDone! Run [php artisan serve] from within the project's directory.\n" >&3
 
 # * Prompt to continue
 echo -n "Press any key to continue..." >&3

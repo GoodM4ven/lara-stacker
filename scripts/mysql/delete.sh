@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> MySQL Database Management |> DELETE ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> MySQL Database Management |> DELETE ]|=-"
 
 # * ===========
 # * Validation
@@ -67,10 +67,10 @@ esac
 # * ======
 
 # ? Source the procedural function scripts now
-sourcer "mysqlDown"
+sourcer "mysqlDown" $cancel_suppression
 
 # ? Get the db name
-echo -ne "Enter the database name: " >&3
+echo -ne "\nEnter the database name: " >&3
 read db_name
 
 # ? Drop the database if it exists
