@@ -1,17 +1,17 @@
 prompt() {
-    # Take in the arguments
+    # ? Take in the arguments
     local first_sentence="$1"
     local second_sentence="${2:-}"
     local should_exit="${3:-true}"
-    local muted_mode="${4:-true}"
-    local without_warning="${5:-false}"
+    local without_warning="${4:-false}"
+    local muted_mode="${5:-false}"
 
     local mute=""
     if [ "$muted_mode" == "true" ]; then
         mute=">&3"
     fi
 
-    # Display the error or warning
+    # ? Display the error or warning
     error_or_warning="Error: "
     if [ "$should_exit" == "false" ]; then
         error_or_warning="Warning: "
@@ -22,12 +22,12 @@ prompt() {
         eval echo -e \"$error_or_warning $first_sentence\\n\" $mute
     fi
 
-    # Display a tip if available
+    # ? Display a tip if available
     if [[ -n $second_sentence ]]; then
         eval echo -e \"Tip: $second_sentence\\n\" $mute
     fi
 
-    # Exit the script or not
+    # ? Exit the script or not
     exit_or_continue="exit"
     if [ "$should_exit" == "false" ]; then
         exit_or_continue="continue"

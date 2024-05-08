@@ -2,17 +2,17 @@
 
 clear
 
-# Status indicator
+# ? Display a status indicator
 echo -e "-=|[ Lara-Stacker |> UPDATE ]|=-\n"
 
 # * ===========
 # * Validation
 # * =========
 
-# Check if prompt function exists and source it
+# ? Check if prompt function exists and source it
 function_path="./scripts/functions/prompt.sh"
 if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main.\n"
+    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
 
     echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
 
@@ -24,20 +24,20 @@ if [[ ! -f $function_path ]]; then
 fi
 source $function_path
 
-# Ensure the script isn't ran directly
+# ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
-    prompt "Aborted for direct execution flow." "Please use the main [lara-stacker.sh] script." true false
+    prompt "Aborted for direct execution flow." "Please use the main [lara-stacker.sh] script."
 fi
 
 # * ============
 # * Preparation
 # * ==========
 
-# Get environment variables and defaults
+# ? Get environment variables and defaults
 lara_stacker_dir=$PWD
 source $lara_stacker_dir/.env
 
-# Setting the echoing level
+# ? Setting the echoing level
 case $LOGGING_LEVEL in
     # Notifications Only
     1)
@@ -55,13 +55,13 @@ case $LOGGING_LEVEL in
         ;;
 esac
 
-# * =========
-# * Updating
-# * =======
+# * ========
+# * Process
+# * ======
 
 cd "$lara_stacker_dir"
 
-# Check if the .git directory exists (or clone it anew)
+# ? Check if the .git directory exists (or clone it anew)
 if [ -d ".git" ]; then
     echo "Fetching the latest updates from GitHub..." >&3
 
@@ -86,18 +86,20 @@ else
     cd $lara_stacker_dir
 fi
 
-# Make the script executable again
+# ? Make the script executable again
 chmod +x ./lara-stacker.sh
 
-# Add a flag to hide the updating option
+# ? Add a flag to hide the updating option
 touch /tmp/updated-lara-stacker.flag
 
 # * ========
 # * The End
 # * ======
 
+# ? Display a successful message
 echo -e "\nUpdated lara-stacker successfully.\n" >&3
 
+# ? Prompt to continue
 echo -n "Press any key to continue..." >&3
 read whatever
 

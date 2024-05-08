@@ -2,17 +2,17 @@
 
 clear
 
-# Status indicator
+# * Display a status indicator
 echo -e "-=|[ Lara-Stacker |> SETUP ]|=-\n"
 
 # * ===========
 # * Validation
 # * =========
 
-# Check if prompt function exists and source it
+# ? Check if prompt function exists and source it
 function_path="./scripts/functions/prompt.sh"
 if [[ ! -f $function_path ]]; then
-    echo -e "Error: Working directory isn't the script's main.\n"
+    echo -e "Error: Working directory isn't the script's main; as \"prompt\" function is missing.\n"
 
     echo -e "Tip: Maybe run [cd ~/Downloads/lara-stacker/ && sudo ./lara-stacker.sh] commands.\n"
 
@@ -24,12 +24,12 @@ if [[ ! -f $function_path ]]; then
 fi
 source $function_path
 
-# Ensure the script isn't ran directly
+# ? Ensure the script isn't ran directly
 if [[ -z "$RAN_MAIN_SCRIPT" ]]; then
-    prompt "Aborted for direct execution flow." "Please use the main [lara-stacker.sh] script." true false
+    prompt "Aborted for direct execution flow." "Please use the main [lara-stacker.sh] script."
 fi
 
-# Ensure that setup isn't done already
+# ? Confirm if setup script isn't run already
 if [ -e "$PWD/done-setup.flag" ]; then
     echo -n "Setup script is already run! Are you sure you want to continue? (y/n) "
     read confirmation
@@ -51,11 +51,12 @@ fi
 # * Preparation
 # * ==========
 
-# Get environment variables and defaults
+# ? Get environment variables and defaults
 lara_stacker_dir=$PWD
 source $lara_stacker_dir/.env
+projects_directory=/var/www/html
 
-# Setting the echoing level
+# ? Set the echoing level
 conditional_quiet="--quiet"
 cancel_suppression=false
 case $LOGGING_LEVEL in
@@ -77,11 +78,17 @@ case $LOGGING_LEVEL in
     ;;
 esac
 
+# ? Check for VSC
+USING_VSC=false
+if command -v codium >/dev/null 2>&1 || command -v code >/dev/null 2>&1; then
+    USING_VSC=true
+fi
+
 # * ===========================
 # * Installing System Packages
 # * =========================
 
-# Installing system packages...
+# ? Instal system packages
 echo -e "Installing system packages..." >&3
 
 if $cancel_suppression; then
@@ -90,11 +97,16 @@ else
     sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 redis-server npm -y 2>&1 >/dev/null
 fi
 
-sudo sed -i "s~post_max_size = 8M~post_max_size = 100M~g" /etc/php/8.1/apache2/php.ini
-sudo sed -i "s~upload_max_filesize = 2M~upload_max_filesize = 100M~g" /etc/php/8.1/apache2/php.ini
-sudo sed -i "s~variables_order = \"GPCS\"~variables_order = \"EGPCS\"~g" /etc/php/8.1/apache2/php.ini
-sudo sed -i'' -e 's/zend\.exception_ignore_args\s*=\s*On/zend.exception_ignore_args = Off/' /etc/php/8.1/apache2/php.ini
-sudo sed -i'' -e 's/zend\.exception_ignore_args\s*=\s*On/zend.exception_ignore_args = Off/' /etc/php/8.1/cli/php.ini
+# Dynamically get the PHP version
+PHP_VERSION=$(php -v | head -n 1 | cut -d ' ' -f 2 | cut -d '.' -f 1,2)
+PHP_INI_APACHE="/etc/php/${PHP_VERSION}/apache2/php.ini"
+PHP_INI_CLI="/etc/php/${PHP_VERSION}/cli/php.ini"
+
+sudo sed -i "s~post_max_size = 8M~post_max_size = 100M~g" "$PHP_INI_APACHE"
+sudo sed -i "s~upload_max_filesize = 2M~upload_max_filesize = 100M~g" "$PHP_INI_APACHE"
+sudo sed -i "s~variables_order = \"GPCS\"~variables_order = \"EGPCS\"~g" "$PHP_INI_APACHE"
+sudo sed -i'' -e 's/zend\.exception_ignore_args\s*=\s*On/zend.exception_ignore_args = Off/' "$PHP_INI_APACHE"
+sudo sed -i'' -e 's/zend\.exception_ignore_args\s*=\s*On/zend.exception_ignore_args = Off/' "$PHP_INI_CLI"
 
 sudo systemctl start apache2
 sudo a2enmod rewrite
@@ -102,19 +114,19 @@ sudo systemctl restart apache2
 sudo a2enmod ssl
 sudo systemctl restart apache2
 
-# Grant user write permissions
+# ? Grant user write permissions
 sudo usermod -a -G www-data $USERNAME
 
 echo -e "\nAdded the environment's user to [www-data] group." >&3
 
-# Setup permissions permanently
-sudo setfacl -Rdm g:www-data:rwx $PROJECTS_DIRECTORY
-sudo chown -R :www-data $PROJECTS_DIRECTORY
-sudo chmod -R g+rwx $PROJECTS_DIRECTORY
+# ? Setup permissions permanently
+sudo setfacl -Rdm g:www-data:rwx $projects_directory
+sudo chown -R :www-data $projects_directory
+sudo chmod -R g+rwx $projects_directory
 
 echo -e "\nSet up permissions in the projects directly permanently." >&3
 
-# media packages
+# ? Instatl media packages
 echo -e "\nInstalling media packages..." >&3
 
 if $cancel_suppression; then
@@ -123,7 +135,7 @@ else
     sudo apt install php-imagick php-gd ghostscript ffmpeg -y 2>&1 >/dev/null
 fi
 
-# Xdebug
+# ? Install Xdebug
 echo -e "\nInstalling PHP Xdebug..." >&3
 
 if $cancel_suppression; then
@@ -138,27 +150,30 @@ touch /home/$USERNAME/.config/xdebug/xdebug.log
 sudo chown www-data:www-data /home/$USERNAME/.config/xdebug/xdebug.log
 sudo chmod 664 /home/$USERNAME/.config/xdebug/xdebug.log
 
-sudo sed -i "s~zend_extension=xdebug.so~zend_extension=xdebug.so\n\nxdebug.log=\"/home/$USERNAME/.config/xdebug/xdebug.log\"\nxdebug.log_level=10\nxdebug.mode=develop,debug,coverage\nxdebug.client_port=9003\nxdebug.start_with_request=yes\nxdebug.discover_client_host=true~g" /etc/php/8.1/mods-available/xdebug.ini
+sudo sed -i "s~zend_extension=xdebug.so~zend_extension=xdebug.so\n\nxdebug.log=\"/home/$USERNAME/.config/xdebug/xdebug.log\"\nxdebug.log_level=10\nxdebug.mode=develop,debug,coverage\nxdebug.client_port=9003\nxdebug.start_with_request=yes\nxdebug.discover_client_host=true~g" "/etc/php/$PHP_VERSION/mods-available/xdebug.ini"
 
 sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USERNAME/.config/xdebug
 
 sudo systemctl restart apache2
 
-# Google Chrome (for Laravel Dusk)
-cd /home/$USERNAME/Downloads/
-if $cancel_suppression; then
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 2>&1
-    sudo apt install -y ./google-chrome-stable_current_amd64.deb 2>&1
-else
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 2>&1 >/dev/null
-    sudo apt install -y ./google-chrome-stable_current_amd64.deb 2>&1 >/dev/null
+# ? Install Google Chrome (for Laravel Dusk)
+if ! command -v google-chrome-stable &> /dev/null; then
+    cd /home/$USERNAME/Downloads/
+    if $cancel_suppression; then
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 2>&1
+        sudo apt install -y ./google-chrome-stable_current_amd64.deb 2>&1
+    else
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 2>&1 >/dev/null
+        sudo apt install -y ./google-chrome-stable_current_amd64.deb 2>&1 >/dev/null
+    fi
+    rm google-chrome-stable_current_amd64.deb
 fi
-rm google-chrome-stable_current_amd64.deb
 
-# Bun
-echo -e "\nInstalling Bun front-end package manager..." >&3
+# ? Install Bun
+if ! command -v bun &> /dev/null; then
+    echo -e "\nInstalling Bun front-end package manager..." >&3
 
-sudo -i -u $USERNAME bash <<EOF
+    sudo -i -u $USERNAME bash <<EOF
 if $cancel_suppression; then
     curl -fsSL https://bun.sh/install | bash 2>&1
 else
@@ -166,10 +181,10 @@ else
 fi
 EOF
 
-export BUN="/home/$USERNAME/.bun/bin/bun"
+    export BUN="/home/$USERNAME/.bun/bin/bun"
 
-# Graphite
-sudo -i -u $USERNAME bash <<EOF
+    # ? Install Graphite
+    sudo -i -u $USERNAME bash <<EOF
 if $cancel_suppression; then
     $BUN add -g @withgraphite/graphite-cli@stable 2>&1
 else
@@ -177,9 +192,10 @@ else
 fi
 EOF
 
-echo -e "\nInstalled Graphite version control CLI..." >&3
+    echo -e "\nInstalled Graphite version control CLI." >&3
+fi
 
-# Composer (globally)
+# ? Install Composer (globally)
 echo -e "\nInstalling composer globally..." >&3
 
 if $cancel_suppression; then
@@ -190,7 +206,7 @@ fi
 
 echo -e "\nexport PATH=\"\$PATH:/home/$USERNAME/.config/composer/vendor/bin\"" >> /home/$USERNAME/.bashrc
 
-# mkcert
+# ? Install mkcert
 echo -e "\nInstalling mkcert for SSL generation..." >&3
 
 if $cancel_suppression; then
@@ -199,7 +215,7 @@ else
     sudo apt install mkcert libnss3-tools -y 2>&1 >/dev/null
 fi
 
-# MySQL
+# ? Install MySQL
 echo -e "\nInstalling MySQL and setting the password to the env-file's..." >&3
 
 if $cancel_suppression; then
@@ -220,13 +236,13 @@ fi
 
 sudo service apache2 restart
 
-# Pest Database
-export MYSQL_PWD=password
+# ? Create a database for Pest
+export MYSQL_PWD=$DB_PASSWORD
 mysql -u root -e "CREATE DATABASE pest;"
 
 echo -e "\nCreated a \"Pest\" MySQL database for testing." >&3
 
-# Mailpit (service)
+# ? Install Mailpit (service)
 echo -e "\nInstalling Mailpit and setting up a service for it..." >&3
 
 mkdir /home/$USERNAME/Downloads/mailpit
@@ -270,7 +286,7 @@ else
 fi
 sudo systemctl start mailpit.service
 
-# MinIO (server, client, and service)
+# ? Install MinIO (server, client, and service)
 echo -e "\nInstalling MinIO and setting up a service for it..." >&3
 
 mkdir /home/$USERNAME/Downloads/minio
@@ -330,7 +346,7 @@ minio-client alias set myminio/ http://localhost:9000 minioadmin minioadmin
 EOF
 
 if [ -n "$EXPOSE_TOKEN" ]; then
-    # Expose
+    # ? Install Expose
     echo -e "\nInstalling Expose and setting up its token to be ready to use..." >&3
 
     cd /home/$USERNAME/Downloads
@@ -346,7 +362,7 @@ if [ -n "$EXPOSE_TOKEN" ]; then
     sudo mv expose /usr/local/bin/
 
     sudo -i -u $USERNAME bash <<EOF
-    expose token $EXPOSE_TOKEN
+expose token $EXPOSE_TOKEN
 EOF
 fi
 
@@ -355,23 +371,23 @@ fi
 # * =======================
 
 if [ "$OPINIONATED" == true ]; then
-    # Link projects directory
+    # ? Link projects directory
     sudo -i -u $USERNAME bash <<EOF
 mkdir /home/$USERNAME/Code
 cd /home/$USERNAME/Code
-ln -s $PROJECTS_DIRECTORY/
+ln -s $projects_directory/
 EOF
 
     cd /home/$USERNAME/Code
-    final_folder=$(basename $PROJECTS_DIRECTORY)
+    final_folder=$(basename $projects_directory)
     sudo mv $final_folder ./Laravel
 
     sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USERNAME/Code
 
     echo -e "\nLinked projects directory into [~/Code/Laravel] directory." >&3
 
-    # Install Firacode font (if VSC installed)
-    if [[ $USING_VSC == true ]]; then
+    # ? Install Firacode font (if VSC installed)
+    if [ $USING_VSC == true ]; then
         if $cancel_suppression; then
             sudo apt install fonts-firacode -y 2>&1
         else
@@ -381,14 +397,14 @@ EOF
         echo -e "\nInstalled Firacode font for VSC." >&3
     fi
 
-    # Create .packages directory
-    sudo mkdir $PROJECTS_DIRECTORY/.packages
+    # ? Create .packages directory
+    sudo mkdir $projects_directory/.packages
 
-    sudo $lara_stacker_dir/scripts/helpers/permit.sh $PROJECTS_DIRECTORY/.packages
+    sudo $lara_stacker_dir/scripts/helpers/permit.sh $projects_directory/.packages
 
-    echo -e "\nCreated a [$PROJECTS_DIRECTORY/.packages] directory." >&3
+    echo -e "\nCreated a [$projects_directory/.packages] directory." >&3
 
-    # Add helper aliases to .bashrc
+    # ? Add helper aliases to .bashrc
     echo -e "\n# Laravel Aliases\nalias cda='composer dump-autoload'\nalias art='php artisan'\nalias fresh='php artisan migrate:fresh'\nalias mfs='php artisan migrate:fresh --seed'\nalias opt='php artisan optimize:clear'\nalias dev='bun run dev'\n" >> /home/$USERNAME/.bashrc
 
     echo -e "\nAdded some helper aliases to [.bashrc] file. Check 'art' out!" >&3
@@ -398,15 +414,18 @@ fi
 # * The End
 # * ======
 
+# ? Mark setup as done
 touch $lara_stacker_dir/done-setup.flag
 sudo $lara_stacker_dir/scripts/helpers/permit.sh $lara_stacker_dir/done-setup.flag
 
+# ? Conclude everything
 echo -e "\nSetup done successfully. The following are required:\n" >&3
 
-echo -e "- Ensure that the browser is ran properly once." >&3
-echo -e "- Run [mkcert -install] command so you could generate SSL certificates." >&3
+echo -e "- Ensure that your web browser is ran properly (launched) once." >&3
+echo -e "- Run [mkcert -install] command so SSL certificates can be generated." >&3
 echo -e "- Restart the operating system for permissions and services to work.\n" >&3
 
+# ? Prompt to continue
 echo -n "Press any key to continue..." >&3
 read whatever
 

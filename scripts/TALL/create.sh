@@ -3,7 +3,7 @@
 clear
 
 # * Display a status indicator
-echo -e "-=|[ Lara-Stacker |> CREATE RAW ]|=-\n"
+echo -e "-=|[ Lara-Stacker |> TALL Projects Management |> CREATE ]|=-\n"
 
 # * ===========
 # * Validation
@@ -39,6 +39,11 @@ sourceIfAvailable() {
 }
 
 # * Source the necessary functions
+sourceIfAvailable "apacheUp"
+sourceIfAvailable "viteUp"
+sourceIfAvailable "mysqlUp"
+sourceIfAvailable "minioUp"
+sourceIfAvailable "workspaceUp"
 sourceIfAvailable "xdebugUp"
 
 # ? Ensure the script isn't ran directly
@@ -71,6 +76,7 @@ fi
 # ? Get environment variables and defaults
 lara_stacker_dir=$PWD
 source $lara_stacker_dir/.env
+projects_directory=/var/www/html
 
 # ? Set the echoing level
 conditional_quiet="--quiet"
@@ -94,7 +100,7 @@ case $LOGGING_LEVEL in
     ;;
 esac
 
-# ? Check for VSC
+# ? Check for VSCodium or VSC existence
 USING_VSC=false
 if command -v codium >/dev/null 2>&1 || command -v code >/dev/null 2>&1; then
     USING_VSC=true
@@ -104,64 +110,81 @@ fi
 # * Input
 # * ====
 
-# ? Get the project path from the user
-echo -ne "Enter the full project path (e.g., /home/$USERNAME/Code/my_laravel_app): " >&3
-read full_directory
+# ? Get the project name from the user
+echo -ne "Enter the project name: " >&3
+read project_name
 
-full_directory="${full_directory%/}"
-project_path=$(dirname "$full_directory")
-project_name=$(basename "$full_directory")
+escaped_project_name=$(echo "$project_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
+escaped_project_name=${escaped_project_name// /}
 
-# ? Cancel if the project path directory doesn't exists
-if [ ! -d "$project_path" ]; then
-    prompt "The project containing path doesn't exist!" "Raw project creation cancelled."
+# ? Abort if the project directory already exists
+if [ -d "$projects_directory/$escaped_project_name" ]; then
+    prompt "Project folder already exists!" "Project creation cancelled."
 fi
 
-# ? Cancel if the project directory already exists
-if [ -d "$project_path/$project_name" ]; then
-    prompt "Project folder already exist within the previously given path!" "Raw project creation cancelled."
-fi
+# * ===============
+# * Initialization
+# * =============
 
-# * ========
-# * Process
-# * ======
-
-# ? ===============================================================
-# ? Create the Laravel raw project in the provided path and folder
-# ? =============================================================
+# ? =====================================================
+# ? Create the Laravel project in the projects directory
+# ? ===================================================
 
 echo -e "\nInstalling the project via Composer..." >&3
 
-cd $project_path/
-composer create-project laravel/laravel $project_name -n $conditional_quiet
+cd $projects_directory/
+composer create-project laravel/laravel $escaped_project_name -n $conditional_quiet
 
-# ? Enforce permissions
-sudo $lara_stacker_dir/scripts/helpers/permit.sh $project_path/$project_name
+sudo $lara_stacker_dir/scripts/helpers/permit.sh $projects_directory/$escaped_project_name
 
-# ? =================================================
-# ? Update the project name in environment variables
-# ? ===============================================
+# ? Create the Apache site
+apacheUp $escaped_project_name $USERNAME $cancel_suppression $lara_stacker_dir
 
-cd $project_path/$project_name
+# ? Link the site to Vite's configuration
+viteUp $projects_directory $escaped_project_name $lara_stacker_dir
 
-sed -i "s/APP_NAME=Laravel/APP_NAME=\"$project_name\"/g" ./.env
-
-echo -e "\nCreated and named the raw Laravel application." >&3
+# ? Generate a MySQL database if doesn't exit
+mysqlUp $escaped_project_name $projects_directory $DB_PASSWORD
 
 # ? Set up launch.json for debugging (Xdebug), if VSC is used
-xdebugUp $USING_VSC $project_name $lara_stacker_dir $project_path
+xdebugUp $USING_VSC $escaped_project_name $lara_stacker_dir $projects_directory
+
+# ? Set up a MinIO storage
+minioUp $escaped_project_name $USERNAME $lara_stacker_dir
+
+# * ==============
+# * Configuration
+# * ============
+
+cd $projects_directory/$escaped_project_name
+
+# TODO Install vpremiss/tall-stacker package manager via Composer when it's ready -_-"
+
+if [ -n "$EXPOSE_TOKEN" ]; then
+    # ? Modify the TrustProxies middleware to work with Expose
+    sed -i -E ':a;N;$!ba;s/(->withMiddleware\(function \(Middleware \$middleware\) \{\n\s*)\/\/(\n\s*\})/\1\$middleware->trustProxies(at: \x27*\x27); \2/g' ./bootstrap/app.php
+
+    echo -e "\nTrusted all proxies for Expose compatibility." >&3
+fi
+
+if [ "$OPINIONATED" == true ]; then
+    # ? Apply Prettier config
+    sudo cp $lara_stacker_dir/files/.opinionated/.prettierrc ./.prettierrc
+
+    echo -e "\nCopied an opinionated Prettier config file to the project." >&3
+
+    if [ "$USING_VSC" == true ]; then
+        # ? Create a dedicated VSC workspace in Desktop
+        workspaceUp $escaped_project_name $USERNAME $lara_stacker_dir
+    fi
+fi
 
 # * ========
 # * The End
 # * ======
 
-# ? Enforce permissions
-sudo $lara_stacker_dir/scripts/helpers/permit.sh $project_path/$project_name
-
-echo -e "\nUpdated directory and file permissions all around." >&3
-
 # * Display a success message
-echo -e "\nLaravel project created successfully! Run [art serve] from within its directory to start.\n" >&3
+echo -e "\nProject created successfully! You can access it at: [https://$escaped_project_name.test].\n" >&3
 
 # * Prompt to continue
 echo -n "Press any key to continue..." >&3
