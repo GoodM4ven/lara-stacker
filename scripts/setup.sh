@@ -69,9 +69,9 @@ fi
 echo -e "\nInstalling system packages..." >&3
 
 if $cancel_suppression; then
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 -y 2>&1
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 npm -y 2>&1
 else
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 -y 2>&1 >/dev/null
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 npm -y 2>&1 >/dev/null
 fi
 
 # ? Dynamically get the PHP version
@@ -188,12 +188,6 @@ fi
 EOF
 
     echo -e "\nInstalled Graphite version control CLI." >&3
-else
-    if $cancel_suppression; then
-        sudo apt install npm -y 2>&1
-    else
-        sudo apt install npm -y 2>&1 >/dev/null
-    fi
 fi
 
 # ? Install Composer (globally)
