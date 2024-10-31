@@ -18,6 +18,14 @@ EOF
 
     # ? Update the Laravel project's environment variables for MinIO storage
     cd $projects_directory/$escaped_project_name
+
+    if ! grep -q '^AWS_ENDPOINT=' ./.env; then
+        sed -i "/^AWS_BUCKET=.*/a AWS_ENDPOINT=" ./.env
+    fi
+    if ! grep -q '^AWS_URL=' ./.env; then
+        sed -i "/^AWS_ENDPOINT=.*/a AWS_URL=" ./.env
+    fi
+
     sed -i "/^FILESYSTEM_DISK=/c\FILESYSTEM_DISK=s3" ./.env
     sed -i "/^AWS_ACCESS_KEY_ID=/c\AWS_ACCESS_KEY_ID=minioadmin" ./.env
     sed -i "/^AWS_SECRET_ACCESS_KEY=/c\AWS_SECRET_ACCESS_KEY=minioadmin" ./.env
