@@ -60,6 +60,8 @@ And, yes, these are valid reasons considering that Laravel itself created [Herd]
 
 ## Installation
 
+- Either download the project zipped, or `git clone` it.
+
 - Extract the scripter somewhere and navigate into it:
   ```bash
   cd ~/Downloads && unzip ./lara-stacker-x.x.x.zip -d ./ && cd lara-stacker-x.x.x
