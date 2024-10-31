@@ -14,13 +14,16 @@ memcachedUp() {
 
     # ? Modify the Laravel project's environment variables
     sed -i 's/^CACHE_STORE=.*/CACHE_STORE=memcached/' ./.env
-    awk -v id="$memcached_id" 'BEGIN{added=0} /^REDIS_/ && !added {
-    print "MEMCACHED_HOST=127.0.0.1";
-    print "MEMCACHED_PERSISTENT_ID=" id "\n";
-    print;
-    added=1;
-    next
-} {print}' ./.env > temp.env && mv temp.env ./.env
+    awk -v id="$memcached_id" '
+        BEGIN{added=0} 
+        /^MEMCACHED_HOST=127.0.0.1/ {memcached_exists=1}
+        /^REDIS_/ && !added && !memcached_exists {
+            print "MEMCACHED_HOST=127.0.0.1";
+            print "MEMCACHED_PERSISTENT_ID=" id;
+            added=1;
+        } 
+        {print}
+    ' ./.env > temp.env && mv temp.env ./.env
     sed -i '/^REDIS_/{s/^/# /}' ./.env
 
     echo -e "\nConfigured Memcached to replace Redis in environment variables." >&3

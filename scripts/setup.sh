@@ -326,6 +326,15 @@ RestartSec=10
 [Install]
 WantedBy=multi-user.target" | sudo tee /etc/systemd/system/minio.service >/dev/null
 
+# ? Add an entry for the service to the /etc/hosts file if it doesn't exist
+if ! grep -q "127.0.0.1 mailpit" /etc/hosts; then
+    echo "127.0.0.1 mailpit" | sudo tee -a /etc/hosts >/dev/null
+
+    echo -e "\nAdded the service to [/etc/hosts] file." >&3
+else
+    echo -e "\nThe service mailpit is already in the [/etc/hosts] file." >&3
+fi
+
 sudo systemctl daemon-reload
 if $cancel_suppression; then
     sudo systemctl enable minio.service 2>&1

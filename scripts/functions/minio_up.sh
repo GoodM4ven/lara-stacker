@@ -18,11 +18,14 @@ EOF
 
     # ? Update the Laravel project's environment variables for MinIO storage
     cd $projects_directory/$escaped_project_name
-    sed -i "s/FILESYSTEM_DISK=local/FILESYSTEM_DISK=s3/g" ./.env
-    sed -i "s/AWS_ACCESS_KEY_ID=/AWS_ACCESS_KEY_ID=minioadmin/g" ./.env
-    sed -i "s/AWS_SECRET_ACCESS_KEY=/AWS_SECRET_ACCESS_KEY=minioadmin/g" ./.env
-    sed -i "s/AWS_BUCKET=/AWS_BUCKET=$escaped_project_name/g" ./.env
-    sed -i "s|AWS_USE_PATH_STYLE_ENDPOINT=false|AWS_ENDPOINT=http://localhost:9000\nAWS_URL=http://localhost:9000/$escaped_project_name\nAWS_USE_PATH_STYLE_ENDPOINT=true|g" ./.env
+    sed -i "/^FILESYSTEM_DISK=/c\FILESYSTEM_DISK=s3" ./.env
+    sed -i "/^AWS_ACCESS_KEY_ID=/c\AWS_ACCESS_KEY_ID=minioadmin" ./.env
+    sed -i "/^AWS_SECRET_ACCESS_KEY=/c\AWS_SECRET_ACCESS_KEY=minioadmin" ./.env
+    sed -i "/^AWS_DEFAULT_REGION=/c\AWS_DEFAULT_REGION=us-east-1" ./.env
+    sed -i "/^AWS_BUCKET=/c\AWS_BUCKET=$escaped_project_name" ./.env
+    sed -i "/^AWS_ENDPOINT=/c\AWS_ENDPOINT=http://localhost:9000" ./.env
+    sed -i "/^AWS_URL=/c\AWS_URL=http://localhost:9000/$escaped_project_name" ./.env
+    sed -i "/^AWS_USE_PATH_STYLE_ENDPOINT=/c\AWS_USE_PATH_STYLE_ENDPOINT=true" ./.env
 
     echo -e "\nSet up a MinIO storage for the project." >&3
 }

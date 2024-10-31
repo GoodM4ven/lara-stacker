@@ -139,6 +139,9 @@ minioUp $escaped_project_name
 
 cd $projects_directory/$escaped_project_name
 
+# ? Migrate the database
+php artisan migrate:fresh --seed
+
 # TODO Install vpremiss/tall-stacker package manager via Composer when it's ready -_-"
 
 if [[ -n "$EXPOSE_TOKEN" ]]; then
