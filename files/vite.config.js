@@ -21,6 +21,7 @@ export default defineConfig({
     server: {
         host,
         hmr: { host },
+        cors: { origin: `https://${host}` },
         https: {
             cert: certPath,
             key: keyPath,
