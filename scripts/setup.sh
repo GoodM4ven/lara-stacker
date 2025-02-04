@@ -69,9 +69,9 @@ fi
 echo -e "\nInstalling system packages..." >&3
 
 if $cancel_suppression; then
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 npm -y 2>&1
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 -y 2>&1
 else
-    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 npm -y 2>&1 >/dev/null
+    sudo apt install git curl php apache2 php-curl php-xml php-dom php-bcmath php-zip sqlite3 php-sqlite3 -y 2>&1 >/dev/null
 fi
 
 # ? Dynamically get the PHP version
@@ -144,6 +144,19 @@ if $cancel_suppression; then
     sudo apt install memcached php-memcached -y 2>&1
 else
     sudo apt install memcached php-memcached -y 2>&1 >/dev/null
+fi
+
+sudo systemctl restart apache2
+
+# ? Install Redis
+echo -e "\nInstalling Redis..." >&3
+
+if $cancel_suppression; then
+    sudo apt install redis php-redis -y 2>&1
+    sudo phpenmod redis 2>&1
+else
+    sudo apt install redis php-redis -y 2>&1 >/dev/null
+    sudo phpenmod redis 2>&1 >/dev/null
 fi
 
 sudo systemctl restart apache2
