@@ -137,17 +137,6 @@ sudo $lara_stacker_dir/scripts/helpers/permit.sh /home/$USERNAME/.config/xdebug
 
 sudo systemctl restart apache2
 
-# ? Install Memcached
-echo -e "\nInstalling Memcached..." >&3
-
-if $cancel_suppression; then
-    sudo apt install memcached php-memcached -y 2>&1
-else
-    sudo apt install memcached php-memcached -y 2>&1 >/dev/null
-fi
-
-sudo systemctl restart apache2
-
 # ? Install Redis
 echo -e "\nInstalling Redis..." >&3
 

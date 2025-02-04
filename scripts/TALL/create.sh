@@ -94,7 +94,7 @@ fi
 sourcer "apacheUp" $cancel_suppression
 sourcer "viteUp" $cancel_suppression
 sourcer "mysqlUp" $cancel_suppression
-sourcer "memcachedUp" $cancel_suppression
+sourcer "redisUp" $cancel_suppression
 sourcer "mailpitUp" $cancel_suppression
 sourcer "minioUp" $cancel_suppression
 sourcer "workspaceUp" $cancel_suppression
@@ -121,8 +121,8 @@ viteUp $escaped_project_name
 # ? Generate a MySQL database if doesn't exit
 mysqlUp $escaped_project_name
 
-# ? Configure Memcached to replace Redis
-memcachedUp $escaped_project_name
+# ? Configure Redis for caching
+redisUp $escaped_project_name
 
 # ? Configure Mailpit to replace log mailer driver
 mailpitUp $escaped_project_name

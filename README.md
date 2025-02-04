@@ -43,14 +43,14 @@ And, yes, these are valid reasons considering that Laravel itself created [Herd]
     - [php-xdebug](https://xdebug.org/)
     - [php-mysql](https://www.php.net/manual/en/book.mysql.php)
     - [php-sqlite3](https://www.php.net/manual/en/book.sqlite3.php)
-    - [php-memcached](https://www.php.net/manual/en/book.memcached.php)
+    - [php-redis](https://github.com/phpredis/phpredis)
     - [firacode](https://github.com/tonsky/FiraCode)
 
 - Services
   - [apache2](https://httpd.apache.org/)
   - [sqlite3](https://www.sqlite.org/index.html)
   - [mysql-server](https://www.mysql.com/) (port 3306)
-  - [memcached](https://memcached.org/) (port 11211)
+  - [redis](https://redis.io/) (port 6379)
   - [mailpit](https://github.com/axllent/mailpit) (http://localhost:8025)
   - [minio](https://min.io/) (http://localhost:9000)
 
