@@ -68,6 +68,7 @@ esac
 
 # ? Source the procedural function scripts now
 sourcer "apacheUp" $cancel_suppression
+sourcer "viteUp" $cancel_suppression
 
 # ? Get the site name
 echo -ne "\nEnter the site name: " >&3
@@ -75,6 +76,12 @@ read site_name
 
 # ? Host the Apache site if it doesn't exist
 apacheUp $site_name $cancel_suppression
+
+escaped_project_name=$(echo "$site_name" | tr ' ' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
+escaped_project_name=${escaped_project_name// /}
+
+# ? Link the site to Vite's configuration
+viteUp $site_name $escaped_project_name
 
 # * ========
 # * The End

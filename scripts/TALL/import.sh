@@ -125,10 +125,10 @@ sudo $lara_stacker_dir/scripts/helpers/permit.sh $projects_directory/$escaped_pr
 echo -e "\nThe project folder has been copied to "$projects_directory" directory." >&3
 
 # ? Create the Apache site
-apacheUp $escaped_project_name $cancel_suppression true
+apacheUp $escaped_project_name $cancel_suppression
 
 # ? Link the site to Vite's configuration
-viteUp $escaped_project_name
+viteUp $project_name $escaped_project_name
 
 # ? Generate a MySQL database if doesn't exit
 mysqlUp $escaped_project_name

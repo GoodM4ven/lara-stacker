@@ -116,7 +116,7 @@ sudo $lara_stacker_dir/scripts/helpers/permit.sh $projects_directory/$escaped_pr
 apacheUp $escaped_project_name $cancel_suppression
 
 # ? Link the site to Vite's configuration
-viteUp $escaped_project_name
+viteUp $project_name $escaped_project_name
 
 # ? Generate a MySQL database if doesn't exit
 mysqlUp $escaped_project_name

@@ -97,20 +97,6 @@ EOF
 
     echo -e "\nLinked the site URL in the project's env file." >&3
 
-    # ? Confirm whether to apply our Vite file for SSL configuration or return
-    if $is_importing_instead; then
-        continueOrAbort "Vite config file usually exists in old projects, yet we need to replace it for SSL configuration." \
-            "Applying Vite config file was cancelled..." \
-            $cancel_suppression \
-            true
-    fi
-
-    # ? Override and modify the vite config for SSL configuration
-    sudo cp $lara_stacker_dir/files/vite.config.js ./
-    sed -i "s~<projectName>~$escaped_project_name~g" ./vite.config.js
-
-    echo -e "\nApplied a new Vite config file to respect SSL." >&3
-
     # ? Append .certs to .gitignore if not already ignored
     if ! grep ".certs" .gitignore; then
         echo "/.certs" >> .gitignore
