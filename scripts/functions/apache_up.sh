@@ -31,10 +31,10 @@ apacheUp() {
     # ? Generate SSL certificate files
     sudo -i -u $USERNAME bash <<EOF
 cd $projects_directory/$escaped_project_name
-if [ ! -d "./certs" ]; then
-    mkdir certs
+if [ ! -d "./.certs" ]; then
+    mkdir .certs
 fi
-cd certs
+cd .certs
 if $cancel_suppression; then
     mkcert $escaped_project_name.test 2>&1
 else
@@ -74,8 +74,8 @@ EOF
             CustomLog ${APACHE_LOG_DIR}/access.log combined
 
             SSLEngine on
-            SSLCertificateFile $projects_directory/$escaped_project_name/certs/$escaped_project_name.test.pem
-            SSLCertificateKeyFile $projects_directory/$escaped_project_name/certs/$escaped_project_name.test-key.pem
+            SSLCertificateFile $projects_directory/$escaped_project_name/.certs/$escaped_project_name.test.pem
+            SSLCertificateKeyFile $projects_directory/$escaped_project_name/.certs/$escaped_project_name.test-key.pem
             FallbackResource /index.php
         </VirtualHost>
     </IfModule>" | sudo tee /etc/apache2/sites-available/$escaped_project_name.conf >/dev/null
@@ -110,4 +110,10 @@ EOF
     sed -i "s~<projectName>~$escaped_project_name~g" ./vite.config.js
 
     echo -e "\nApplied a new Vite config file to respect SSL." >&3
+
+    # ? Append .certs to .gitignore if not already ignored
+    if ! grep ".certs" .gitignore; then
+        echo "/.certs" >> .gitignore
+        echo -e "\nAdded .certs folder to .gitignore." >&3
+    fi
 }

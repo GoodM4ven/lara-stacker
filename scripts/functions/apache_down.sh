@@ -33,8 +33,8 @@ apacheDown() {
     fi
 
     # ? Delete the site's cert files if they exist
-    if [ -d "$projects_directory/$escaped_project_name/certs" ]; then
-        sudo rm -rf $projects_directory/$escaped_project_name/certs
+    if [ -d "$projects_directory/$escaped_project_name/.certs" ]; then
+        sudo rm -rf $projects_directory/$escaped_project_name/.certs
 
         echo -e "\nDeleted the site's SSL certificates." >&3
     fi

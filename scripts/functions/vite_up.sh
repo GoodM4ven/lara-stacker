@@ -14,8 +14,8 @@ viteUp() {
         sed -i "/import laravel from 'laravel-vite-plugin';/a \\
 \\
 const host = \"${escaped_project_name}.test\";\\
-const certPath = path.resolve(__dirname, \`./certs/\${host}.pem\`);\\
-const keyPath = path.resolve(__dirname, \`./certs/\${host}-key.pem\`);" $vite_config_file
+const certPath = path.resolve(__dirname, \`./.certs/\${host}.pem\`);\\
+const keyPath = path.resolve(__dirname, \`./.certs/\${host}-key.pem\`);" $vite_config_file
         sed -i '/^});/i \    server: {\
             host,\
             hmr: { host },\

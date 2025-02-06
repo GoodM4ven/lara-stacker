@@ -113,9 +113,9 @@ sourcer "xdebugUp" $cancel_suppression
 # ? Make a copy of the project in the directory
 # ? ==========================================
 
-# ? Ensures certs folder exists nevertheless
-if [ ! -d "$project_path/$project_name/certs" ]; then
-    mkdir $project_path/$project_name/certs
+# ? Ensures .certs folder exists nevertheless
+if [ ! -d "$project_path/$project_name/.certs" ]; then
+    mkdir $project_path/$project_name/.certs
 fi
 
 sudo cp -r $project_path/$project_name $projects_directory/$escaped_project_name
