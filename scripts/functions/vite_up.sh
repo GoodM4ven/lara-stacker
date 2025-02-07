@@ -15,7 +15,7 @@ viteUp() {
     PROJECT_NAME="$project_name"
     FILE="$vite_config_file"
 
-    if ! grep -q "const host = \"${PROJECT_NAME}.test\"" "$FILE"; then
+    if ! grep -q "const host =" "$FILE"; then
         if ! grep -q '^import path from "path";' "$FILE"; then
             sed -i '1i import path from "path";' "$FILE"
         fi
