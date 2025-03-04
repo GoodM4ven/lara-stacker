@@ -1,6 +1,9 @@
 {
 	"extensions": {
-		"recommendations": []
+		"recommendations": [],
+		"unwantedRecommendations": [
+	        "vscode.php-language-features"
+		]
 	},
 	"folders": [
 		{
