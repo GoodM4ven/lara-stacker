@@ -87,7 +87,7 @@ viteUp() {
     server: {\n\
         host,\n\
         hmr: { host },\n\
-        cors: { origin: `https://${host}` },\n\
+        cors: { origin: `*` },\n\
         https: {\n\
             cert: certPath,\n\
             key: keyPath,\n\
